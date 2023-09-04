@@ -16,12 +16,46 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+* {
+  box-sizing: border-box;
+  transition: all ease-in-out 150ms;
+}
+
+body,
+html {
+  background-image: linear-gradient(to bottom right, #243555, #141e30);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+input {
+  border: none;
+  background-color: rgba(31, 41, 55, 1);
+  border-bottom: 2px solid rgba(75, 85, 99, 1);
+}
+
+input:focus {
+  outline: none;
+}
+
+input[type="submit"] {
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: white;
+  color: rgba(31, 41, 55, 1);
+}
+
+label {
+  display: block;
+}
+
+a {
+  text-decoration: underline;
 }

@@ -1,0 +1,68 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "user": "guest",
+      "password": "password",
+      "calorie_goal": 1200
+    },
+    {
+      "id": 2,
+      "user": "guest2",
+      "password": "password",
+      "calorie_goal": 1500
+    }
+  ],
+  "Foods": [
+    {
+      "id": 1,
+      "food": "banana",
+      "calories": 80,
+      "amount": "1oz"
+    },
+    {
+      "id": 2,
+      "food": "apple",
+      "calories": 50,
+      "amount": "1oz"
+    },
+    {
+      "id": 3,
+      "food": "blueberries",
+      "calories": 120,
+      "amount": "1oz"
+    },
+    {
+      "id": 4,
+      "food": "peanut butter",
+      "calories": 150,
+      "amount": "2 tablespoons"
+    }
+  ],
+  "days": [
+    {
+      "id": 1,
+      "userId": 1,
+      "date": "9/1/23"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "date": "9/1/23"
+    }
+  ],
+  "entries": [
+    {
+      "id": 1,
+      "createdAt": 1203981231,
+      "foodId": 1,
+      "dayId": 1
+    },
+    {
+      "id": 1,
+      "createdAt": 1203981231,
+      "foodId": 4,
+      "dayId": 2
+    }
+  ]
+}
