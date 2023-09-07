@@ -11,6 +11,30 @@
       "user": "guest2",
       "password": "password",
       "calorie_goal": 1500
+    },
+    {
+      "user": "apples",
+      "password": "apples",
+      "calorieGoal": 2000,
+      "id": 5
+    },
+    {
+      "user": "New",
+      "password": "Player",
+      "calorieGoal": 2000,
+      "id": 6
+    },
+    {
+      "user": "",
+      "password": "",
+      "calorieGoal": 2000,
+      "id": 7
+    },
+    {
+      "user": "GooGoo",
+      "password": "GaGa",
+      "calorieGoal": 2000,
+      "id": 8
     }
   ],
   "Foods": [

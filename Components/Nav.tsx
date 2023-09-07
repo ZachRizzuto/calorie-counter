@@ -1,40 +1,58 @@
 "use client";
 import Image from "next/image";
-import { Button } from "./Button";
+import styles from "../Components/Button.module.css";
 import { LogContext } from "./Providers/LogProvider";
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "./Button";
 
 export const Nav = () => {
-  const { isLoggedIn, setIsLoggedIn } = useContext(LogContext);
   const { push } = useRouter();
-
-  useEffect(() => {
-    !isLoggedIn && push("/login");
-  }, [isLoggedIn, push]);
   return (
     <>
       <nav className="flex items-center justify-between h-24 w-full bg-gray-800">
         <Image src={"/favicon.ico"} height={50} width={50} alt="logo" />
-        <ul className="flex gap-2 pr-4">
+        <ul className="flex items-center gap-2 mr-4">
           <li>
-            <Button text={"Buy Food"} onClick={() => null} />
+            <Link
+              href="/food-store"
+              className={`text-center text-white bg-gray-700 rounded-md relative ${styles.btnShadowAni} no-underline p-2`}
+            >
+              Buy Food
+            </Link>
           </li>
           <li>
-            <Button text={"Today"} onClick={() => null} />
+            <Link
+              href="/today"
+              className={`text-center text-white bg-gray-700 rounded-md relative ${styles.btnShadowAni} no-underline p-2`}
+            >
+              Today
+            </Link>
           </li>
           <li>
-            <Button text={"Profile"} onClick={() => null} />
+            <Link
+              href={"/profile"}
+              className={`text-center text-white bg-gray-700 rounded-md relative ${styles.btnShadowAni} no-underline p-2`}
+            >
+              Profile
+            </Link>
           </li>
           <li>
-            <Button text={"Add Food"} onClick={() => null} />
+            <Link
+              href={"/add-food"}
+              className={`text-center text-white bg-gray-700 rounded-md relative ${styles.btnShadowAni} no-underline p-2`}
+            >
+              Add Food
+            </Link>
           </li>
           <li>
             <Button
               text={"Logout"}
               onClick={() => {
-                localStorage.removeItem("user");
-                setIsLoggedIn(false);
+                push("/login");
+                // localStorage.removeItem("user");
+                // setIsLoggedIn(false);
               }}
             />
           </li>

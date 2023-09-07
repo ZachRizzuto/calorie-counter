@@ -41,6 +41,7 @@ input {
 
 input:focus {
   outline: none;
+  border-color: rgba(52, 211, 153);
 }
 
 input[type="submit"] {
@@ -48,6 +49,11 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
+  background-color: white;
+  color: rgba(31, 41, 55, 1);
+}
+
+input[type="submit"]:focus {
   background-color: white;
   color: rgba(31, 41, 55, 1);
 }

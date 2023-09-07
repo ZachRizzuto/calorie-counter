@@ -14,7 +14,7 @@ export const PageSection = ({
 }) => {
   return (
     <div
-      className={`bg-gray-800 rounded-md flex flex-col items-start justify-center p-[20px] mx-[20px] mt-[50px] ${styles.height} ${styles.width}`}
+      className={`bg-gray-800 rounded-md flex flex-col items-start justify-start p-[20px] mx-[20px] mt-[50px] ${styles.height} ${styles.width}`}
     >
       {children}
     </div>

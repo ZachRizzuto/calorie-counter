@@ -8,7 +8,7 @@ export const Button = ({
 }) => {
   return (
     <button
-      className={`h-8 w-40 text-center text-white bg-gray-700 rounded-md relative ${styles.btnShadowAni}`}
+      className={`text-center text-white bg-gray-700 rounded-full relative p-2 hover:bg-red-700`}
       onClick={onClick}
     >
       {text}

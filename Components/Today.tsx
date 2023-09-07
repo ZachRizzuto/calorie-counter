@@ -15,21 +15,30 @@ export const Today = () => {
       <PageSection
         styles={{
           height: "",
-          width: "w-[35vw]",
+          width: "w-full",
         }}
       >
         <div className="flex justify-between border-b-2 border-solid w-full pb-2">
           <h1 className="inline text-5xl">Today</h1>
           <h2 className="inline text-4xl">{`${month + 1}/${day}/${year}`}</h2>
         </div>
-        <div className="overflow-scroll max-h-[360px] w-full p-2 text-xl">
+        <div className="overflow-scroll max-h-[450px] w-full p-2 text-xl">
           {sampleArray.map((val) => {
-            return <div key={val}>{val}</div>;
+            return (
+              <div
+                className="border-b-[1px] border-solid border-gray-600"
+                key={val}
+              >
+                {val}
+              </div>
+            );
           })}
         </div>
-        <div className="flex justify-between border-t-2 border-solid w-full pb-2">
-          <h1>Total</h1>
-          <p>{sampleArray.reduce((acc, num) => acc + num)} kcal</p>
+        <div className="flex justify-between items-center border-t-2 border-solid w-full p-2">
+          <h1 className="text-4xl">Total</h1>
+          <p className="text-6xl text-green-500 ">
+            {sampleArray.reduce((acc, num) => acc + num)} kcal
+          </p>
         </div>
       </PageSection>
     </>
