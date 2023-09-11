@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "./Button";
 import { UserContext } from "./Providers/UserProvider";
 import { useContext } from "react";
+import toast from "react-hot-toast";
 
 export const Nav = () => {
   const { push } = useRouter();
@@ -59,6 +60,10 @@ export const Nav = () => {
                 });
                 localStorage.removeItem("user");
                 setIsLoggedIn(false);
+                toast("Logged out!", {
+                  icon: "👋",
+                  duration: 1200,
+                });
               }}
               styles={isLoggedIn ? "hover:bg-red-700" : ""}
             />
