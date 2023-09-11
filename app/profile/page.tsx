@@ -1,18 +1,50 @@
 "use client";
+import { Button } from "@/Components/Button";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
-import { LogContext } from "@/Components/Providers/LogProvider";
+import { UserContext } from "@/Components/Providers/UserProvider";
+import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { editUserGoal } from "../(utils)/requests";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Profile() {
-  const { user } = useContext(LogContext);
+  const { user, setUser } = useContext(UserContext);
+
+  const [showCalorieModal, setShowCalorieModal] = useState(false);
+
+  const handleForm = (data: FormData) => {
+    const newGoal = data.get("calorie")?.valueOf();
+
+    if (typeof user.id === "number") {
+      editUserGoal(user.id, newGoal).then((res) => {
+        if (!res.ok) {
+          throw new Error("Couldn't resolve goal change.");
+        }
+        if (typeof newGoal === "string") {
+          const intGoal = parseInt(newGoal);
+          setUser({
+            ...user,
+            calorie_goal: intGoal,
+          });
+        }
+      });
+      toast.success("Changed goal!");
+    }
+  };
+
   return (
     <>
       <PageWrapper>
         <Nav />
-        <div className="flex items-center justify-between h-[100vh]">
+        <EditCalorieGoalModal
+          show={showCalorieModal}
+          setShow={(show) => setShowCalorieModal(show)}
+          handleForm={handleForm}
+        />
+        <div className="flex items-center justify-center h-[100vh] p-[30px] gap-2 w-full">
           <div>
             <PageSection
               styles={{
@@ -28,6 +60,7 @@ export default function Profile() {
                 width={350}
                 height={350}
                 className="rounded-[50%]"
+                loading="lazy"
               />
             </PageSection>
             <PageSection
@@ -36,7 +69,32 @@ export default function Profile() {
                 height: "h-full",
               }}
             >
-              <div>Calorie Goal: {user.user}</div>
+              <div className="flex justify-between items-center w-full">
+                <div>Calorie Goal: {user?.calorie_goal}</div>
+                <Button
+                  text="Edit"
+                  onClick={() => {
+                    !showCalorieModal
+                      ? setShowCalorieModal(true)
+                      : setShowCalorieModal(false);
+                  }}
+                  styles="hover:bg-green-400 hover:text-gray-800"
+                />
+              </div>
+            </PageSection>
+          </div>
+          <div>
+            <PageSection
+              styles={{
+                width: "w-full",
+                height: "h-full",
+              }}
+            >
+              <h2 className="text-2xl">Calorie Count This Week</h2>
+              <div>
+                Find user inputs that match logged user Id and get the total
+                from last 7 days
+              </div>
             </PageSection>
           </div>
         </div>

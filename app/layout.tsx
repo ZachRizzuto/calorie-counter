@@ -1,8 +1,9 @@
 "use client";
-import { LogProvider } from "@/Components/Providers/LogProvider";
+import { UserProvider } from "@/Components/Providers/UserProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <LogProvider>
-        <body className={inter.className}>{children}</body>
-      </LogProvider>
+      <UserProvider>
+        <body className={inter.className}>
+          <Toaster />
+          {children}
+        </body>
+      </UserProvider>
     </html>
   );
 }

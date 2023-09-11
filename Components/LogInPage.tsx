@@ -1,12 +1,14 @@
 "use client";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
-import { LogContext } from "./Providers/LogProvider";
-import { redirect, useRouter } from "next/navigation";
+import { useContext, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import getAllUsers from "@/lib/request";
 import { TUser } from "@/types";
+import { UserContext } from "./Providers/UserProvider";
+import toast from "react-hot-toast";
 
 export function LogInPage() {
+  const { setIsLoggedIn, setUser } = useContext(UserContext);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -15,6 +17,8 @@ export function LogInPage() {
 
   const userRef = useRef<HTMLInputElement>(null);
 
+  const { push } = useRouter();
+
   const reset = () => {
     setForm({
       user: "",
@@ -22,82 +26,88 @@ export function LogInPage() {
     });
   };
   return (
-    <form
-      className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3"
-      onSubmit={(e) => {
-        e.preventDefault();
+    <>
+      <form
+        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3"
+        onSubmit={(e) => {
+          e.preventDefault();
 
-        const userData = getAllUsers();
-        userData
-          .then((data) =>
-            data.find(
-              (user: TUser) =>
-                form.user === user.user && form.password === user.password
+          const userData = getAllUsers();
+          userData
+            .then((data) =>
+              data.find(
+                (user: TUser) =>
+                  form.user === user.user && form.password === user.password
+              )
             )
-          )
-          .then((match) => {
-            if (match) {
-              localStorage.setItem("user", JSON.stringify(match));
-              setIsError(false);
-            } else {
-              setIsError(true);
-              userRef.current?.focus();
-            }
-          });
-
-        reset();
-      }}
-    >
-      <h1 className="text-5xl mt-0">Login!</h1>
-      {isError && (
-        <div className="bg-red-500 text-white p-2 rounded-md">
-          Incorrect username or password! Try again!
-        </div>
-      )}
-      <div>
-        <label htmlFor="user">Username: </label>
-        <input
-          type="text"
-          name="user"
-          autoComplete="off"
-          value={form.user}
-          onChange={(e) =>
-            setForm({
-              ...form,
-              user: e.target.value,
-            })
-          }
-          ref={userRef}
-        />
-      </div>
-      <div>
-        <label htmlFor="pass">Password: </label>
-        <input
-          type="password"
-          name="pass"
-          autoComplete="off"
-          value={form.password}
-          onChange={(e) => {
-            setForm({
-              ...form,
-              password: e.target.value,
+            .then((match) => {
+              if (match) {
+                localStorage.setItem("user", JSON.stringify(match));
+                setIsError(false);
+                setIsLoggedIn(true);
+                push("/today");
+                setUser(match);
+                toast.success("Logged In");
+              } else {
+                setIsError(true);
+                userRef.current?.focus();
+              }
             });
-          }}
-        />
-      </div>
-      <div>
-        <input
-          type="submit"
-          value="Login"
-          className="bg-gray-700 w-32 h-10 mr-8"
-        />
-        <Link
-          href="/signup"
-          className="text-white hover:text-gray-500 focus:text-gray-500"
-        >
-          Sign up
-        </Link>
-      </div>
-    </form>
+
+          reset();
+        }}
+      >
+        <h1 className="text-5xl mt-0">Login!</h1>
+        {isError && (
+          <div className="bg-red-500 text-white p-2 rounded-md">
+            Incorrect username or password! Try again!
+          </div>
+        )}
+        <div>
+          <label htmlFor="user">Username: </label>
+          <input
+            type="text"
+            name="user"
+            autoComplete="off"
+            value={form.user}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                user: e.target.value,
+              })
+            }
+            ref={userRef}
+          />
+        </div>
+        <div>
+          <label htmlFor="pass">Password: </label>
+          <input
+            type="password"
+            name="pass"
+            autoComplete="off"
+            value={form.password}
+            onChange={(e) => {
+              setForm({
+                ...form,
+                password: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <div>
+          <input
+            type="submit"
+            value="Login"
+            className="bg-gray-700 w-32 h-10 mr-8"
+          />
+          <Link
+            href="/signup"
+            className="text-white hover:text-gray-500 focus:text-gray-500"
+          >
+            Sign up
+          </Link>
+        </div>
+      </form>
+    </>
   );
 }

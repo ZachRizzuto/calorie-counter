@@ -8,9 +8,9 @@ export default function TodayTab() {
     <>
       <PageWrapper>
         <Nav />
-        <div className="flex justify-between items-center p-[30px] w-full">
+        <div className="flex items-center justify-between h-[100vh] p-[30px] gap-2">
           <Today />
-          <div className="w-full h-full flex flex-col items-center justify-center">
+          <div className="w-full h-full flex flex-col items-center justify-center gap-2">
             <PageSection
               styles={{
                 width: "w-full",

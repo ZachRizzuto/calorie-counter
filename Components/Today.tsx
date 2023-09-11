@@ -14,7 +14,7 @@ export const Today = () => {
     <>
       <PageSection
         styles={{
-          height: "",
+          height: "h-[90%]",
           width: "w-full",
         }}
       >

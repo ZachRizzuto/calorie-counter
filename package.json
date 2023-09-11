@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "server": "json-server --host 192.168.1.156 db.json --port 3001"
+    "serve": "json-server --host 192.168.1.156 db.json --port 3001"
   },
   "dependencies": {
     "@types/node": "20.5.7",
@@ -21,6 +21,8 @@
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-toast": "^1.0.3",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2"
   }

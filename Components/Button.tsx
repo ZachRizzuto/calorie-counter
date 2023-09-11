@@ -1,14 +1,15 @@
 import styles from "./Button.module.css";
-export const Button = ({
-  text,
-  onClick,
-}: {
+
+type Props = {
   text: string;
   onClick: () => void;
-}) => {
+  styles?: string;
+};
+
+export const Button = ({ text, onClick, styles }: Props) => {
   return (
     <button
-      className={`text-center text-white bg-gray-700 rounded-full relative p-2 hover:bg-red-700`}
+      className={`text-center text-white bg-gray-700 rounded-full relative p-2 ${styles}`}
       onClick={onClick}
     >
       {text}

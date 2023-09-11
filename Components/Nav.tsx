@@ -1,17 +1,18 @@
 "use client";
 import Image from "next/image";
 import styles from "../Components/Button.module.css";
-import { LogContext } from "./Providers/LogProvider";
-import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "./Button";
+import { UserContext } from "./Providers/UserProvider";
+import { useContext } from "react";
 
 export const Nav = () => {
   const { push } = useRouter();
+  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(UserContext);
   return (
     <>
-      <nav className="flex items-center justify-between h-24 w-full bg-gray-800">
+      <nav className="flex items-center justify-between min-h-[86px] w-full bg-gray-800">
         <Image src={"/favicon.ico"} height={50} width={50} alt="logo" />
         <ul className="flex items-center gap-2 mr-4">
           <li>
@@ -51,9 +52,15 @@ export const Nav = () => {
               text={"Logout"}
               onClick={() => {
                 push("/login");
-                // localStorage.removeItem("user");
-                // setIsLoggedIn(false);
+                setUser({
+                  user: "",
+                  password: "",
+                  calorie_goal: undefined,
+                });
+                localStorage.removeItem("user");
+                setIsLoggedIn(false);
               }}
+              styles={isLoggedIn ? "hover:bg-red-700" : ""}
             />
           </li>
         </ul>

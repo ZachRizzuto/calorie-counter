@@ -31,6 +31,7 @@ html {
   height: 100%;
   width: 100%;
   color: white;
+  overflow: hidden;
 }
 
 input {
@@ -56,6 +57,18 @@ input[type="submit"]:hover {
 input[type="submit"]:focus {
   background-color: white;
   color: rgba(31, 41, 55, 1);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 label {
