@@ -43,6 +43,7 @@ export const EditCalorieGoalModal = ({ show, setShow, handleForm }: Props) => {
                 setFormValue(e.target.value);
               }
             }}
+            autoComplete="off"
           />
           <button type="submit"></button>
         </form>

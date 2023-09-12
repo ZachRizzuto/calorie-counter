@@ -1,0 +1,10 @@
+.formTransition {
+  opacity: 0;
+  transition-duration: 0.3s;
+  transform: translateX(500px);
+}
+
+.entry {
+  opacity: 1;
+  transform: translateX(0);
+}

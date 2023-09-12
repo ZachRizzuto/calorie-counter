@@ -10,7 +10,8 @@ export default function TodayTab() {
         <Nav />
         <div className="flex items-center justify-between h-[100vh] p-[30px] gap-2">
           <Today />
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2">
+
+          {/* <div className="w-full h-full flex flex-col items-center justify-center gap-2">
             <PageSection
               styles={{
                 width: "w-full",
@@ -31,7 +32,7 @@ export default function TodayTab() {
                 <h1 className="inline text-4xl">Calorie Dense Foods</h1>
               </div>
             </PageSection>
-          </div>
+          </div> */}
         </div>
       </PageWrapper>
     </>

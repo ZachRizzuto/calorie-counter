@@ -40,6 +40,17 @@ input {
   border-bottom: 2px solid rgba(75, 85, 99, 1);
 }
 
+select {
+  border: none;
+  background-color: rgba(31, 41, 55, 1);
+  border-bottom: 2px solid rgba(75, 85, 99, 1);
+}
+
+select:focus {
+  outline: none;
+  border-color: rgba(52, 211, 153);
+}
+
 input:focus {
   outline: none;
   border-color: rgba(52, 211, 153);
@@ -57,18 +68,6 @@ input[type="submit"]:hover {
 input[type="submit"]:focus {
   background-color: white;
   color: rgba(31, 41, 55, 1);
-}
-
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
 }
 
 label {

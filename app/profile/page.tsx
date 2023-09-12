@@ -21,6 +21,7 @@ export default function Profile() {
     if (typeof user.id === "number") {
       editUserGoal(user.id, newGoal).then((res) => {
         if (!res.ok) {
+          toast.error("Failed to changed goal");
           throw new Error("Couldn't resolve goal change.");
         }
         if (typeof newGoal === "string") {
