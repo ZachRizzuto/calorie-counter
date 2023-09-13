@@ -54,6 +54,7 @@ export const Nav = () => {
               onClick={() => {
                 push("/login");
                 setUser({
+                  id: undefined,
                   user: "",
                   password: "",
                   calorie_goal: undefined,

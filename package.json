@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "serve": "json-server --host 192.168.1.156 db.json --port 3001"
+    "serve": "json-server --host 192.168.1.156 db.json --port 3001",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "@types/node": "20.5.7",
@@ -16,7 +17,9 @@
     "autoprefixer": "10.4.15",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "@faker-js/faker": "^8.0.2",
     "json-server": "^0.17.3",
+    "@types/lodash-es": "^4.17.7",
     "next": "13.4.19",
     "postcss": "8.4.29",
     "react": "18.2.0",

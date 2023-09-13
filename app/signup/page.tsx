@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
 async function createUser(data: FormData) {
   "use server";

@@ -1,40 +1,16 @@
 {
   "Users": [
     {
-      "id": 1,
+      "id": 0,
       "user": "guest",
       "password": "password",
-      "calorie_goal": "2000"
+      "calorie_goal": 2000
     },
     {
-      "id": 2,
+      "id": 1,
       "user": "guest2",
       "password": "password",
-      "calorie_goal": "3500"
-    },
-    {
-      "user": "apples",
-      "password": "apples",
-      "calorieGoal": 2000,
-      "id": 5
-    },
-    {
-      "user": "New",
-      "password": "Player",
-      "calorieGoal": 2000,
-      "id": 6
-    },
-    {
-      "user": "",
-      "password": "",
-      "calorieGoal": 2000,
-      "id": 7
-    },
-    {
-      "user": "GooGoo",
-      "password": "GaGa",
-      "calorieGoal": 2000,
-      "id": 8
+      "calorie_goal": 3500
     }
   ],
   "Foods": [
@@ -42,19 +18,19 @@
       "id": 1,
       "food": "banana",
       "calories": 80,
-      "amount": "1oz"
+      "amount": "1 oz"
     },
     {
       "id": 2,
       "food": "apple",
       "calories": 50,
-      "amount": "1oz"
+      "amount": "1 oz"
     },
     {
       "id": 3,
       "food": "blueberries",
       "calories": 120,
-      "amount": "1oz"
+      "amount": "1 oz"
     },
     {
       "id": 4,
@@ -67,137 +43,41 @@
       "calories": null,
       "amount": " oz",
       "id": 5
-    },
-    {
-      "food": "banana",
-      "calories": 1300,
-      "amount": "12 oz",
-      "id": 6
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 7
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 8
-    },
-    {
-      "food": "banana",
-      "calories": 4242,
-      "amount": "414 oz",
-      "id": 9
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 10
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 11
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 12
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 13
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 14
     }
   ],
   "days": [
     {
-      "id": 1,
-      "userId": 1,
+      "id": 0,
+      "userId": 0,
       "date": "9/1/23"
     },
     {
-      "id": 2,
-      "userId": 2,
+      "id": 1,
+      "userId": 1,
       "date": "9/1/23"
     }
   ],
   "entries": [
     {
-      "id": 1,
-      "createdAt": 1203981231,
+      "id": 0,
+      "createdAt": 1694583793478,
       "foodId": 1,
       "dayId": 1,
+      "userId": 0
+    },
+    {
+      "id": 1,
+      "createdAt": 1694583793478,
+      "foodId": 4,
+      "dayId": 2,
       "userId": 1
     },
     {
-      "id": 2,
-      "createdAt": 1203981231,
-      "foodId": 4,
-      "dayId": 2,
-      "userId": 2
-    },
-    {
-      "userId": 2,
+      "userId": 0,
       "dayId": 1,
       "createdAt": 12312123,
       "foodId": 5,
-      "id": 3
-    },
-    {
-      "userId": 2,
-      "dayId": 1,
-      "createdAt": 12312123,
-      "foodId": 6,
-      "id": 4
-    },
-    {
-      "userId": 2,
-      "dayId": 1,
-      "createdAt": 12312123,
-      "foodId": 7,
-      "id": 5
-    },
-    {
-      "userId": 2,
-      "dayId": 1,
-      "createdAt": 12312123,
-      "foodId": 8,
-      "id": 6
-    },
-    {
-      "userId": 2,
-      "dayId": 1,
-      "createdAt": 12312123,
-      "foodId": 9,
-      "id": 7
-    },
-    {
-      "userId": 2,
-      "dayId": 1,
-      "createdAt": 12312123,
-      "foodId": 13,
-      "id": 8
-    },
-    {
-      "userId": 2,
-      "dayId": 1,
-      "createdAt": 12312123,
-      "foodId": 14,
-      "id": 9
+      "id": 2
     }
   ]
 }

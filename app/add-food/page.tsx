@@ -7,12 +7,7 @@ import styles from "./food-form.module.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/Components/Providers/UserProvider";
 import { TFood, TFoodForm } from "@/types";
-import {
-  getAllFoods,
-  postEntry,
-  postFood,
-  setAllUsersFoods,
-} from "../(utils)/requests";
+import { getAllFoods, postEntry, postFood } from "../(utils)/requests";
 import { Button } from "@/Components/Button";
 import toast from "react-hot-toast";
 
@@ -40,26 +35,28 @@ export default function AddFoodForm() {
     };
 
     postFood(food)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Couldn't add entry");
+        } else {
+          return res.json();
+        }
+      })
       .then((res) => {
         const newFoods = [...userFoods];
         newFoods.push(res);
 
-        if (res) {
-          const newEntry = {
-            userId: user.id,
-            dayId: 1,
-            createdAt: 12312123,
-            foodId: res.id,
-          };
+        const newEntry = {
+          userId: user.id,
+          dayId: 1,
+          createdAt: 12312123,
+          foodId: res.id,
+        };
 
-          postEntry(newEntry);
+        postEntry(newEntry);
 
-          setUserFoods(newFoods);
-          toast.success("Added entry!");
-        } else {
-          throw new Error("Couldn't add entry");
-        }
+        setUserFoods(newFoods);
+        toast.success("Added entry!");
       });
   };
 
@@ -193,7 +190,11 @@ export default function AddFoodForm() {
                   </div>
                 </div>
               </div>
-              <Button text="Add Entry" type="submit" styles="mt-6" />
+              <Button
+                text="Add Entry"
+                type="submit"
+                styles={`mt-6 hover:bg-transparent-theme`}
+              />
             </form>
           </PageSection>
         </div>
