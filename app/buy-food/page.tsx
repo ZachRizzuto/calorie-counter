@@ -1,5 +1,3 @@
 export default function BuyFoodPage() {
-	return (
-		
-	)
+  return <h1>Hi</h1>;
 }

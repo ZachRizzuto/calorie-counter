@@ -8,11 +8,10 @@ import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import Image from "next/image";
 import { useContext, useState } from "react";
 import { editUserGoal } from "../(utils)/requests";
-import toast, { Toaster } from "react-hot-toast";
-import { divide } from "lodash-es";
+import toast from "react-hot-toast";
 
 export default function Profile() {
-  const { user, setUser, userDays, userEntries } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 

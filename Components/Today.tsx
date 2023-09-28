@@ -1,9 +1,8 @@
 "use client";
-import { newDay } from "@/app/(utils)/requests";
 import { Entry } from "./Entry";
 import { PageSection } from "./PageSection";
 import { UserContext } from "./Providers/UserProvider";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 const date = new Date();
 const month = date.getMonth();
