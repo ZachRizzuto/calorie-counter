@@ -7,12 +7,26 @@ import styles from "./food-form.module.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/Components/Providers/UserProvider";
 import { TFood, TFoodForm } from "@/types";
-import { getAllFoods, postEntry, postFood } from "../(utils)/requests";
+import {
+  getAllEntries,
+  getAllFoods,
+  postEntry,
+  postFood,
+} from "../(utils)/requests";
 import { Button } from "@/Components/Button";
 import toast from "react-hot-toast";
+import { getTime } from "@/utils/date";
 
 export default function AddFoodForm() {
-  const { user, userFoods, setUserFoods } = useContext(UserContext);
+  const {
+    user,
+    userFoods,
+    setUserFoods,
+    setUserEntries,
+    today,
+    todaysFood,
+    setTodaysFood,
+  } = useContext(UserContext);
 
   const [formData, setFormData] = useState<TFoodForm>({
     foodSelect: "",
@@ -42,20 +56,23 @@ export default function AddFoodForm() {
           return res.json();
         }
       })
-      .then((res) => {
-        const newFoods = [...userFoods];
-        newFoods.push(res);
-
+      .then((res: TFood) => {
+        const newFoods = [...userFoods, res];
         const newEntry = {
           userId: user.id,
-          dayId: 1,
-          createdAt: 12312123,
+          dayId: today.id,
+          createdAt: getTime(),
           foodId: res.id,
         };
 
         postEntry(newEntry);
 
+        getAllEntries().then((entries) => setUserEntries(entries));
+
         setUserFoods(newFoods);
+
+        setTodaysFood([...todaysFood, res]);
+
         toast.success("Added entry!");
       });
   };
@@ -64,9 +81,6 @@ export default function AddFoodForm() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         entry.target.classList.add(styles.entry);
-        if (entry.isIntersecting) {
-          observer.unobserve(entry.target);
-        }
       });
     });
 

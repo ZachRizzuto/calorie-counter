@@ -2,10 +2,10 @@
 import Link from "next/link";
 import { useContext, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import getAllUsers from "@/lib/request";
 import { TUser } from "@/types";
 import { UserContext } from "./Providers/UserProvider";
 import toast from "react-hot-toast";
+import { getUsers } from "@/app/(utils)/requests";
 
 export function LogInPage() {
   const { setIsLoggedIn, setUser } = useContext(UserContext);
@@ -32,7 +32,7 @@ export function LogInPage() {
         onSubmit={(e) => {
           e.preventDefault();
 
-          const userData = getAllUsers();
+          const userData = getUsers();
           userData
             .then((data) =>
               data.find(

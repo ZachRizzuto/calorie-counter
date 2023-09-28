@@ -21,6 +21,7 @@ async function createUser(data: FormData) {
     },
     body: JSON.stringify(userObj),
   });
+
   redirect("/login");
 }
 

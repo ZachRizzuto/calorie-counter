@@ -6,7 +6,6 @@ const sample = _.sample;
 
 const userAmount = 2;
 
-const foodAmount = 4;
 const foods = [
   {
     id: 1,
@@ -59,31 +58,51 @@ const db = {
       };
     }
   }),
-  entries: range(2).map((_, id) => {
-    if (id === 0) {
-      return {
-        id,
-        createdAt: date.getTime(),
-        foodId: 1,
-        dayId: 1,
-        userId: 0,
-      };
-    } else if (id === 1) {
-      return {
-        id,
-        createdAt: date.getTime(),
-        foodId: 4,
-        dayId: 2,
-        userId: 1,
-      };
-    } else if (id === 2) {
-      return {
-        id,
-        createdAt: date.getTime(),
-        foodId: 5,
-        userId: 0,
-        dayId: 1,
-      };
+  entries: range(5).map((_, id) => {
+    switch (id) {
+      case 0:
+        return {
+          id,
+          createdAt: date.getTime(),
+          foodId: 1,
+          dayId: 0,
+          userId: 0,
+        };
+
+      case 1:
+        return {
+          id,
+          createdAt: date.getTime(),
+          foodId: 4,
+          dayId: 1,
+          userId: 1,
+        };
+
+      case 2:
+        return {
+          id,
+          createdAt: date.getTime(),
+          foodId: 5,
+          userId: 0,
+          dayId: 0,
+        };
+
+      case 3:
+        return {
+          id,
+          createdAt: date.getTime(),
+          foodId: 2,
+          userId: 0,
+          dayId: 0,
+        };
+      case 4:
+        return {
+          id,
+          createdAt: date.getTime(),
+          foodId: 3,
+          userId: 0,
+          dayId: 0,
+        };
     }
   }),
 };

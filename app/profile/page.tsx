@@ -9,9 +9,10 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { editUserGoal } from "../(utils)/requests";
 import toast, { Toaster } from "react-hot-toast";
+import { divide } from "lodash-es";
 
 export default function Profile() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, userDays, userEntries } = useContext(UserContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
@@ -92,10 +93,6 @@ export default function Profile() {
               }}
             >
               <h2 className="text-2xl">Calorie Count This Week</h2>
-              <div>
-                Find user inputs that match logged user Id and get the total
-                from last 7 days
-              </div>
             </PageSection>
           </div>
         </div>

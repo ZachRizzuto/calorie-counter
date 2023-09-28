@@ -7,6 +7,7 @@ import { Button } from "./Button";
 import { UserContext } from "./Providers/UserProvider";
 import { useContext } from "react";
 import toast from "react-hot-toast";
+import { TUser } from "@/types";
 
 export const Nav = () => {
   const { push } = useRouter();
@@ -53,12 +54,7 @@ export const Nav = () => {
               text={"Logout"}
               onClick={() => {
                 push("/login");
-                setUser({
-                  id: undefined,
-                  user: "",
-                  password: "",
-                  calorie_goal: undefined,
-                });
+                setUser({} as TUser);
                 localStorage.removeItem("user");
                 setIsLoggedIn(false);
                 toast("Logged out!", {

@@ -1,8 +1,8 @@
 export type TUser = {
-  id: number | undefined;
+  id: number;
   user: string;
   password: string;
-  calorie_goal: number | undefined;
+  calorie_goal: number;
 };
 
 export type TFood = {
