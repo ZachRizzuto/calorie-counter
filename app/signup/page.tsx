@@ -11,7 +11,7 @@ async function createUser(data: FormData) {
   const userObj = {
     user: user,
     password: password,
-    calorieGoal: 2000,
+    calorie_goal: 2000,
   };
 
   await fetch("http://192.168.1.156:3001/Users", {

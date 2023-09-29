@@ -37,150 +37,6 @@
       "food": "peanut butter",
       "calories": 150,
       "amount": "2 tablespoons"
-    },
-    {
-      "food": "apple",
-      "calories": 10,
-      "amount": "20 g",
-      "id": 5
-    },
-    {
-      "food": "berry",
-      "calories": 20,
-      "amount": "50 oz",
-      "id": 6
-    },
-    {
-      "food": "Peanuts",
-      "calories": 4,
-      "amount": "4 oz",
-      "id": 7
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 8
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 9
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 10
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 11
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 12
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 13
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 14
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 15
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 16
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 17
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 18
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 19
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 20
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 21
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 22
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 23
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 24
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 25
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 26
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 27
-    },
-    {
-      "food": "",
-      "calories": 5000,
-      "amount": " oz",
-      "id": 28
     }
   ],
   "days": [
@@ -196,35 +52,42 @@
     },
     {
       "userId": 0,
-      "date": "9/28/2023",
+      "date": "9/29/2023",
       "id": 2
     }
   ],
   "entries": [
     {
       "id": 0,
-      "createdAt": 1695918912430,
+      "createdAt": 1696006942819,
       "foodId": 1,
       "dayId": 0,
       "userId": 0
     },
     {
       "id": 1,
-      "createdAt": 1695918912430,
+      "createdAt": 1696006942819,
       "foodId": 4,
       "dayId": 1,
       "userId": 1
     },
     {
+      "id": 2,
+      "createdAt": 1696006942819,
+      "foodId": 5,
+      "userId": 0,
+      "dayId": 0
+    },
+    {
       "id": 3,
-      "createdAt": 1695918912430,
+      "createdAt": 1696006942819,
       "foodId": 2,
       "userId": 0,
       "dayId": 0
     },
     {
       "id": 4,
-      "createdAt": 1695918912430,
+      "createdAt": 1696006942819,
       "foodId": 3,
       "userId": 0,
       "dayId": 0

@@ -63,6 +63,12 @@ export const postEntry = (entry: Omit<TEntry, "id">) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(entry),
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error("Couldn't delete Entry");
+    } else {
+      return res.json();
+    }
   });
 };
 

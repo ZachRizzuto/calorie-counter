@@ -6,7 +6,7 @@ import { PageWrapper } from "@/Components/PageWrapper";
 import styles from "./food-form.module.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/Components/Providers/UserProvider";
-import { TFood, TFoodForm } from "@/types";
+import { TEntry, TFood, TFoodForm } from "@/types";
 import {
   getAllEntries,
   getAllFoods,
@@ -16,6 +16,7 @@ import {
 import { Button } from "@/Components/Button";
 import toast from "react-hot-toast";
 import { getTime } from "@/utils/date";
+import { validateEntry } from "@/utils/formvalidation";
 
 export default function AddFoodForm() {
   const {
@@ -26,6 +27,7 @@ export default function AddFoodForm() {
     today,
     todaysFood,
     setTodaysFood,
+    userEntries,
   } = useContext(UserContext);
 
   const [formData, setFormData] = useState<TFoodForm>({
@@ -35,12 +37,24 @@ export default function AddFoodForm() {
     food: "",
     calories: "",
   });
+
   const [allFoods, setAllFoods] = useState<TFood[]>([]);
+
+  const isCustomFoodDisabled =
+    !(formData.foodSelect == undefined) || formData.foodSelect
+      ? formData.foodSelect.length > 0
+      : false;
+  const isFoodSelectDisabled =
+    !(formData.amount.length === 0) ||
+    !(formData.food.length === 0) ||
+    !(formData.calories.length === 0);
 
   const handleFormPost = (newFood: TFoodForm) => {
     const foodName = newFood.food;
     const calories = parseInt(newFood.calories);
     const amount = `${newFood.amount} ${newFood.amountType}`;
+
+    const selectedFood = newFood.foodSelect;
 
     const food = {
       food: foodName,
@@ -58,6 +72,7 @@ export default function AddFoodForm() {
       })
       .then((res: TFood) => {
         const newFoods = [...userFoods, res];
+
         const newEntry = {
           userId: user.id,
           dayId: today.id,
@@ -65,7 +80,9 @@ export default function AddFoodForm() {
           foodId: res.id,
         };
 
-        postEntry(newEntry);
+        postEntry(newEntry).then((entry: TEntry) =>
+          setUserEntries([...userEntries, entry])
+        );
 
         getAllEntries().then((entries) => setUserEntries(entries));
 
@@ -112,7 +129,11 @@ export default function AddFoodForm() {
               onSubmit={(e) => {
                 e.preventDefault();
 
-                handleFormPost(formData);
+                if (validateEntry(formData)) {
+                  handleFormPost(formData);
+                } else {
+                  alert("Missing Info Please Fill Out Entire Form");
+                }
 
                 setFormData({
                   foodSelect: "",
@@ -127,6 +148,7 @@ export default function AddFoodForm() {
                 <h2>Food Selection</h2>
                 <div className="w-full h-full flex justify-center items-center">
                   <input
+                    disabled={isFoodSelectDisabled}
                     type="text"
                     list="prevFoods"
                     className="max-w-[350px] w-full"
@@ -145,6 +167,7 @@ export default function AddFoodForm() {
                     <label htmlFor="amount">Amount</label>
                     <div>
                       <input
+                        disabled={isCustomFoodDisabled}
                         type="number"
                         className="min-w-[75px] w-full mb-2"
                         name="amount"
@@ -154,6 +177,7 @@ export default function AddFoodForm() {
                         }
                       />
                       <select
+                        disabled={isCustomFoodDisabled}
                         name="amount"
                         id="amount"
                         className="relative top-[1px] w-full"
@@ -176,6 +200,7 @@ export default function AddFoodForm() {
                   <div className="flex flex-col w-full">
                     <label htmlFor="foodName">Food</label>
                     <input
+                      disabled={isCustomFoodDisabled}
                       type="text"
                       list="foods"
                       name="foodName"
@@ -191,6 +216,7 @@ export default function AddFoodForm() {
                   <div className="flex flex-col w-full">
                     <label htmlFor="calories">Calories</label>
                     <input
+                      disabled={isCustomFoodDisabled}
                       type="number"
                       name="calories"
                       value={formData.calories}
@@ -222,9 +248,10 @@ export default function AddFoodForm() {
       </datalist>
       <datalist id="prevFoods">
         {allFoods.map((food) => (
-          <option key={food.id} value={food.id}>
-            {`${food.amount} | ${food.food} | ${food.calories} kcal`}
-          </option>
+          <option
+            key={food.id}
+            value={food.id}
+          >{`${food.amount} | ${food.food} | ${food.calories} kcal`}</option>
         ))}
       </datalist>
     </>

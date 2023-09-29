@@ -43,8 +43,8 @@ export function LogInPage() {
             .then((match) => {
               if (match) {
                 localStorage.setItem("user", JSON.stringify(match));
-                setIsError(false);
                 setIsLoggedIn(true);
+                setIsError(false);
                 push("/today");
                 setUser(match);
                 toast.success("Logged In");

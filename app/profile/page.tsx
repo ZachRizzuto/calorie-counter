@@ -11,14 +11,14 @@ import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
 
 export default function Profile() {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, totalCalories } = useContext(UserContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
 
-    if (typeof user.id === "number") {
+    if (typeof user.id === "number" && newGoal !== "") {
       editUserGoal(user.id, newGoal).then((res) => {
         if (!res.ok) {
           toast.error("Failed to changed goal");
@@ -71,7 +71,7 @@ export default function Profile() {
               }}
             >
               <div className="flex justify-between items-center w-full">
-                <div>Calorie Goal: {user?.calorie_goal}</div>
+                <div>Calorie Goal: {user.calorie_goal}</div>
                 <Button
                   text="Edit"
                   onClick={() => {
@@ -91,7 +91,9 @@ export default function Profile() {
                 height: "h-full",
               }}
             >
-              <h2 className="text-2xl">Calorie Count This Week</h2>
+              <h2 className="text-2xl">
+                Calorie Count This Week: {totalCalories}
+              </h2>
             </PageSection>
           </div>
         </div>

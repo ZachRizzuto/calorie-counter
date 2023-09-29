@@ -31,6 +31,7 @@ type TContext = {
   setToday: (day: TDay) => void;
   todaysFood: TFood[];
   setTodaysFood: (foods: TFood[]) => void;
+  totalCalories: number;
 };
 
 export const UserContext = createContext<TContext>({} as TContext);
@@ -58,7 +59,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     entries: TEntry[]
   ) => {
     // Setting the users days
-    console.log("Handling Date");
     await getAllDays()
       .then((days) => {
         const userDays = days.filter((day: TDay) => {
@@ -82,13 +82,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const matchedDay = days.find((day) => day.date === dateToday);
 
     if (matchedDay) {
-      console.log("user entries:", userEntries);
-      console.log("matched day id:", matchedDay.id);
       const todaysEntries = userEntries.filter(
         (entry) => entry.dayId === matchedDay.id
       );
-
-      console.log("todays entries:", todaysEntries);
 
       let todaysFoods: TFood[] = [];
       for (let i = 0; i < todaysEntries.length; i++) {
@@ -155,7 +151,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
               user.user === savedUser.user &&
               user.password === savedUser.password
           );
-          console.log(matchedUser);
           if (matchedUser) {
             setIsLoggedIn(true);
             setUser(matchedUser);
@@ -177,7 +172,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     handleAllData();
-  }, []);
+  }, [user.user]);
+
+  const totalCalories = todaysFood.reduce((acc, num) => acc + num.calories, 0);
 
   return (
     <UserContext.Provider
@@ -197,6 +194,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setToday,
         todaysFood,
         setTodaysFood,
+        totalCalories,
       }}
     >
       {children}

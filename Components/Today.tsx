@@ -12,10 +12,14 @@ const year = date.getFullYear();
 const dateToday = `${month + 1}/${day}/${year}`;
 
 export const Today = () => {
-  const { isLoggedIn, deleteFood, userEntries, todaysFood, user } =
-    useContext(UserContext);
-
-  const totalCalories = todaysFood.reduce((acc, num) => acc + num.calories, 0);
+  const {
+    isLoggedIn,
+    deleteFood,
+    userEntries,
+    todaysFood,
+    user,
+    totalCalories,
+  } = useContext(UserContext);
 
   return (
     <>
