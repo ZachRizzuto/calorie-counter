@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { getUsers } from "@/app/(utils)/requests";
 
 export function LogInPage() {
-  const { setIsLoggedIn, setUser } = useContext(UserContext);
+  const { setIsLoggedIn, setUser, handleAllData } = useContext(UserContext);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -43,14 +43,18 @@ export function LogInPage() {
             .then((match) => {
               if (match) {
                 localStorage.setItem("user", JSON.stringify(match));
-                setIsLoggedIn(true);
                 setIsError(false);
-                push("/today");
-                setUser(match);
-                toast.success("Logged In");
+                return match;
               } else {
                 setIsError(true);
                 userRef.current?.focus();
+              }
+            })
+            .then((match) => {
+              if (match) {
+                handleAllData();
+                toast.success("Logged In");
+                push("/today");
               }
             });
 

@@ -7,12 +7,7 @@ import styles from "./food-form.module.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/Components/Providers/UserProvider";
 import { TEntry, TFood, TFoodForm } from "@/types";
-import {
-  getAllEntries,
-  getAllFoods,
-  postEntry,
-  postFood,
-} from "../(utils)/requests";
+import { getAllFoods, postEntry, postFood } from "../(utils)/requests";
 import { Button } from "@/Components/Button";
 import toast from "react-hot-toast";
 import { getTime } from "@/utils/date";
@@ -28,6 +23,10 @@ export default function AddFoodForm() {
     todaysFood,
     setTodaysFood,
     userEntries,
+    todaysEntries,
+    setTodaysEntries,
+    setTotalCalories,
+    totalCalories,
   } = useContext(UserContext);
 
   const [formData, setFormData] = useState<TFoodForm>({
@@ -44,54 +43,80 @@ export default function AddFoodForm() {
     !(formData.foodSelect == undefined) || formData.foodSelect
       ? formData.foodSelect.length > 0
       : false;
+
   const isFoodSelectDisabled =
     !(formData.amount.length === 0) ||
     !(formData.food.length === 0) ||
     !(formData.calories.length === 0);
 
   const handleFormPost = (newFood: TFoodForm) => {
-    const foodName = newFood.food;
-    const calories = parseInt(newFood.calories);
-    const amount = `${newFood.amount} ${newFood.amountType}`;
+    const selectedFood = newFood.foodSelect
+      ? parseInt(newFood.foodSelect)
+      : undefined;
 
-    const selectedFood = newFood.foodSelect;
+    const selectedFoodData = selectedFood
+      ? allFoods.find((food) => food.id === selectedFood)
+      : undefined;
 
-    const food = {
-      food: foodName,
-      calories: calories,
-      amount: amount,
-    };
+    if (selectedFoodData) {
+      const newEntry = {
+        userId: user.id,
+        dayId: today.id,
+        createdAt: getTime(),
+        foodId: selectedFoodData.id,
+      };
 
-    postFood(food)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Couldn't add entry");
-        } else {
-          return res.json();
-        }
-      })
-      .then((res: TFood) => {
-        const newFoods = [...userFoods, res];
+      postEntry(newEntry)
+        .then((entry: TEntry) => {
+          setUserEntries([...userEntries, entry]);
+          setTodaysEntries([...todaysEntries, entry]);
+          setTodaysFood([...todaysFood, selectedFoodData]);
+          setTotalCalories(totalCalories + selectedFoodData.calories);
+          toast.success("Added entry!");
+        })
+        .catch(() => toast.error("Couldn't post entry"));
+    } else {
+      const foodName = newFood.food;
+      const calories = parseInt(newFood.calories);
+      const amount = `${newFood.amount} ${newFood.amountType}`;
 
-        const newEntry = {
-          userId: user.id,
-          dayId: today.id,
-          createdAt: getTime(),
-          foodId: res.id,
-        };
+      const food = {
+        food: foodName,
+        calories: calories,
+        amount: amount,
+      };
 
-        postEntry(newEntry).then((entry: TEntry) =>
-          setUserEntries([...userEntries, entry])
-        );
+      postFood(food)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Couldn't add entry");
+          } else {
+            return res.json();
+          }
+        })
+        .then((res: TFood) => {
+          const newFoods = [...userFoods, res];
 
-        getAllEntries().then((entries) => setUserEntries(entries));
+          setTotalCalories(totalCalories + res.calories);
 
-        setUserFoods(newFoods);
+          const newEntry = {
+            userId: user.id,
+            dayId: today.id,
+            createdAt: getTime(),
+            foodId: res.id,
+          };
 
-        setTodaysFood([...todaysFood, res]);
+          postEntry(newEntry).then((entry: TEntry) => {
+            setUserEntries([...userEntries, entry]);
+            setTodaysEntries([...todaysEntries, entry]);
+            toast.success("Added entry!");
+          });
 
-        toast.success("Added entry!");
-      });
+          setUserFoods(newFoods);
+
+          setTodaysFood([...todaysFood, res]);
+        });
+    }
   };
 
   useEffect(() => {

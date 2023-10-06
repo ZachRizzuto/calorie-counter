@@ -7,11 +7,10 @@ import { Button } from "./Button";
 import { UserContext } from "./Providers/UserProvider";
 import { useContext } from "react";
 import toast from "react-hot-toast";
-import { TUser } from "@/types";
 
 export const Nav = () => {
   const { push } = useRouter();
-  const { isLoggedIn, setIsLoggedIn, setUser } = useContext(UserContext);
+  const { isLoggedIn, resetState } = useContext(UserContext);
   return (
     <>
       <nav className="flex items-center justify-between min-h-[86px] w-full bg-gray-800">
@@ -54,9 +53,8 @@ export const Nav = () => {
               text={"Logout"}
               onClick={() => {
                 push("/login");
-                setUser({} as TUser);
                 localStorage.removeItem("user");
-                setIsLoggedIn(false);
+                resetState();
                 toast("Logged out!", {
                   icon: "👋",
                   duration: 1200,

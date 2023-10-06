@@ -11,6 +11,30 @@
       "user": "guest2",
       "password": "password",
       "calorie_goal": 3500
+    },
+    {
+      "user": "guest3",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 2
+    },
+    {
+      "user": "guest4",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 3
+    },
+    {
+      "user": "guest5",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 4
+    },
+    {
+      "user": "guest6",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 5
     }
   ],
   "Foods": [
@@ -37,6 +61,12 @@
       "food": "peanut butter",
       "calories": 150,
       "amount": "2 tablespoons"
+    },
+    {
+      "food": "pudding",
+      "calories": 300,
+      "amount": "3 cup",
+      "id": 5
     }
   ],
   "days": [
@@ -52,45 +82,56 @@
     },
     {
       "userId": 0,
-      "date": "9/29/2023",
+      "date": "10/5/2023",
       "id": 2
+    },
+    {
+      "userId": 1,
+      "date": "10/5/2023",
+      "id": 3
+    },
+    {
+      "userId": 2,
+      "date": "10/5/2023",
+      "id": 4
+    },
+    {
+      "userId": 3,
+      "date": "10/5/2023",
+      "id": 5
+    },
+    {
+      "userId": 4,
+      "date": "10/5/2023",
+      "id": 6
+    },
+    {
+      "userId": 5,
+      "date": "10/5/2023",
+      "id": 7
     }
   ],
   "entries": [
     {
-      "id": 0,
-      "createdAt": 1696006942819,
-      "foodId": 1,
-      "dayId": 0,
-      "userId": 0
-    },
-    {
       "id": 1,
-      "createdAt": 1696006942819,
+      "createdAt": 1696561449802,
       "foodId": 4,
-      "dayId": 1,
+      "dayId": 2,
       "userId": 1
     },
     {
-      "id": 2,
-      "createdAt": 1696006942819,
+      "userId": 0,
+      "dayId": 2,
+      "createdAt": 1696562462245,
+      "foodId": 4,
+      "id": 2
+    },
+    {
+      "userId": 0,
+      "dayId": 2,
+      "createdAt": 1696562462245,
       "foodId": 5,
-      "userId": 0,
-      "dayId": 0
-    },
-    {
-      "id": 3,
-      "createdAt": 1696006942819,
-      "foodId": 2,
-      "userId": 0,
-      "dayId": 0
-    },
-    {
-      "id": 4,
-      "createdAt": 1696006942819,
-      "foodId": 3,
-      "userId": 0,
-      "dayId": 0
+      "id": 3
     }
   ]
 }

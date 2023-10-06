@@ -1,3 +1,4 @@
+import { TEntry } from "@/types";
 import { Button } from "./Button";
 import styles from "./Entry.module.css";
 

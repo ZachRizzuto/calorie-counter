@@ -65,7 +65,7 @@ const db = {
           id,
           createdAt: date.getTime(),
           foodId: 1,
-          dayId: 0,
+          dayId: 2,
           userId: 0,
         };
 
@@ -74,7 +74,7 @@ const db = {
           id,
           createdAt: date.getTime(),
           foodId: 4,
-          dayId: 1,
+          dayId: 2,
           userId: 1,
         };
 
@@ -82,9 +82,9 @@ const db = {
         return {
           id,
           createdAt: date.getTime(),
-          foodId: 5,
+          foodId: 1,
           userId: 0,
-          dayId: 0,
+          dayId: 2,
         };
 
       case 3:
@@ -93,7 +93,7 @@ const db = {
           createdAt: date.getTime(),
           foodId: 2,
           userId: 0,
-          dayId: 0,
+          dayId: 2,
         };
       case 4:
         return {
@@ -101,7 +101,7 @@ const db = {
           createdAt: date.getTime(),
           foodId: 3,
           userId: 0,
-          dayId: 0,
+          dayId: 2,
         };
     }
   }),

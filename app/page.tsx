@@ -9,6 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("user");
+
     if (isLoggedIn) {
       push("/today");
     }
@@ -20,6 +21,7 @@ export default function Home() {
         className={"w-full h-full flex flex-col items-center justify-center"}
       >
         <h1>Welcome! Please Login!</h1>
+
         <Link href={"/login"} className={styles.btnShadowAni}>
           Login
         </Link>

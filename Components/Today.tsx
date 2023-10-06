@@ -1,8 +1,10 @@
 "use client";
+import { TEntry, TFood } from "@/types";
 import { Entry } from "./Entry";
 import { PageSection } from "./PageSection";
 import { UserContext } from "./Providers/UserProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { deleteEntry } from "@/app/(utils)/requests";
 
 const date = new Date();
 const month = date.getMonth();
@@ -14,11 +16,14 @@ const dateToday = `${month + 1}/${day}/${year}`;
 export const Today = () => {
   const {
     isLoggedIn,
-    deleteFood,
-    userEntries,
-    todaysFood,
+    userFoods,
     user,
+    todaysEntries,
+    setTodaysEntries,
     totalCalories,
+    setTotalCalories,
+    todaysFood,
+    setTodaysFood,
   } = useContext(UserContext);
 
   return (
@@ -35,24 +40,39 @@ export const Today = () => {
             <h2 className="inline text-4xl">{dateToday}</h2>
           </div>
           <div className="overflow-scroll max-h-[450px] w-full h-full text-xl">
-            {todaysFood.length > 0 ? (
-              todaysFood.map((food) => {
-                return (
-                  <Entry
-                    calories={food.calories}
-                    foodName={food.food}
-                    amount={food.amount}
-                    key={food.id}
-                    deleteEntry={() => {
-                      const entry = userEntries.find(
-                        (entry) => entry.foodId === food.id
-                      );
-                      if (entry) {
-                        deleteFood(entry, food.id);
+            {todaysEntries.length > 0 ? (
+              todaysEntries.map((entry: TEntry) => {
+                const food = userFoods.find((food) => entry.foodId === food.id);
+
+                if (food) {
+                  return (
+                    <Entry
+                      calories={food.calories}
+                      foodName={food.food}
+                      amount={food.amount}
+                      key={entry.id}
+                      deleteEntry={() =>
+                        deleteEntry(entry.id).then((res) => {
+                          if (res.ok) {
+                            setTodaysEntries(
+                              todaysEntries.filter((ent) => ent.id !== entry.id)
+                            );
+
+                            setTodaysFood(
+                              todaysFood.filter(
+                                (todayFood) => todayFood.id !== food.id
+                              )
+                            );
+
+                            setTotalCalories(totalCalories - food.calories);
+                          } else {
+                            throw new Error("Couldn't Delete Food :(");
+                          }
+                        })
                       }
-                    }}
-                  />
-                );
+                    />
+                  );
+                }
               })
             ) : (
               <h2 className="mt-6 text-center">No food entries for today!</h2>

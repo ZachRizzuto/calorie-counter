@@ -45,10 +45,6 @@ export const deleteEntry = (id: number) => {
     headers: {
       "Content-Type": "application/json",
     },
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error("Couldn't delete Entry");
-    }
   });
 };
 
