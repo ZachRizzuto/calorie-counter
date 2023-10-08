@@ -75,6 +75,39 @@ export default function AddFoodForm() {
           toast.success("Added entry!");
         })
         .catch(() => toast.error("Couldn't post entry"));
+    } else if (
+      userFoods.find(
+        (food) =>
+          food.food === newFood.food &&
+          food.calories === parseInt(newFood.calories) &&
+          food.amount === `${newFood.amount} ${newFood.amountType}`
+      )
+    ) {
+      const foodName = newFood.food;
+      const calories = parseInt(newFood.calories);
+
+      const matchedFood = userFoods.find(
+        (food) =>
+          food.food === foodName &&
+          food.calories === calories &&
+          food.amount === `${newFood.amount} ${newFood.amountType}`
+      );
+
+      if (matchedFood) {
+        const newEntry = {
+          userId: user.id,
+          dayId: today.id,
+          createdAt: getTime(),
+          foodId: matchedFood.id,
+        };
+
+        setTotalCalories(totalCalories + matchedFood.calories);
+        postEntry(newEntry).then((entry) => {
+          setUserEntries([...userEntries, entry]);
+          setTodaysEntries([...todaysEntries, entry]);
+          toast.success("Added entry!");
+        });
+      }
     } else {
       const foodName = newFood.food;
       const calories = parseInt(newFood.calories);
@@ -113,6 +146,7 @@ export default function AddFoodForm() {
           });
 
           setUserFoods(newFoods);
+          setAllFoods(newFoods);
 
           setTodaysFood([...todaysFood, res]);
         });
@@ -219,6 +253,7 @@ export default function AddFoodForm() {
                         <option value="cup">cup</option>
                         <option value="tablespoon">tablespoon</option>
                         <option value="teaspoon">teaspoon</option>
+                        <option value="whole">whole</option>
                       </select>
                     </div>
                   </div>

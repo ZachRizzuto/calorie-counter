@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 type Props = {
   width: string;
   height: string;
+  custom?: string;
 };
 
 export const PageSection = ({
@@ -14,7 +15,7 @@ export const PageSection = ({
 }) => {
   return (
     <div
-      className={`bg-gray-800 rounded-md flex flex-col items-start justify-start p-[20px] border-b-2 border-green-500 ${styles.height} ${styles.width}`}
+      className={`bg-gray-800 rounded-md flex flex-col items-start justify-start p-[20px] border-b-2 border-green-500 ${styles.height} ${styles.width} ${styles.custom}`}
     >
       {children}
     </div>

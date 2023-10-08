@@ -10,7 +10,7 @@
       "id": 1,
       "user": "guest2",
       "password": "password",
-      "calorie_goal": 3500
+      "calorie_goal": "1500"
     },
     {
       "user": "guest3",
@@ -67,6 +67,72 @@
       "calories": 300,
       "amount": "3 cup",
       "id": 5
+    },
+    {
+      "food": "banana",
+      "calories": 80,
+      "amount": "1 oz",
+      "id": 6
+    },
+    {
+      "food": "chipotle",
+      "calories": 1,
+      "amount": "35 g",
+      "id": 7
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 8
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 9
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 10
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 11
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 12
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 13
+    },
+    {
+      "food": "",
+      "calories": null,
+      "amount": " oz",
+      "id": 14
+    },
+    {
+      "food": "pie",
+      "calories": 800,
+      "amount": "1 whole",
+      "id": 15
+    },
+    {
+      "food": "muffins",
+      "calories": 350,
+      "amount": "2 whole",
+      "id": 16
     }
   ],
   "days": [
@@ -109,6 +175,36 @@
       "userId": 5,
       "date": "10/5/2023",
       "id": 7
+    },
+    {
+      "userId": 1,
+      "date": "10/6/2023",
+      "id": 8
+    },
+    {
+      "userId": 0,
+      "date": "10/6/2023",
+      "id": 9
+    },
+    {
+      "userId": 1,
+      "date": "10/7/2023",
+      "id": 10
+    },
+    {
+      "userId": 0,
+      "date": "10/7/2023",
+      "id": 11
+    },
+    {
+      "userId": 0,
+      "date": "10/8/2023",
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "date": "10/8/2023",
+      "id": 13
     }
   ],
   "entries": [
@@ -132,6 +228,125 @@
       "createdAt": 1696562462245,
       "foodId": 5,
       "id": 3
+    },
+    {
+      "userId": 1,
+      "dayId": 8,
+      "createdAt": 1696645280523,
+      "foodId": 5,
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "dayId": 8,
+      "createdAt": 1696645280523,
+      "foodId": 3,
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "dayId": 8,
+      "createdAt": 1696645280523,
+      "foodId": 4,
+      "id": 6
+    },
+    {
+      "userId": 0,
+      "dayId": 9,
+      "createdAt": 1696645525422,
+      "foodId": 1,
+      "id": 7
+    },
+    {
+      "userId": 0,
+      "dayId": 9,
+      "createdAt": 1696645525422,
+      "foodId": 1,
+      "id": 8
+    },
+    {
+      "userId": 0,
+      "dayId": 9,
+      "createdAt": 1696645525422,
+      "foodId": 1,
+      "id": 9
+    },
+    {
+      "userId": 1,
+      "dayId": 10,
+      "createdAt": 1696737572402,
+      "foodId": 5,
+      "id": 10
+    },
+    {
+      "userId": 1,
+      "dayId": 10,
+      "createdAt": 1696737572402,
+      "foodId": 1,
+      "id": 11
+    },
+    {
+      "userId": 0,
+      "dayId": 11,
+      "createdAt": 1696739470234,
+      "foodId": 6,
+      "id": 12
+    },
+    {
+      "userId": 0,
+      "dayId": 11,
+      "createdAt": 1696739470234,
+      "foodId": 1,
+      "id": 13
+    },
+    {
+      "userId": 0,
+      "dayId": 11,
+      "createdAt": 1696739470234,
+      "foodId": 7,
+      "id": 14
+    },
+    {
+      "userId": 0,
+      "dayId": 12,
+      "createdAt": 1696741632365,
+      "foodId": 2,
+      "id": 15
+    },
+    {
+      "userId": 0,
+      "dayId": 12,
+      "createdAt": 1696741632365,
+      "foodId": 3,
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "dayId": 13,
+      "createdAt": 1696741784432,
+      "foodId": 15,
+      "id": 22
+    },
+    {
+      "userId": 0,
+      "dayId": 12,
+      "createdAt": 1696741784432,
+      "foodId": 3,
+      "id": 23
+    },
+    {
+      "userId": 0,
+      "dayId": 12,
+      "createdAt": 1696741784432,
+      "foodId": 16,
+      "id": 24
+    },
+    {
+      "userId": 1,
+      "dayId": 13,
+      "createdAt": 1696741784432,
+      "foodId": 16,
+      "id": 25
     }
   ]
 }
