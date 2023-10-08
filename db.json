@@ -35,6 +35,60 @@
       "password": "password",
       "calorie_goal": 2000,
       "id": 5
+    },
+    {
+      "user": "zachary",
+      "password": "rizzuto",
+      "calorie_goal": 2000,
+      "id": 6
+    },
+    {
+      "user": "guest7",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 7
+    },
+    {
+      "user": "guest8",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 8
+    },
+    {
+      "user": "guest9",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 9
+    },
+    {
+      "user": "guest11",
+      "password": "password",
+      "calorie_goal": 2000,
+      "id": 10
+    },
+    {
+      "user": "asdasd",
+      "password": "asdasd",
+      "calorie_goal": 2000,
+      "id": 11
+    },
+    {
+      "user": "as",
+      "password": "as",
+      "calorie_goal": 2000,
+      "id": 12
+    },
+    {
+      "user": "asf",
+      "password": "asf",
+      "calorie_goal": 2000,
+      "id": 13
+    },
+    {
+      "user": "asf",
+      "password": "asf",
+      "calorie_goal": 2000,
+      "id": 14
     }
   ],
   "Foods": [
@@ -79,48 +133,6 @@
       "calories": 1,
       "amount": "35 g",
       "id": 7
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 8
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 9
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 10
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 11
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 12
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 13
-    },
-    {
-      "food": "",
-      "calories": null,
-      "amount": " oz",
-      "id": 14
     },
     {
       "food": "pie",
@@ -205,6 +217,11 @@
       "userId": 1,
       "date": "10/8/2023",
       "id": 13
+    },
+    {
+      "userId": 13,
+      "date": "10/8/2023",
+      "id": 14
     }
   ],
   "entries": [
@@ -310,13 +327,6 @@
       "userId": 0,
       "dayId": 12,
       "createdAt": 1696741632365,
-      "foodId": 2,
-      "id": 15
-    },
-    {
-      "userId": 0,
-      "dayId": 12,
-      "createdAt": 1696741632365,
       "foodId": 3,
       "id": 16
     },
@@ -347,6 +357,13 @@
       "createdAt": 1696741784432,
       "foodId": 16,
       "id": 25
+    },
+    {
+      "userId": 0,
+      "dayId": 12,
+      "createdAt": 1696789668886,
+      "foodId": 16,
+      "id": 26
     }
   ]
 }

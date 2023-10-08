@@ -20,16 +20,20 @@ async function createUser(data: FormData) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(userObj),
+  }).then((res) => {
+    if (res.ok) {
+      redirect("/login");
+    } else {
+      throw new Error("Couldn't create account");
+    }
   });
-
-  redirect("/login");
 }
 
 export default function SignUpForm() {
   return (
     <>
       <form
-        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3"
+        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border border-blue-500"
         action={createUser}
       >
         <h1 className="text-5xl mt-0">Sign Up!</h1>

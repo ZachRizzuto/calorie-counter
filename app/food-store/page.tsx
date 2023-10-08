@@ -47,7 +47,7 @@ export default function BuyFoodPage() {
                 styles={{
                   height: "h-full",
                   width: "w-full",
-                  custom: "overflow-y-scroll",
+                  custom: "overflow-y-scroll overflow-x-none",
                 }}
               >
                 {userFoods.map((food) => {

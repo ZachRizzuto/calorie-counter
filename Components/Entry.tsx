@@ -12,7 +12,7 @@ type Props = {
 export const Entry = ({ calories, foodName, amount, deleteEntry }: Props) => {
   return (
     <div
-      className={`border-b-[1px] border-solid border-gray-600 flex items-center justify-between p-1 ${styles.deleteShow}`}
+      className={`border-b-[1px] border-solid border-gray-600 flex items-center justify-between p-1 ${styles.deleteShow} hover:border-green-500`}
     >
       <div className="flex justify-between gap-6">
         <div className="w-[150px]">{amount}</div>

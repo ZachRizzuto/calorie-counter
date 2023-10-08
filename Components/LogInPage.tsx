@@ -28,7 +28,7 @@ export function LogInPage() {
   return (
     <>
       <form
-        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3"
+        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
         onSubmit={(e) => {
           e.preventDefault();
 
