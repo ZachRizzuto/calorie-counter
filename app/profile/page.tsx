@@ -11,9 +11,25 @@ import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
 
 export default function Profile() {
-  const { user, setUser, totalCalories } = useContext(UserContext);
+  const { user, setUser, userDays, userEntries, userFoods } =
+    useContext(UserContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
+
+  const lastSevenDays = userDays.slice(-7).map((day) => day.id);
+
+  const lastSevenDayEntrieIds = userEntries
+    .filter((entry) => lastSevenDays.includes(entry.id))
+    .map((entry) => entry.id);
+
+  const lastSevenDayFoods = userFoods.filter((food) =>
+    lastSevenDayEntrieIds.includes(food.id)
+  );
+
+  const lastSevenDayTotalCalories = lastSevenDayFoods.reduce(
+    (acc, food) => (acc += food.calories),
+    0
+  );
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
@@ -92,7 +108,7 @@ export default function Profile() {
               }}
             >
               <h2 className="text-2xl">
-                Calorie Count This Week: {totalCalories}
+                Calorie Count This Week: {lastSevenDayTotalCalories}
               </h2>
             </PageSection>
           </div>

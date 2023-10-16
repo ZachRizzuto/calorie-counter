@@ -108,6 +108,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       );
 
       let variable: TFood[] = [];
+      // Change to id filter using includes method on array.
 
       for (let i = 0; i < filteredTodaysEntries.length; i++) {
         for (let j = 0; j < foods.length; j++) {
