@@ -76,7 +76,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const handleDate = async (user: TUser, entries: TEntry[], foods: TFood[]) => {
+  const handleDate = async (user: TUser, foods: TFood[]) => {
     // Setting the users days
     await getAllDays()
       .then((days) => {
@@ -87,8 +87,10 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
       })
       .then((userDays) => {
         setUserDays(userDays);
-        // Setting Today && if a new day creating another day
-        getTodaysInformation(userDays, user.id, entries, foods);
+        getEntriesForUser(userDays).then((entries) => {
+          // Setting Today && if a new day creating another day
+          getTodaysInformation(userDays, user.id, entries, foods);
+        });
       });
   };
 
@@ -105,7 +107,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         (entry) => entry.dayId === matchedDay.id
       );
 
-      const entryFoodIds = filteredTodaysEntries.map((entry) => entry.id);
+      const entryFoodIds = filteredTodaysEntries.map((entry) => entry.foodId);
 
       const filteredFood = foods.filter((food) =>
         entryFoodIds.includes(food.id)
@@ -132,21 +134,27 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const handleUserFoodData = (user: TUser) => {
-    getAllEntries().then((entries) => {
-      const matchedEntries = entries.filter(
-        (entry: TEntry) => entry.userId === user.id
+  const getEntriesForUser = (days: TDay[]) => {
+    return getAllEntries().then((entries) => {
+      const dayUserIds = days.map((day) => day.id);
+
+      const matchedEntries = entries.filter((entry: TEntry) =>
+        dayUserIds.includes(entry.dayId)
       );
 
       setUserEntries(matchedEntries);
 
-      getAllFoods()
-        .then((foods) => {
-          setAllFoods(foods);
-          return foods;
-        })
-        .then((foods) => handleDate(user, matchedEntries, foods));
+      return matchedEntries;
     });
+  };
+
+  const handleUserFoodData = (user: TUser) => {
+    getAllFoods()
+      .then((foods) => {
+        setAllFoods(foods);
+        return foods;
+      })
+      .then((foods) => handleDate(user, foods));
   };
 
   const handleLogin = async () => {

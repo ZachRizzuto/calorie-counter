@@ -6,13 +6,6 @@ import { UserContentContext } from "./Providers/UserContentProvider";
 import { useContext, useState } from "react";
 import { deleteEntry } from "@/app/(utils)/requests";
 
-const date = new Date();
-const month = date.getMonth();
-const day = date.getDate();
-const year = date.getFullYear();
-
-const dateToday = `${month + 1}/${day}/${year}`;
-
 export const Today = () => {
   const {
     isLoggedIn,
@@ -24,6 +17,7 @@ export const Today = () => {
     setTotalCalories,
     todaysFood,
     setTodaysFood,
+    today,
   } = useContext(UserContentContext);
 
   return (
@@ -37,9 +31,9 @@ export const Today = () => {
         >
           <div className="flex justify-between border-b-2 border-solid w-full pb-2">
             <h1 className="inline text-5xl">Today</h1>
-            <h2 className="inline text-4xl">{dateToday}</h2>
+            <h2 className="inline text-4xl">{today.date}</h2>
           </div>
-          <div className="overflow-scroll max-h-[450px] w-full h-full text-xl">
+          <div className="overflow-y-scroll max-h-[450px] w-full h-full text-xl overflow-x-none">
             {todaysEntries.length > 0 ? (
               todaysEntries.map((entry: TEntry) => {
                 const food = allFoods.find((food) => entry.foodId === food.id);

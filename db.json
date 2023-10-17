@@ -244,162 +244,140 @@
       "id": 1,
       "createdAt": 1696561449802,
       "foodId": 4,
-      "dayId": 2,
-      "userId": 1
+      "dayId": 2
     },
     {
-      "userId": 0,
       "dayId": 2,
       "createdAt": 1696562462245,
       "foodId": 4,
       "id": 2
     },
     {
-      "userId": 0,
       "dayId": 2,
       "createdAt": 1696562462245,
       "foodId": 5,
       "id": 3
     },
     {
-      "userId": 1,
       "dayId": 8,
       "createdAt": 1696645280523,
       "foodId": 5,
       "id": 4
     },
     {
-      "userId": 1,
       "dayId": 8,
       "createdAt": 1696645280523,
       "foodId": 3,
       "id": 5
     },
     {
-      "userId": 1,
       "dayId": 8,
       "createdAt": 1696645280523,
       "foodId": 4,
       "id": 6
     },
     {
-      "userId": 0,
       "dayId": 9,
       "createdAt": 1696645525422,
       "foodId": 1,
       "id": 7
     },
     {
-      "userId": 0,
       "dayId": 9,
       "createdAt": 1696645525422,
       "foodId": 1,
       "id": 8
     },
     {
-      "userId": 0,
       "dayId": 9,
       "createdAt": 1696645525422,
       "foodId": 1,
       "id": 9
     },
     {
-      "userId": 1,
       "dayId": 10,
       "createdAt": 1696737572402,
       "foodId": 5,
       "id": 10
     },
     {
-      "userId": 1,
       "dayId": 10,
       "createdAt": 1696737572402,
       "foodId": 1,
       "id": 11
     },
     {
-      "userId": 0,
       "dayId": 11,
       "createdAt": 1696739470234,
       "foodId": 6,
       "id": 12
     },
     {
-      "userId": 0,
       "dayId": 11,
       "createdAt": 1696739470234,
       "foodId": 1,
       "id": 13
     },
     {
-      "userId": 0,
       "dayId": 11,
       "createdAt": 1696739470234,
       "foodId": 7,
       "id": 14
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696741632365,
       "foodId": 3,
       "id": 16
     },
     {
-      "userId": 1,
       "dayId": 13,
       "createdAt": 1696741784432,
       "foodId": 15,
       "id": 22
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696741784432,
       "foodId": 3,
       "id": 23
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696741784432,
       "foodId": 16,
       "id": 24
     },
     {
-      "userId": 1,
       "dayId": 13,
       "createdAt": 1696741784432,
       "foodId": 16,
       "id": 25
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696789668886,
       "foodId": 16,
       "id": 26
     },
     {
-      "userId": 0,
       "dayId": 15,
       "createdAt": 1697261189985,
       "foodId": 6,
       "id": 27
     },
     {
-      "userId": 0,
-      "dayId": 16,
-      "createdAt": 1697499409697,
-      "foodId": 3,
-      "id": 28
-    },
-    {
-      "userId": 0,
       "dayId": 16,
       "createdAt": 1697499409697,
       "foodId": 16,
       "id": 30
+    },
+    {
+      "userId": 1,
+      "dayId": 17,
+      "createdAt": 1697504200393,
+      "foodId": 7,
+      "id": 31
     }
   ]
 }
