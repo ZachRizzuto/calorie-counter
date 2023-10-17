@@ -227,6 +227,16 @@
       "userId": 0,
       "date": "10/14/2023",
       "id": 15
+    },
+    {
+      "userId": 0,
+      "date": "10/16/2023",
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "date": "10/16/2023",
+      "id": 17
     }
   ],
   "entries": [
@@ -376,6 +386,20 @@
       "createdAt": 1697261189985,
       "foodId": 6,
       "id": 27
+    },
+    {
+      "userId": 0,
+      "dayId": 16,
+      "createdAt": 1697499409697,
+      "foodId": 3,
+      "id": 28
+    },
+    {
+      "userId": 0,
+      "dayId": 16,
+      "createdAt": 1697499409697,
+      "foodId": 16,
+      "id": 30
     }
   ]
 }

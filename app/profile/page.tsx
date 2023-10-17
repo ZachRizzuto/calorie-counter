@@ -3,7 +3,7 @@ import { Button } from "@/Components/Button";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
-import { UserContext } from "@/Components/Providers/UserProvider";
+import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import Image from "next/image";
 import { useContext, useState } from "react";
@@ -11,8 +11,8 @@ import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
 
 export default function Profile() {
-  const { user, setUser, userDays, userEntries, userFoods } =
-    useContext(UserContext);
+  const { user, setUser, userDays, userEntries, allFoods } =
+    useContext(UserContentContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
@@ -22,7 +22,7 @@ export default function Profile() {
     .filter((entry) => lastSevenDays.includes(entry.id))
     .map((entry) => entry.id);
 
-  const lastSevenDayFoods = userFoods.filter((food) =>
+  const lastSevenDayFoods = allFoods.filter((food) =>
     lastSevenDayEntrieIds.includes(food.id)
   );
 

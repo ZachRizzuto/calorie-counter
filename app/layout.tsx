@@ -1,5 +1,5 @@
 "use client";
-import { UserProvider } from "@/Components/Providers/UserProvider";
+import { UserContentProvider } from "@/Components/Providers/UserContentProvider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -21,12 +21,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <UserProvider>
+      <UserContentProvider>
         <body className={inter.className}>
           <Toaster />
           {children}
         </body>
-      </UserProvider>
+      </UserContentProvider>
     </html>
   );
 }

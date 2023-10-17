@@ -4,13 +4,13 @@ import styles from "../Components/Button.module.css";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "./Button";
-import { UserContext } from "./Providers/UserProvider";
+import { UserContentContext } from "./Providers/UserContentProvider";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 
 export const Nav = () => {
   const { push } = useRouter();
-  const { isLoggedIn, resetState } = useContext(UserContext);
+  const { isLoggedIn, resetState } = useContext(UserContentContext);
   return (
     <>
       <nav className="flex items-center justify-between min-h-[86px] w-full bg-gray-800">

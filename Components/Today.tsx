@@ -2,7 +2,7 @@
 import { TEntry, TFood } from "@/types";
 import { Entry } from "./Entry";
 import { PageSection } from "./PageSection";
-import { UserContext } from "./Providers/UserProvider";
+import { UserContentContext } from "./Providers/UserContentProvider";
 import { useContext, useState } from "react";
 import { deleteEntry } from "@/app/(utils)/requests";
 
@@ -16,7 +16,7 @@ const dateToday = `${month + 1}/${day}/${year}`;
 export const Today = () => {
   const {
     isLoggedIn,
-    userFoods,
+    allFoods,
     user,
     todaysEntries,
     setTodaysEntries,
@@ -24,7 +24,7 @@ export const Today = () => {
     setTotalCalories,
     todaysFood,
     setTodaysFood,
-  } = useContext(UserContext);
+  } = useContext(UserContentContext);
 
   return (
     <>
@@ -42,7 +42,7 @@ export const Today = () => {
           <div className="overflow-scroll max-h-[450px] w-full h-full text-xl">
             {todaysEntries.length > 0 ? (
               todaysEntries.map((entry: TEntry) => {
-                const food = userFoods.find((food) => entry.foodId === food.id);
+                const food = allFoods.find((food) => entry.foodId === food.id);
 
                 if (food) {
                   return (

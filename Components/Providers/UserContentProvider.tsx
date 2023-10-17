@@ -20,8 +20,8 @@ type TContext = {
   setIsLoggedIn: (bool: boolean) => void;
   user: TUser;
   setUser: (user: TUser) => void;
-  userFoods: TFood[];
-  setUserFoods: (foods: TFood[]) => void;
+  allFoods: TFood[];
+  setAllFoods: (foods: TFood[]) => void;
   deleteFood: (entry: TEntry) => void;
   userEntries: TEntry[];
   setUserEntries: (entries: TEntry[]) => void;
@@ -33,19 +33,17 @@ type TContext = {
   setToday: (day: TDay) => void;
   todaysFood: TFood[];
   setTodaysFood: (foods: TFood[]) => void;
-  allUsers: TUser[];
-  handleAllData: () => void;
+  handleUserLoginData: () => void;
   totalCalories: number;
   setTotalCalories: (calories: number) => void;
   resetState: () => void;
 };
 
-export const UserContext = createContext<TContext>({} as TContext);
-export const UserProvider = ({ children }: { children: ReactNode }) => {
+export const UserContentContext = createContext<TContext>({} as TContext);
+export const UserContentProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [allUsers, setAllUsers] = useState<TUser[]>([]);
   const [user, setUser] = useState<TUser>({} as TUser);
-  const [userFoods, setUserFoods] = useState<TFood[]>([]);
+  const [allFoods, setAllFoods] = useState<TFood[]>([]);
   const [todaysFood, setTodaysFood] = useState<TFood[]>([]);
   const [userEntries, setUserEntries] = useState<TEntry[]>([]);
   const [todaysEntries, setTodaysEntries] = useState<TEntry[]>([]);
@@ -57,9 +55,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const resetState = () => {
     setIsLoggedIn(false);
-    setAllUsers([]);
     setUser({} as TUser);
-    setUserFoods([]);
+    setAllFoods([]);
     setTodaysFood([]);
     setUserEntries([]);
     setTodaysEntries([]);
@@ -68,6 +65,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setTotalCalories(0);
   };
 
+  // Deletes Entry On Today Page
   const deleteFood = (entry: TEntry) => {
     deleteEntry(entry.id).then((res) => {
       if (res.ok) {
@@ -90,11 +88,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       .then((userDays) => {
         setUserDays(userDays);
         // Setting Today && if a new day creating another day
-        getToday(userDays, user.id, entries, foods);
+        getTodaysInformation(userDays, user.id, entries, foods);
       });
   };
 
-  const getToday = (
+  const getTodaysInformation = (
     days: TDay[],
     userId: number,
     userEntries: TEntry[],
@@ -107,21 +105,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         (entry) => entry.dayId === matchedDay.id
       );
 
-      let variable: TFood[] = [];
-      // Change to id filter using includes method on array.
+      const entryFoodIds = filteredTodaysEntries.map((entry) => entry.id);
 
-      for (let i = 0; i < filteredTodaysEntries.length; i++) {
-        for (let j = 0; j < foods.length; j++) {
-          if (filteredTodaysEntries[i].foodId === foods[j].id) {
-            variable.push(foods[j]);
-          }
-        }
-      }
+      const filteredFood = foods.filter((food) =>
+        entryFoodIds.includes(food.id)
+      );
 
-      setTodaysFood(variable);
+      setTodaysFood(filteredFood);
 
       setTotalCalories(
-        variable.reduce((prev, curr) => (prev += curr.calories), 0)
+        filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
       );
 
       setTodaysEntries(filteredTodaysEntries);
@@ -139,7 +132,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const setAllUsersFoods = (user: TUser) => {
+  const handleUserFoodData = (user: TUser) => {
     getAllEntries().then((entries) => {
       const matchedEntries = entries.filter(
         (entry: TEntry) => entry.userId === user.id
@@ -149,7 +142,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
       getAllFoods()
         .then((foods) => {
-          setUserFoods(foods);
+          setAllFoods(foods);
           return foods;
         })
         .then((foods) => handleDate(user, matchedEntries, foods));
@@ -158,53 +151,47 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const handleLogin = async () => {
     // validating user login and setting user if already logged in
-    return await getUsers()
-      .then((users) => {
-        setAllUsers(users);
-        return users;
-      })
-      .then((users) => {
-        const localStoreUser = localStorage.getItem("user");
+    return await getUsers().then((users) => {
+      const localStoreUser = localStorage.getItem("user");
 
-        if (localStoreUser) {
-          const savedUser = JSON.parse(localStoreUser);
-          const matchedUser = users.find(
-            (user) =>
-              user.user === savedUser.user &&
-              user.password === savedUser.password
-          );
-          if (matchedUser) {
-            setIsLoggedIn(true);
-            setUser(matchedUser);
-            return matchedUser;
-          }
-        } else {
-          push("/login");
+      if (localStoreUser) {
+        const savedUser = JSON.parse(localStoreUser);
+        const matchedUser = users.find(
+          (user) =>
+            user.user === savedUser.user && user.password === savedUser.password
+        );
+        if (matchedUser) {
+          setIsLoggedIn(true);
+          setUser(matchedUser);
+          return matchedUser;
         }
-      });
+      } else {
+        push("/login");
+      }
+    });
   };
 
-  const handleAllData = async () => {
+  const handleUserLoginData = async () => {
     await handleLogin().then((user) => {
       if (user) {
-        setAllUsersFoods(user);
+        handleUserFoodData(user);
       }
     });
   };
 
   useEffect(() => {
-    handleAllData();
+    handleUserLoginData();
   }, []);
 
   return (
-    <UserContext.Provider
+    <UserContentContext.Provider
       value={{
         isLoggedIn,
         setIsLoggedIn,
         user,
         setUser,
-        userFoods,
-        setUserFoods,
+        allFoods,
+        setAllFoods,
         deleteFood,
         userEntries,
         setUserEntries,
@@ -218,12 +205,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setTodaysFood,
         totalCalories,
         setTotalCalories,
-        allUsers,
-        handleAllData,
+        handleUserLoginData,
         resetState,
       }}
     >
       {children}
-    </UserContext.Provider>
+    </UserContentContext.Provider>
   );
 };

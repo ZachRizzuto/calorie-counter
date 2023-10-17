@@ -2,13 +2,13 @@
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
-import { UserContext } from "@/Components/Providers/UserProvider";
+import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { StoreOption } from "@/Components/StoreOption";
 import Image from "next/image";
 import { useContext } from "react";
 
 export default function BuyFoodPage() {
-  const { userFoods } = useContext(UserContext);
+  const { allFoods } = useContext(UserContentContext);
   return (
     <>
       <PageWrapper>
@@ -50,7 +50,7 @@ export default function BuyFoodPage() {
                   custom: "overflow-y-scroll overflow-x-none",
                 }}
               >
-                {userFoods.map((food) => {
+                {allFoods.map((food) => {
                   if (food.calories > 80) {
                     return <StoreOption key={food.id} foodName={food.food} />;
                   }

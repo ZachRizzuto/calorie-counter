@@ -5,7 +5,7 @@ import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
 import styles from "./food-form.module.css";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "@/Components/Providers/UserProvider";
+import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { TEntry, TFood, TFoodForm } from "@/types";
 import { getAllFoods, postEntry, postFood } from "../(utils)/requests";
 import { Button } from "@/Components/Button";
@@ -16,8 +16,8 @@ import { validateEntry } from "@/utils/formvalidation";
 export default function AddFoodForm() {
   const {
     user,
-    userFoods,
-    setUserFoods,
+    allFoods,
+    setAllFoods,
     setUserEntries,
     today,
     todaysFood,
@@ -27,7 +27,7 @@ export default function AddFoodForm() {
     setTodaysEntries,
     setTotalCalories,
     totalCalories,
-  } = useContext(UserContext);
+  } = useContext(UserContentContext);
 
   const [formData, setFormData] = useState<TFoodForm>({
     foodSelect: "",
@@ -36,8 +36,6 @@ export default function AddFoodForm() {
     food: "",
     calories: "",
   });
-
-  const [allFoods, setAllFoods] = useState<TFood[]>([]);
 
   const isCustomFoodDisabled =
     !(formData.foodSelect == undefined) || formData.foodSelect
@@ -76,7 +74,7 @@ export default function AddFoodForm() {
         })
         .catch(() => toast.error("Couldn't post entry"));
     } else if (
-      userFoods.find(
+      allFoods.find(
         (food) =>
           food.food === newFood.food &&
           food.calories === parseInt(newFood.calories) &&
@@ -86,7 +84,7 @@ export default function AddFoodForm() {
       const foodName = newFood.food;
       const calories = parseInt(newFood.calories);
 
-      const matchedFood = userFoods.find(
+      const matchedFood = allFoods.find(
         (food) =>
           food.food === foodName &&
           food.calories === calories &&
@@ -128,7 +126,7 @@ export default function AddFoodForm() {
           }
         })
         .then((res: TFood) => {
-          const newFoods = [...userFoods, res];
+          const newFoods = [...allFoods, res];
 
           setTotalCalories(totalCalories + res.calories);
 
@@ -145,7 +143,7 @@ export default function AddFoodForm() {
             toast.success("Added entry!");
           });
 
-          setUserFoods(newFoods);
+          setAllFoods(newFoods);
           setAllFoods(newFoods);
 
           setTodaysFood([...todaysFood, res]);
