@@ -16,14 +16,14 @@ export default function Profile() {
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
-  const lastSevenDays = userDays.slice(-7).map((day) => day.id);
+  const lastSevenDayIds = userDays.slice(-7).map((day) => day.id);
 
-  const lastSevenDayEntrieIds = userEntries
-    .filter((entry) => lastSevenDays.includes(entry.id))
+  const lastSevenDayEntryIds = userEntries
+    .filter((entry) => lastSevenDayIds.includes(entry.dayId))
     .map((entry) => entry.id);
 
   const lastSevenDayFoods = allFoods.filter((food) =>
-    lastSevenDayEntrieIds.includes(food.id)
+    lastSevenDayEntryIds.includes(food.id)
   );
 
   const lastSevenDayTotalCalories = lastSevenDayFoods.reduce(

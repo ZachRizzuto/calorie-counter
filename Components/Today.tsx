@@ -15,8 +15,6 @@ export const Today = () => {
     setTodaysEntries,
     totalCalories,
     setTotalCalories,
-    todaysFood,
-    setTodaysFood,
     today,
   } = useContext(UserContentContext);
 
@@ -50,12 +48,6 @@ export const Today = () => {
                           if (res.ok) {
                             setTodaysEntries(
                               todaysEntries.filter((ent) => ent.id !== entry.id)
-                            );
-
-                            setTodaysFood(
-                              todaysFood.filter(
-                                (todayFood) => todayFood.id !== food.id
-                              )
                             );
 
                             setTotalCalories(totalCalories - food.calories);

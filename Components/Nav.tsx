@@ -10,12 +10,13 @@ import toast from "react-hot-toast";
 
 export const Nav = () => {
   const { push } = useRouter();
-  const { isLoggedIn, resetState } = useContext(UserContentContext);
+  const { isLoggedIn, resetState, user } = useContext(UserContentContext);
   return (
     <>
       <nav className="flex items-center justify-between min-h-[86px] w-full bg-gray-800">
         <Image src={"/favicon.ico"} height={50} width={50} alt="logo" />
         <ul className="flex items-center gap-2 mr-4">
+          <li>{user.balance}🪙</li>
           <li>
             <Link
               href="/food-store"
