@@ -3,6 +3,7 @@ export type TUser = {
   user: string;
   password: string;
   calorie_goal: number;
+  balance: number;
 };
 
 export type TFood = {

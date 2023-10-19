@@ -4,91 +4,106 @@
       "id": 0,
       "user": "guest",
       "password": "password",
-      "calorie_goal": 2000
+      "calorie_goal": 2000,
+      "balance": 33
     },
     {
       "id": 1,
       "user": "guest2",
       "password": "password",
-      "calorie_goal": "1500"
+      "calorie_goal": 1500,
+      "balance": 12
     },
     {
       "user": "guest3",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 2
+      "id": 2,
+      "balance": 1
     },
     {
       "user": "guest4",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 3
+      "id": 3,
+      "balance": 1
     },
     {
       "user": "guest5",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 4
+      "id": 4,
+      "balance": 1
     },
     {
       "user": "guest6",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 5
+      "id": 5,
+      "balance": 1
     },
     {
       "user": "zachary",
       "password": "rizzuto",
       "calorie_goal": 2000,
-      "id": 6
+      "id": 6,
+      "balance": 1
     },
     {
       "user": "guest7",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 7
+      "id": 7,
+      "balance": 1
     },
     {
       "user": "guest8",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 8
+      "id": 8,
+      "balance": 1
     },
     {
       "user": "guest9",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 9
+      "id": 9,
+      "balance": 1
     },
     {
       "user": "guest11",
       "password": "password",
       "calorie_goal": 2000,
-      "id": 10
+      "id": 10,
+      "balance": 1
     },
     {
       "user": "asdasd",
       "password": "asdasd",
       "calorie_goal": 2000,
-      "id": 11
+      "id": 11,
+      "balance": 1
     },
     {
       "user": "as",
       "password": "as",
       "calorie_goal": 2000,
-      "id": 12
+      "id": 12,
+      "balance": 1
     },
     {
       "user": "asf",
       "password": "asf",
       "calorie_goal": 2000,
-      "id": 13
+      "id": 13,
+      "balance": 1
     },
     {
       "user": "asf",
       "password": "asf",
       "calorie_goal": 2000,
-      "id": 14
+      "id": 14,
+      "balance": 1
     }
   ],
   "Foods": [
@@ -145,6 +160,30 @@
       "calories": 350,
       "amount": "2 whole",
       "id": 16
+    },
+    {
+      "food": "Cake",
+      "calories": 350,
+      "amount": "1 1/4",
+      "id": 17
+    },
+    {
+      "food": "pie",
+      "calories": 750,
+      "amount": "1 whole",
+      "id": 18
+    },
+    {
+      "food": "Chocolate",
+      "calories": 500,
+      "amount": "2 cup",
+      "id": 19
+    },
+    {
+      "food": "Chocolate-Vanilla Twist Ice Cream.",
+      "calories": 400,
+      "amount": "1 whole",
+      "id": 20
     }
   ],
   "days": [
@@ -227,6 +266,36 @@
       "userId": 0,
       "date": "10/14/2023",
       "id": 15
+    },
+    {
+      "userId": 0,
+      "date": "10/16/2023",
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "date": "10/16/2023",
+      "id": 17
+    },
+    {
+      "userId": 0,
+      "date": "10/17/2023",
+      "id": 18
+    },
+    {
+      "userId": 0,
+      "date": "10/18/2023",
+      "id": 19
+    },
+    {
+      "userId": 0,
+      "date": "10/19/2023",
+      "id": 20
+    },
+    {
+      "userId": 2,
+      "date": "10/19/2023",
+      "id": 21
     }
   ],
   "entries": [
@@ -234,148 +303,231 @@
       "id": 1,
       "createdAt": 1696561449802,
       "foodId": 4,
-      "dayId": 2,
-      "userId": 1
+      "dayId": 2
     },
     {
-      "userId": 0,
       "dayId": 2,
       "createdAt": 1696562462245,
       "foodId": 4,
       "id": 2
     },
     {
-      "userId": 0,
       "dayId": 2,
       "createdAt": 1696562462245,
       "foodId": 5,
       "id": 3
     },
     {
-      "userId": 1,
       "dayId": 8,
       "createdAt": 1696645280523,
       "foodId": 5,
       "id": 4
     },
     {
-      "userId": 1,
       "dayId": 8,
       "createdAt": 1696645280523,
       "foodId": 3,
       "id": 5
     },
     {
-      "userId": 1,
       "dayId": 8,
       "createdAt": 1696645280523,
       "foodId": 4,
       "id": 6
     },
     {
-      "userId": 0,
       "dayId": 9,
       "createdAt": 1696645525422,
       "foodId": 1,
       "id": 7
     },
     {
-      "userId": 0,
       "dayId": 9,
       "createdAt": 1696645525422,
       "foodId": 1,
       "id": 8
     },
     {
-      "userId": 0,
       "dayId": 9,
       "createdAt": 1696645525422,
       "foodId": 1,
       "id": 9
     },
     {
-      "userId": 1,
       "dayId": 10,
       "createdAt": 1696737572402,
       "foodId": 5,
       "id": 10
     },
     {
-      "userId": 1,
       "dayId": 10,
       "createdAt": 1696737572402,
       "foodId": 1,
       "id": 11
     },
     {
-      "userId": 0,
       "dayId": 11,
       "createdAt": 1696739470234,
       "foodId": 6,
       "id": 12
     },
     {
-      "userId": 0,
       "dayId": 11,
       "createdAt": 1696739470234,
       "foodId": 1,
       "id": 13
     },
     {
-      "userId": 0,
       "dayId": 11,
       "createdAt": 1696739470234,
       "foodId": 7,
       "id": 14
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696741632365,
       "foodId": 3,
       "id": 16
     },
     {
-      "userId": 1,
       "dayId": 13,
       "createdAt": 1696741784432,
       "foodId": 15,
       "id": 22
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696741784432,
       "foodId": 3,
       "id": 23
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696741784432,
       "foodId": 16,
       "id": 24
     },
     {
-      "userId": 1,
       "dayId": 13,
       "createdAt": 1696741784432,
       "foodId": 16,
       "id": 25
     },
     {
-      "userId": 0,
       "dayId": 12,
       "createdAt": 1696789668886,
       "foodId": 16,
       "id": 26
     },
     {
-      "userId": 0,
       "dayId": 15,
       "createdAt": 1697261189985,
       "foodId": 6,
       "id": 27
+    },
+    {
+      "dayId": 16,
+      "createdAt": 1697499409697,
+      "foodId": 16,
+      "id": 30
+    },
+    {
+      "userId": 1,
+      "dayId": 17,
+      "createdAt": 1697504200393,
+      "foodId": 7,
+      "id": 31
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697590194791,
+      "foodId": 1,
+      "id": 32
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697591489225,
+      "foodId": 17,
+      "id": 33
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592184640,
+      "foodId": 18,
+      "id": 34
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 19,
+      "id": 35
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 20,
+      "id": 36
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 5,
+      "id": 37
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 6,
+      "id": 38
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 16,
+      "id": 39
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 3,
+      "id": 40
+    },
+    {
+      "userId": 0,
+      "dayId": 18,
+      "createdAt": 1697592312080,
+      "foodId": 1,
+      "id": 41
+    },
+    {
+      "userId": 0,
+      "dayId": 19,
+      "createdAt": 1697675993070,
+      "foodId": 15,
+      "id": 42
+    },
+    {
+      "userId": 0,
+      "dayId": 19,
+      "createdAt": 1697675993070,
+      "foodId": 18,
+      "id": 43
+    },
+    {
+      "userId": 0,
+      "dayId": 19,
+      "createdAt": 1697675993070,
+      "foodId": 18,
+      "id": 44
     }
   ]
 }

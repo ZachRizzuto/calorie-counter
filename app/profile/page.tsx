@@ -3,7 +3,7 @@ import { Button } from "@/Components/Button";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
-import { UserContext } from "@/Components/Providers/UserProvider";
+import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import Image from "next/image";
 import { useContext, useState } from "react";
@@ -11,19 +11,19 @@ import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
 
 export default function Profile() {
-  const { user, setUser, userDays, userEntries, userFoods } =
-    useContext(UserContext);
+  const { user, setUser, userDays, userEntries, allFoods } =
+    useContext(UserContentContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
-  const lastSevenDays = userDays.slice(-7).map((day) => day.id);
+  const lastSevenDayIds = userDays.slice(-7).map((day) => day.id);
 
-  const lastSevenDayEntrieIds = userEntries
-    .filter((entry) => lastSevenDays.includes(entry.id))
+  const lastSevenDayEntryIds = userEntries
+    .filter((entry) => lastSevenDayIds.includes(entry.dayId))
     .map((entry) => entry.id);
 
-  const lastSevenDayFoods = userFoods.filter((food) =>
-    lastSevenDayEntrieIds.includes(food.id)
+  const lastSevenDayFoods = allFoods.filter((food) =>
+    lastSevenDayEntryIds.includes(food.id)
   );
 
   const lastSevenDayTotalCalories = lastSevenDayFoods.reduce(

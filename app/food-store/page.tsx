@@ -1,14 +1,16 @@
 "use client";
+import { Button } from "@/Components/Button";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
-import { UserContext } from "@/Components/Providers/UserProvider";
+import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { StoreOption } from "@/Components/StoreOption";
 import Image from "next/image";
 import { useContext } from "react";
+import { buyFood } from "../(utils)/requests";
 
 export default function BuyFoodPage() {
-  const { userFoods } = useContext(UserContext);
+  const { allFoods, user, setUser } = useContext(UserContentContext);
   return (
     <>
       <PageWrapper>
@@ -37,7 +39,46 @@ export default function BuyFoodPage() {
                   loading="lazy"
                 />
                 <div>
-                  <span className="pr-[20px] text-7xl text-center">${50}</span>
+                  <span className="text-7xl text-center">{user.balance}🪙</span>
+                </div>
+                <div className="flex gap-1">
+                  Dev Purposes:
+                  <Button
+                    text={"+1"}
+                    styles={"w-12"}
+                    onClick={() => {
+                      buyFood(-1, user.balance, user.id).then((res) => {
+                        if (res.ok) {
+                          const newBalance = user.balance + 1;
+                          setUser({ ...user, balance: newBalance });
+                        }
+                      });
+                    }}
+                  />
+                  <Button
+                    text={"+5"}
+                    styles={"w-12"}
+                    onClick={() => {
+                      buyFood(-5, user.balance, user.id).then((res) => {
+                        if (res.ok) {
+                          const newBalance = user.balance + 5;
+                          setUser({ ...user, balance: newBalance });
+                        }
+                      });
+                    }}
+                  />
+                  <Button
+                    text={"+10"}
+                    styles={"w-12"}
+                    onClick={() => {
+                      buyFood(-10, user.balance, user.id).then((res) => {
+                        if (res.ok) {
+                          const newBalance = user.balance + 10;
+                          setUser({ ...user, balance: newBalance });
+                        }
+                      });
+                    }}
+                  />
                 </div>
               </PageSection>
             </div>
@@ -50,9 +91,15 @@ export default function BuyFoodPage() {
                   custom: "overflow-y-scroll overflow-x-none",
                 }}
               >
-                {userFoods.map((food) => {
-                  if (food.calories > 80) {
-                    return <StoreOption key={food.id} foodName={food.food} />;
+                {allFoods.map((food) => {
+                  if (food.calories >= 350) {
+                    return (
+                      <StoreOption
+                        key={food.id}
+                        foodName={food.food}
+                        calories={food.calories}
+                      />
+                    );
                   }
                 })}
               </PageSection>
