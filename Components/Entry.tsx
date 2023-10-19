@@ -16,7 +16,7 @@ export const Entry = ({ calories, foodName, amount, deleteEntry }: Props) => {
     >
       <div className="flex justify-between gap-6">
         <div className="w-[150px]">{amount}</div>
-        <div className="w-[150px]">{foodName}</div>
+        <div className="w-[400px]">{foodName}</div>
       </div>
       <div>
         <div>{calories} kcal</div>

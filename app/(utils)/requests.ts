@@ -84,3 +84,21 @@ export const newDay = (userId: number, date: string) => {
     }),
   });
 };
+
+export const buyFood = (cost: number, prevBalance: number, userId: number) => {
+  const newBalance = prevBalance - cost;
+
+  if (newBalance >= 0) {
+    return fetch(`http://192.168.1.156:3001/Users/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        balance: newBalance,
+      }),
+    });
+  } else {
+    throw new Error("Cannot process purchase");
+  }
+};

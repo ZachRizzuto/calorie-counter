@@ -20,8 +20,6 @@ export default function AddFoodForm() {
     setAllFoods,
     setUserEntries,
     today,
-    todaysFood,
-    setTodaysFood,
     userEntries,
     todaysEntries,
     setTodaysEntries,
@@ -68,7 +66,6 @@ export default function AddFoodForm() {
         .then((entry: TEntry) => {
           setUserEntries([...userEntries, entry]);
           setTodaysEntries([...todaysEntries, entry]);
-          setTodaysFood([...todaysFood, selectedFoodData]);
           setTotalCalories(totalCalories + selectedFoodData.calories);
           toast.success("Added entry!");
         })
@@ -145,8 +142,6 @@ export default function AddFoodForm() {
 
           setAllFoods(newFoods);
           setAllFoods(newFoods);
-
-          setTodaysFood([...todaysFood, res]);
         });
     }
   };
@@ -252,6 +247,10 @@ export default function AddFoodForm() {
                         <option value="tablespoon">tablespoon</option>
                         <option value="teaspoon">teaspoon</option>
                         <option value="whole">whole</option>
+                        <option value="1/4">1/4</option>
+                        <option value="1/4">1/8</option>
+                        <option value="1/4">1/2</option>
+                        <option value="1/3">1/3</option>
                       </select>
                     </div>
                   </div>

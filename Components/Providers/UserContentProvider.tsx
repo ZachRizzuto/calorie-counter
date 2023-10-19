@@ -9,6 +9,7 @@ import { getUsers } from "../../app/(utils)/requests";
 import { TDay, TEntry, TFood, TUser } from "@/types";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 const date = new Date();
 const month = date.getMonth();
 const day = date.getDate();
@@ -31,8 +32,6 @@ type TContext = {
   setUserDays: (days: TDay[]) => void;
   today: TDay;
   setToday: (day: TDay) => void;
-  todaysFood: TFood[];
-  setTodaysFood: (foods: TFood[]) => void;
   handleUserLoginData: () => void;
   totalCalories: number;
   setTotalCalories: (calories: number) => void;
@@ -44,7 +43,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<TUser>({} as TUser);
   const [allFoods, setAllFoods] = useState<TFood[]>([]);
-  const [todaysFood, setTodaysFood] = useState<TFood[]>([]);
   const [userEntries, setUserEntries] = useState<TEntry[]>([]);
   const [todaysEntries, setTodaysEntries] = useState<TEntry[]>([]);
   const [userDays, setUserDays] = useState<TDay[]>([]);
@@ -57,7 +55,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn(false);
     setUser({} as TUser);
     setAllFoods([]);
-    setTodaysFood([]);
     setUserEntries([]);
     setTodaysEntries([]);
     setUserDays([]);
@@ -112,8 +109,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
       const filteredFood = foods.filter((food) =>
         entryFoodIds.includes(food.id)
       );
-
-      setTodaysFood(filteredFood);
 
       setTotalCalories(
         filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
@@ -209,8 +204,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         setUserDays,
         today,
         setToday,
-        todaysFood,
-        setTodaysFood,
         totalCalories,
         setTotalCalories,
         handleUserLoginData,

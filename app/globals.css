@@ -77,3 +77,19 @@ label {
 a {
   text-decoration: underline;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #35ee2f;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #238f31;
+}
