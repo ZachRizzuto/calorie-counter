@@ -41,6 +41,7 @@ const db = {
     user: id === 0 ? "guest" : "guest2",
     password: "password",
     calorie_goal: id === 0 ? 2000 : 3500,
+    balance: 0,
   })),
   Foods: foods.map((food) => food),
   days: range(daysAmount).map((_, id) => {

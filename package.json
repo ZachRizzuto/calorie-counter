@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "serve": "json-server --host 192.168.1.156 db.json --port 3001",
+    "serve": "json-server db.json --port 3001",
     "seed": "node seed.mjs"
   },
   "dependencies": {

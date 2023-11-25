@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
+import { TFood } from "@/types";
 
 export default function Profile() {
   const { user, setUser, userDays, userEntries, allFoods } =
@@ -16,20 +17,22 @@ export default function Profile() {
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
+  let lastWeeksCalorieTotal = 0;
+
   const lastSevenDayIds = userDays.slice(-7).map((day) => day.id);
 
-  const lastSevenDayEntryIds = userEntries
+  const lastSevenDayFoodIds = userEntries
     .filter((entry) => lastSevenDayIds.includes(entry.dayId))
-    .map((entry) => entry.id);
+    .map((entry) => entry.foodId);
 
-  const lastSevenDayFoods = allFoods.filter((food) =>
-    lastSevenDayEntryIds.includes(food.id)
-  );
 
-  const lastSevenDayTotalCalories = lastSevenDayFoods.reduce(
-    (acc, food) => (acc += food.calories),
-    0
-  );
+  for(let food of allFoods) {
+    for(let id of lastSevenDayFoodIds) {
+      if(food.id === id) {
+        lastWeeksCalorieTotal += food.calories;
+      }
+    }
+  }
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
@@ -108,7 +111,7 @@ export default function Profile() {
               }}
             >
               <h2 className="text-2xl">
-                Calorie Count This Week: {lastSevenDayTotalCalories}
+                Calorie Count This Week: {lastWeeksCalorieTotal}
               </h2>
             </PageSection>
           </div>
