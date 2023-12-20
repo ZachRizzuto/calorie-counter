@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { TUser } from "@/types";
 import { UserContentContext } from "../../Components/Providers/UserContentProvider";
 import toast from "react-hot-toast";
-import { getUsers } from "@/app/(utils)/requests";
+import { getUsers, login } from "@/app/(utils)/requests";
 
 export default function Login() {
-  const { handleUserLoginData } = useContext(UserContentContext);
+  const { handleUserLoginData, setIsLoggedIn, setUser } = useContext(UserContentContext);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -29,34 +29,44 @@ export default function Login() {
     <>
       <form
         className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
 
-          const userData = getUsers();
-          userData
-            .then((data) =>
-              data.find(
-                (user: TUser) =>
-                  form.user === user.user && form.password === user.password
-              )
-            )
-            .then((match) => {
-              if (match) {
-                localStorage.setItem("user", JSON.stringify(match));
-                setIsError(false);
-                return match;
-              } else {
-                setIsError(true);
-                userRef.current?.focus();
-              }
-            })
-            .then((match) => {
-              if (match) {
-                handleUserLoginData();
-                toast.success("Logged In");
-                push("/today");
-              }
-            });
+          // const userData = getUsers();
+          // userData
+          //   .then((data) =>
+          //     data.find(
+          //       (user: TUser) =>
+          //         form.user === user.user && form.password === user.password
+          //     )
+          //   )
+          //   .then((match) => {
+          //     if (match) {
+          //       localStorage.setItem("user", JSON.stringify(match));
+          //       setIsError(false);
+          //       return match;
+          //     } else {
+          //       setIsError(true);
+          //       userRef.current?.focus();
+          //     }
+          //   })
+          //   .then((match) => {
+          //     if (match) {
+          //       handleUserLoginData();
+          //       toast.success("Logged In");
+          //       push("/today");
+          //     }
+          //   });
+
+          await login({
+            user: form.user,
+            password: form.password
+          }).then((res) => {
+            toast.success("Logged In")
+            setUser(res)
+            setIsLoggedIn(true)
+            push("/today")
+          }).catch((e) => console.log(e))
 
           reset();
         }}

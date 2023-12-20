@@ -1,7 +1,5 @@
 export type TUser = {
-  id: number;
   user: string;
-  password: string;
   calorie_goal: number;
   balance: number;
 };
@@ -33,4 +31,16 @@ export type TFoodForm = {
   amountType: string;
   food: string;
   calories: string;
+};
+
+export const isUserType = (user: any) => {
+  console.log(user);
+  if (
+    user.userInformation.balance &&
+    user.userInformation.user &&
+    user.userInformation.calorie_goal
+  ) {
+    return true;
+  }
+  return false;
 };

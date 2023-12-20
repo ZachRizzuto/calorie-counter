@@ -3,10 +3,11 @@ import {
   getAllDays,
   getAllEntries,
   getAllFoods,
+  loginFromJwt,
   newDay,
 } from "@/app/(utils)/requests";
 import { getUsers } from "../../app/(utils)/requests";
-import { TDay, TEntry, TFood, TUser } from "@/types";
+import { TDay, TEntry, TFood, TUser, isUserType } from "@/types";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -76,24 +77,17 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
   const handleDate = async (user: TUser, foods: TFood[]) => {
     // Setting the users days
     await getAllDays()
-      .then((days) => {
-        const userDays = days.filter((day: TDay) => {
-          return day.userId === user.id;
-        });
-        return userDays;
-      })
       .then((userDays) => {
         setUserDays(userDays);
         getEntriesForUser(userDays).then((entries) => {
           // Setting Today && if a new day creating another day
-          getTodaysInformation(userDays, user.id, entries, foods);
+          getTodaysInformation(userDays, entries, foods);
         });
       });
   };
 
   const getTodaysInformation = (
     days: TDay[],
-    userId: number,
     userEntries: TEntry[],
     foods: TFood[]
   ) => {
@@ -118,14 +112,12 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
       setToday(matchedDay);
     } else {
-      if (userId || userId === 0) {
-        newDay(userId, dateToday)
+        newDay(dateToday)
           .then((res) => res.json())
           .then((day) => {
             setToday(day);
             setUserDays([...userDays, day]);
           });
-      }
     }
   };
 
@@ -153,26 +145,29 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleLogin = async () => {
-    // validating user login and setting user if already logged in
-    return await getUsers().then((users) => {
+    // setting user if already logged in
+    
       const localStoreUser = localStorage.getItem("user");
 
       if (localStoreUser) {
         const savedUser = JSON.parse(localStoreUser);
-        const matchedUser = users.find(
-          (user) =>
-            user.user === savedUser.user && user.password === savedUser.password
-        );
-        if (matchedUser) {
-          setIsLoggedIn(true);
-          setUser(matchedUser);
-          return matchedUser;
-        }
+
+        return loginFromJwt(savedUser).then(() => {
+          setIsLoggedIn(true)
+          if(isUserType(savedUser)) {
+            setUser(savedUser.userData)
+            return savedUser.userData
+          } else {
+            throw new Error("Incorrect user data type")
+          }
+        })
+
+
       } else {
         push("/login");
       }
-    });
-  };
+    
+  }
 
   const handleUserLoginData = async () => {
     await handleLogin().then((user) => {

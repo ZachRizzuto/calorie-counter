@@ -1,9 +1,18 @@
-import { TDay, TEntry, TFood, TUser } from "@/types";
+import { TEntry, TFood, TUser } from "@/types";
 
-const baseUrl = "http://localhost:3001"
+const baseUrl = "http://localhost:3001";
+
+type jwtToken = {
+  token: string;
+  userData: {
+    user: string;
+    balance: number;
+    calorie_goal: number;
+  };
+};
 
 export const getUsers = (): Promise<TUser[]> => {
-  return fetch(`${baseUrl}/Users`)
+  return fetch(`${baseUrl}/users`)
     .then((res) => {
       if (!res.ok) {
         throw new Error("Couldn't retrieve user data.");
@@ -12,11 +21,43 @@ export const getUsers = (): Promise<TUser[]> => {
     .then((res) => res.json());
 };
 
+export const login = (user: { user: string; password: string }) => {
+  return fetch(`${baseUrl}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((res) => res.json())
+    .then((userData) => {
+      localStorage.setItem("user", JSON.stringify(userData));
+      return userData;
+    })
+    .catch((error) => console.log(error));
+};
+
+export const loginFromJwt = (token: jwtToken) => {
+  return fetch(`${baseUrl}/auth/login/redirect`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(token),
+  })
+    .then((res) => res.json())
+    .then((userData) => {
+      localStorage.setItem("user", JSON.stringify(userData));
+      return userData;
+    })
+    .catch((error) => console.log(error));
+};
+
 export const editUserGoal = (
   id: number,
   change: number | string | Object | undefined
 ) => {
-  return fetch(`${baseUrl}/Users/${id}`, {
+  return fetch(`${baseUrl}/users/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -28,11 +69,11 @@ export const editUserGoal = (
 };
 
 export const getAllFoods = () => {
-  return fetch(`${baseUrl}/Foods`).then((res) => res.json());
+  return fetch(`${baseUrl}/foods`).then((res) => res.json());
 };
 
 export const postFood = (food: Omit<TFood, "id">) => {
-  return fetch(`${baseUrl}/Foods`, {
+  return fetch(`${baseUrl}/foods`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -71,17 +112,16 @@ export const postEntry = (entry: Omit<TEntry, "id">) => {
 };
 
 export const getAllDays = () => {
-  return fetch(`${baseUrl}/Days`).then((res) => res.json());
+  return fetch(`${baseUrl}/days/1`).then((res) => res.json());
 };
 
-export const newDay = (userId: number, date: string) => {
-  return fetch(`${baseUrl}/Days`, {
+export const newDay = (date: string) => {
+  return fetch(`${baseUrl}/days`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId: userId,
       date: date,
     }),
   });
@@ -91,7 +131,7 @@ export const buyFood = (cost: number, prevBalance: number, userId: number) => {
   const newBalance = prevBalance - cost;
 
   if (newBalance >= 0) {
-    return fetch(`${baseUrl}/Users/${userId}`, {
+    return fetch(`${baseUrl}/users/${userId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
