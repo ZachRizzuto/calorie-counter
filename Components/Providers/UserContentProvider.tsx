@@ -6,10 +6,12 @@ import {
   loginFromJwt,
   newDay,
 } from "@/app/(utils)/requests";
-import { getUsers } from "../../app/(utils)/requests";
-import { TDay, TEntry, TFood, TUser, isUserType } from "@/types";
+import { TDay, TEntry, TFood, TUser } from "@/types";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import z from "zod"
+import { localStorageUserSchema, userSchema } from "@/zod-types";
+
 
 const date = new Date();
 const month = date.getMonth();
@@ -65,18 +67,21 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
   // Deletes Entry On Today Page
   const deleteFood = (entry: TEntry) => {
-    deleteEntry(entry.id).then((res) => {
-      if (res.ok) {
-        setTodaysEntries(todaysEntries.filter((ent) => ent.id !== entry.id));
-      } else {
-        throw new Error("Couldn't Delete Food :(");
-      }
-    });
+    // deleteEntry(entry.id).then((res) => {
+    //   if (res.ok) {
+    //     setTodaysEntries(todaysEntries.filter((ent) => ent.id !== entry.id));
+    //   } else {
+    //     throw new Error("Couldn't Delete Food :(");
+    //   }
+    // });
   };
 
   const handleDate = async (user: TUser, foods: TFood[]) => {
+    const jwtTokenS = localStorage.getItem("user")
     // Setting the users days
-    await getAllDays()
+    if(jwtTokenS) {
+      const jwtToken = JSON.parse(jwtTokenS).token
+      await getAllDays(jwtToken)
       .then((userDays) => {
         setUserDays(userDays);
         getEntriesForUser(userDays).then((entries) => {
@@ -84,6 +89,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
           getTodaysInformation(userDays, entries, foods);
         });
       });
+    }
   };
 
   const getTodaysInformation = (
@@ -112,12 +118,16 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
       setToday(matchedDay);
     } else {
-        newDay(dateToday)
+        const jwtTokenS = localStorage.getItem("user")
+        if(jwtTokenS) {
+          const jwtToken = JSON.parse(jwtTokenS).token
+          newDay(dateToday, jwtToken)
           .then((res) => res.json())
           .then((day) => {
             setToday(day);
             setUserDays([...userDays, day]);
           });
+        }
     }
   };
 
@@ -148,19 +158,26 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
     // setting user if already logged in
     
       const localStoreUser = localStorage.getItem("user");
-
+      
       if (localStoreUser) {
-        const savedUser = JSON.parse(localStoreUser);
 
-        return loginFromJwt(savedUser).then(() => {
-          setIsLoggedIn(true)
-          if(isUserType(savedUser)) {
-            setUser(savedUser.userData)
-            return savedUser.userData
+        const userJson = JSON.parse(localStoreUser);
+
+        const isCorrectUserFormat = localStorageUserSchema.parse(userJson)
+
+        if(!isCorrectUserFormat) {
+          return new Error("Incorrect user format")
+        }
+
+        return loginFromJwt(userJson.token).then((user) => {
+          if(userSchema.parse(user)) {
+            setIsLoggedIn(true)
+            setUser(user)
+            return user
           } else {
             throw new Error("Incorrect user data type")
           }
-        })
+        }).catch((e) => console.log({ERROR: e}))
 
 
       } else {

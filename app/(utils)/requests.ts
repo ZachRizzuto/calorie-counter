@@ -2,15 +2,6 @@ import { TEntry, TFood, TUser } from "@/types";
 
 const baseUrl = "http://localhost:3001";
 
-type jwtToken = {
-  token: string;
-  userData: {
-    user: string;
-    balance: number;
-    calorie_goal: number;
-  };
-};
-
 export const getUsers = (): Promise<TUser[]> => {
   return fetch(`${baseUrl}/users`)
     .then((res) => {
@@ -37,17 +28,18 @@ export const login = (user: { user: string; password: string }) => {
     .catch((error) => console.log(error));
 };
 
-export const loginFromJwt = (token: jwtToken) => {
+export const loginFromJwt = (token: string) => {
   return fetch(`${baseUrl}/auth/login/redirect`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(token),
+    body: JSON.stringify({
+      token: token,
+    }),
   })
     .then((res) => res.json())
     .then((userData) => {
-      localStorage.setItem("user", JSON.stringify(userData));
       return userData;
     })
     .catch((error) => console.log(error));
@@ -72,22 +64,24 @@ export const getAllFoods = () => {
   return fetch(`${baseUrl}/foods`).then((res) => res.json());
 };
 
-export const postFood = (food: Omit<TFood, "id">) => {
+export const postFood = (food: Omit<TFood, "id">, jwtToken: string) => {
   return fetch(`${baseUrl}/foods`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${jwtToken}`,
     },
     body: JSON.stringify(food),
   });
 };
 
-export const deleteEntry = (id: number) => {
+export const deleteEntry = (id: number, jwtToken: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${jwtToken}`);
   return fetch(`${baseUrl}/entries/${id}`, {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headers,
   });
 };
 
@@ -95,11 +89,12 @@ export const getAllEntries = () => {
   return fetch(`${baseUrl}/entries`).then((res) => res.json());
 };
 
-export const postEntry = (entry: Omit<TEntry, "id">) => {
+export const postEntry = (entry: Omit<TEntry, "id">, jwtToken: string) => {
   return fetch(`${baseUrl}/entries`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      authorization: jwtToken,
     },
     body: JSON.stringify(entry),
   }).then((res) => {
@@ -111,16 +106,21 @@ export const postEntry = (entry: Omit<TEntry, "id">) => {
   });
 };
 
-export const getAllDays = () => {
-  return fetch(`${baseUrl}/days/1`).then((res) => res.json());
+export const getAllDays = (jwtToken: string) => {
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${jwtToken}`);
+  return fetch(`${baseUrl}/days/`, {
+    headers: headers,
+  }).then((res) => res.json());
 };
 
-export const newDay = (date: string) => {
+export const newDay = (date: string, jwtToken: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${jwtToken}`);
   return fetch(`${baseUrl}/days`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headers,
     body: JSON.stringify({
       date: date,
     }),
