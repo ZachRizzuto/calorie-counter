@@ -56,20 +56,11 @@ export default function AddFoodForm() {
 
     if (selectedFoodData) {
       const newEntry = {
-        userId: user.id,
         dayId: today.id,
         createdAt: getTime(),
         foodId: selectedFoodData.id,
       };
 
-      postEntry(newEntry)
-        .then((entry: TEntry) => {
-          setUserEntries([...userEntries, entry]);
-          setTodaysEntries([...todaysEntries, entry]);
-          setTotalCalories(totalCalories + selectedFoodData.calories);
-          toast.success("Added entry!");
-        })
-        .catch(() => toast.error("Couldn't post entry"));
     } else if (
       allFoods.find(
         (food) =>

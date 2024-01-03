@@ -1,8 +1,10 @@
 import {
   deleteEntry,
-  getAllDays,
   getAllEntries,
   getAllFoods,
+  getAllUsersDays,
+  getDate,
+  getEntriesForUserByDay,
   loginFromJwt,
   newDay,
 } from "@/app/(utils)/requests";
@@ -17,7 +19,7 @@ const date = new Date();
 const month = date.getMonth();
 const day = date.getDate();
 const year = date.getFullYear();
-const dateToday = `${month + 1}/${day}/${year}`;
+const dateToday = `${month + 1}-${day}-${year}`;
 
 type TContext = {
   isLoggedIn: boolean;
@@ -76,82 +78,70 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
     // });
   };
 
-  const handleDate = async (user: TUser, foods: TFood[]) => {
+  const handleDate = (food: TFood[]) => {
     const jwtTokenS = localStorage.getItem("user")
     // Setting the users days
     if(jwtTokenS) {
       const jwtToken = JSON.parse(jwtTokenS).token
-      await getAllDays(jwtToken)
+      getAllUsersDays(jwtToken)
       .then((userDays) => {
         setUserDays(userDays);
-        getEntriesForUser(userDays).then((entries) => {
           // Setting Today && if a new day creating another day
-          getTodaysInformation(userDays, entries, foods);
-        });
+          getTodaysInformation(food);
       });
     }
   };
 
-  const getTodaysInformation = (
-    days: TDay[],
-    userEntries: TEntry[],
+  const getTodaysInformation = async (
     foods: TFood[]
   ) => {
-    const matchedDay = days.find((day) => day.date === dateToday);
+    const jwtTokenS = localStorage.getItem("user")
 
-    if (matchedDay) {
-      const filteredTodaysEntries = userEntries.filter(
-        (entry) => entry.dayId === matchedDay.id
-      );
+    let matchedDay: undefined | TDay
 
-      const entryFoodIds = filteredTodaysEntries.map((entry) => entry.foodId);
-
-      const filteredFood = foods.filter((food) =>
-        entryFoodIds.includes(food.id)
-      );
-
-      setTotalCalories(
-        filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
-      );
-
-      setTodaysEntries(filteredTodaysEntries);
-
-      setToday(matchedDay);
-    } else {
-        const jwtTokenS = localStorage.getItem("user")
-        if(jwtTokenS) {
-          const jwtToken = JSON.parse(jwtTokenS).token
-          newDay(dateToday, jwtToken)
+    if(jwtTokenS !== null) {
+        const jwtToken = JSON.parse(jwtTokenS).token
+        matchedDay = await getDate(dateToday, jwtToken).then((day) => {
+          if(!day) {
+          return newDay(dateToday, jwtToken)
           .then((res) => res.json())
           .then((day) => {
             setToday(day);
             setUserDays([...userDays, day]);
           });
+          }
+          return day
+        })
+        if(matchedDay) {
+   
+         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, jwtToken)
+
+         setUserEntries(filteredTodaysEntries)
+   
+         const entryFoodIds = filteredTodaysEntries.map((entry: TEntry) => entry.foodId);
+   
+         const filteredFood = foods.filter((food) =>
+           entryFoodIds.includes(food.id)
+         );
+   
+         setTotalCalories(
+           filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
+         );
+   
+         setTodaysEntries(filteredTodaysEntries);
+   
+         setToday(matchedDay);
         }
     }
   };
 
-  const getEntriesForUser = (days: TDay[]) => {
-    return getAllEntries().then((entries) => {
-      const dayUserIds = days.map((day) => day.id);
-
-      const matchedEntries = entries.filter((entry: TEntry) =>
-        dayUserIds.includes(entry.dayId)
-      );
-
-      setUserEntries(matchedEntries);
-
-      return matchedEntries;
-    });
-  };
-
-  const handleUserFoodData = (user: TUser) => {
+  const handleUserFoodData = () => {
     getAllFoods()
       .then((foods) => {
         setAllFoods(foods);
         return foods;
       })
-      .then((foods) => handleDate(user, foods));
+      .then((foods) => handleDate(foods));
   };
 
   const handleLogin = async () => {
@@ -179,7 +169,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
           }
         }).catch((e) => console.log({ERROR: e}))
 
-
       } else {
         push("/login");
       }
@@ -189,7 +178,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
   const handleUserLoginData = async () => {
     await handleLogin().then((user) => {
       if (user) {
-        handleUserFoodData(user);
+        handleUserFoodData();
       }
     });
   };

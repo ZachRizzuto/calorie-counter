@@ -9,7 +9,6 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
-import { TFood } from "@/types";
 
 export default function Profile() {
   const { user, setUser, userDays, userEntries, allFoods } =
@@ -25,7 +24,6 @@ export default function Profile() {
     .filter((entry) => lastSevenDayIds.includes(entry.dayId))
     .map((entry) => entry.foodId);
 
-
   for(let food of allFoods) {
     for(let id of lastSevenDayFoodIds) {
       if(food.id === id) {
@@ -33,6 +31,7 @@ export default function Profile() {
       }
     }
   }
+
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();

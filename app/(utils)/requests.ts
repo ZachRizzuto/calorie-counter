@@ -85,33 +85,72 @@ export const deleteEntry = (id: number, jwtToken: string) => {
   });
 };
 
-export const getAllEntries = () => {
+export const getAllEntries = (): Promise<TEntry> => {
   return fetch(`${baseUrl}/entries`).then((res) => res.json());
 };
 
+export const getEntriesForUserByDay = (dayId: number, jwtToken: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${jwtToken}`);
+  return fetch(`${baseUrl}/entries/${dayId}`, {
+    headers: headers,
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Couldn't get entries");
+      }
+      return res.json();
+    })
+    .catch((e) => console.error(e));
+};
+
 export const postEntry = (entry: Omit<TEntry, "id">, jwtToken: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${jwtToken}`);
   return fetch(`${baseUrl}/entries`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: jwtToken,
-    },
+    headers: headers,
     body: JSON.stringify(entry),
   }).then((res) => {
     if (!res.ok) {
-      throw new Error("Couldn't delete Entry");
+      throw new Error("Couldn't post Entry");
     } else {
       return res.json();
     }
   });
 };
 
-export const getAllDays = (jwtToken: string) => {
+export const getAllUsersDays = (jwtToken: string) => {
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${jwtToken}`);
   return fetch(`${baseUrl}/days/`, {
     headers: headers,
   }).then((res) => res.json());
+};
+
+export const getDate = (date: string, jwtToken: string) => {
+  const dateRegex = /^\d{1,2}-\d{1,2}-\d{4}$/;
+
+  const isValidDate = dateRegex.test(date);
+
+  if (!isValidDate) throw new Error("Incorrect date format");
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${jwtToken}`);
+  return fetch(`${baseUrl}/days/${date}`, {
+    headers: headers,
+  })
+    .then((res) => {
+      if (res.status === 204) {
+        return undefined;
+      } else {
+        return res.json();
+      }
+    })
+    .catch((e) => console.error(e));
 };
 
 export const newDay = (date: string, jwtToken: string) => {
