@@ -2,6 +2,17 @@ import { TEntry, TFood, TUser } from "@/types";
 
 const baseUrl = "http://localhost:3001";
 
+export const getJwtTokenFromLocalStorage = (): string | undefined => {
+  const userInfoS = localStorage.getItem("user");
+
+  if (userInfoS) {
+    const userInfo = JSON.parse(userInfoS);
+
+    if (userInfo.token) return userInfo.token;
+    else return undefined;
+  } else return undefined;
+};
+
 export const getUsers = (): Promise<TUser[]> => {
   return fetch(`${baseUrl}/users`)
     .then((res) => {
@@ -28,7 +39,10 @@ export const login = (user: { user: string; password: string }) => {
     .catch((error) => console.log(error));
 };
 
-export const loginFromJwt = (token: string) => {
+export const loginFromJwt = (token: string | undefined) => {
+  if (token === undefined)
+    throw new Error("Unable to retrieve login information");
+
   return fetch(`${baseUrl}/auth/login/redirect`, {
     method: "POST",
     headers: {
@@ -46,14 +60,19 @@ export const loginFromJwt = (token: string) => {
 };
 
 export const editUserGoal = (
-  id: number,
-  change: number | string | Object | undefined
+  change: number | string | Object | undefined,
+  jwtToken: string | undefined
 ) => {
-  return fetch(`${baseUrl}/users/${id}`, {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", `Bearer ${jwtToken}`);
+
+  return fetch(`${baseUrl}/users/`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headers,
     body: JSON.stringify({
       calorie_goal: change,
     }),
@@ -64,7 +83,13 @@ export const getAllFoods = () => {
   return fetch(`${baseUrl}/foods`).then((res) => res.json());
 };
 
-export const postFood = (food: Omit<TFood, "id">, jwtToken: string) => {
+export const postFood = (
+  food: Omit<TFood, "id">,
+  jwtToken: string | undefined
+) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   return fetch(`${baseUrl}/foods`, {
     method: "POST",
     headers: {
@@ -75,7 +100,10 @@ export const postFood = (food: Omit<TFood, "id">, jwtToken: string) => {
   });
 };
 
-export const deleteEntry = (id: number, jwtToken: string) => {
+export const deleteEntry = (id: number, jwtToken: string | undefined) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", `Bearer ${jwtToken}`);
@@ -89,7 +117,13 @@ export const getAllEntries = (): Promise<TEntry> => {
   return fetch(`${baseUrl}/entries`).then((res) => res.json());
 };
 
-export const getEntriesForUserByDay = (dayId: number, jwtToken: string) => {
+export const getEntriesForUserByDay = (
+  dayId: number,
+  jwtToken: string | undefined
+) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", `Bearer ${jwtToken}`);
@@ -105,7 +139,13 @@ export const getEntriesForUserByDay = (dayId: number, jwtToken: string) => {
     .catch((e) => console.error(e));
 };
 
-export const postEntry = (entry: Omit<TEntry, "id">, jwtToken: string) => {
+export const postEntry = (
+  entry: Omit<TEntry, "id" | "userId">,
+  jwtToken: string | undefined
+) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", `Bearer ${jwtToken}`);
@@ -122,7 +162,10 @@ export const postEntry = (entry: Omit<TEntry, "id">, jwtToken: string) => {
   });
 };
 
-export const getAllUsersDays = (jwtToken: string) => {
+export const getAllUsersDays = (jwtToken: string | undefined) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   const headers = new Headers();
   headers.append("Authorization", `Bearer ${jwtToken}`);
   return fetch(`${baseUrl}/days/`, {
@@ -130,7 +173,10 @@ export const getAllUsersDays = (jwtToken: string) => {
   }).then((res) => res.json());
 };
 
-export const getDate = (date: string, jwtToken: string) => {
+export const getDate = (date: string, jwtToken: string | undefined) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   const dateRegex = /^\d{1,2}-\d{1,2}-\d{4}$/;
 
   const isValidDate = dateRegex.test(date);
@@ -153,7 +199,10 @@ export const getDate = (date: string, jwtToken: string) => {
     .catch((e) => console.error(e));
 };
 
-export const newDay = (date: string, jwtToken: string) => {
+export const newDay = (date: string, jwtToken: string | undefined) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", `Bearer ${jwtToken}`);

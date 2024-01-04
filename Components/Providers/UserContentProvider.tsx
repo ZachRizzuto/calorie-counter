@@ -5,13 +5,13 @@ import {
   getAllUsersDays,
   getDate,
   getEntriesForUserByDay,
+  getJwtTokenFromLocalStorage,
   loginFromJwt,
   newDay,
 } from "@/app/(utils)/requests";
 import { TDay, TEntry, TFood, TUser } from "@/types";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import z from "zod"
 import { localStorageUserSchema, userSchema } from "@/zod-types";
 
 
@@ -79,31 +79,24 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleDate = (food: TFood[]) => {
-    const jwtTokenS = localStorage.getItem("user")
     // Setting the users days
-    if(jwtTokenS) {
-      const jwtToken = JSON.parse(jwtTokenS).token
-      getAllUsersDays(jwtToken)
+      getAllUsersDays(getJwtTokenFromLocalStorage())
       .then((userDays) => {
         setUserDays(userDays);
           // Setting Today && if a new day creating another day
           getTodaysInformation(food);
       });
-    }
   };
 
   const getTodaysInformation = async (
     foods: TFood[]
   ) => {
-    const jwtTokenS = localStorage.getItem("user")
 
     let matchedDay: undefined | TDay
 
-    if(jwtTokenS !== null) {
-        const jwtToken = JSON.parse(jwtTokenS).token
-        matchedDay = await getDate(dateToday, jwtToken).then((day) => {
+        matchedDay = await getDate(dateToday, getJwtTokenFromLocalStorage()).then((day) => {
           if(!day) {
-          return newDay(dateToday, jwtToken)
+          return newDay(dateToday, getJwtTokenFromLocalStorage())
           .then((res) => res.json())
           .then((day) => {
             setToday(day);
@@ -114,7 +107,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         })
         if(matchedDay) {
    
-         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, jwtToken)
+         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, getJwtTokenFromLocalStorage())
 
          setUserEntries(filteredTodaysEntries)
    
@@ -132,7 +125,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
    
          setToday(matchedDay);
         }
-    }
+    
   };
 
   const handleUserFoodData = () => {

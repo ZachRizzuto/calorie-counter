@@ -35,6 +35,7 @@ export const EditCalorieGoalModal = ({ show, setShow, handleForm }: Props) => {
         >
           <label htmlFor="calorie">New Calorie Goal:</label>
           <input
+            id="calorie"
             type="text"
             name="calorie"
             value={formValue}

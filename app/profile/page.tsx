@@ -7,7 +7,7 @@ import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import Image from "next/image";
 import { useContext, useState } from "react";
-import { editUserGoal } from "../(utils)/requests";
+import { editUserGoal, getJwtTokenFromLocalStorage } from "../(utils)/requests";
 import toast from "react-hot-toast";
 
 export default function Profile() {
@@ -36,8 +36,8 @@ export default function Profile() {
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
 
-    if (typeof user.id === "number" && newGoal !== "") {
-      editUserGoal(user.id, newGoal).then((res) => {
+    if (newGoal !== "") {
+      editUserGoal(newGoal, getJwtTokenFromLocalStorage()).then((res) => {
         if (!res.ok) {
           toast.error("Failed to changed goal");
           throw new Error("Couldn't resolve goal change.");

@@ -62,6 +62,7 @@ export default function Login() {
             user: form.user,
             password: form.password
           }).then((res) => {
+            localStorage.setItem("user", JSON.stringify(res))
             toast.success("Logged In")
             setUser(res)
             setIsLoggedIn(true)
