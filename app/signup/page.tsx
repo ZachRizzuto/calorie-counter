@@ -10,10 +10,9 @@ async function createUser(data: FormData) {
   const userObj = {
     user: user,
     password: password,
-    calorie_goal: 2000,
   };
 
-  await fetch("http://192.168.1.156:3001/Users", {
+  await fetch("http://localhost:3001/auth/signup", {
     method: "Post",
     headers: {
       "Content-Type": "application/json",

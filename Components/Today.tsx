@@ -4,7 +4,7 @@ import { Entry } from "./Entry";
 import { PageSection } from "./PageSection";
 import { UserContentContext } from "./Providers/UserContentProvider";
 import { useContext, useState } from "react";
-import { deleteEntry } from "@/app/(utils)/requests";
+import { deleteEntry, getJwtTokenFromLocalStorage } from "@/app/(utils)/requests";
 
 export const Today = () => {
   const {
@@ -44,7 +44,7 @@ export const Today = () => {
                       amount={food.amount}
                       key={entry.id}
                       deleteEntry={() =>
-                        deleteEntry(entry.id).then((res) => {
+                        deleteEntry(entry.id, getJwtTokenFromLocalStorage()).then((res) => {
                           if (res.ok) {
                             setTodaysEntries(
                               todaysEntries.filter((ent) => ent.id !== entry.id)

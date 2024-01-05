@@ -1,20 +1,24 @@
 import {
-  deleteEntry,
-  getAllDays,
-  getAllEntries,
+  getAllEntriesForUser,
   getAllFoods,
-  newDay,
+  getAllUsersDays,
+  getDate,
+  getEntriesForUserByDay,
+  getJwtTokenFromLocalStorage,
+  loginFromJwt,
+  newDay
 } from "@/app/(utils)/requests";
-import { getUsers } from "../../app/(utils)/requests";
 import { TDay, TEntry, TFood, TUser } from "@/types";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { localStorageUserSchema, userSchema } from "@/zod-types";
 import { useRouter } from "next/navigation";
+import { ReactNode, createContext, useEffect, useState } from "react";
+
 
 const date = new Date();
 const month = date.getMonth();
 const day = date.getDate();
 const year = date.getFullYear();
-const dateToday = `${month + 1}/${day}/${year}`;
+const dateToday = `${month + 1}-${day}-${year}`;
 
 type TContext = {
   isLoggedIn: boolean;
@@ -32,11 +36,11 @@ type TContext = {
   setUserDays: (days: TDay[]) => void;
   today: TDay;
   setToday: (day: TDay) => void;
-  handleUserLoginData: () => void;
+  handleUserFoodData: () => void;
   totalCalories: number;
   setTotalCalories: (calories: number) => void;
   resetState: () => void;
-};
+}; 
 
 export const UserContentContext = createContext<TContext>({} as TContext);
 export const UserContentProvider = ({ children }: { children: ReactNode }) => {
@@ -64,120 +68,111 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
   // Deletes Entry On Today Page
   const deleteFood = (entry: TEntry) => {
-    deleteEntry(entry.id).then((res) => {
-      if (res.ok) {
-        setTodaysEntries(todaysEntries.filter((ent) => ent.id !== entry.id));
-      } else {
-        throw new Error("Couldn't Delete Food :(");
-      }
-    });
+    // deleteEntry(entry.id).then((res) => {
+    //   if (res.ok) {
+    //     setTodaysEntries(todaysEntries.filter((ent) => ent.id !== entry.id));
+    //   } else {
+    //     throw new Error("Couldn't Delete Food :(");
+    //   }
+    // });
   };
 
-  const handleDate = async (user: TUser, foods: TFood[]) => {
+  const handleDate = (food: TFood[]) => {
     // Setting the users days
-    await getAllDays()
-      .then((days) => {
-        const userDays = days.filter((day: TDay) => {
-          return day.userId === user.id;
-        });
-        return userDays;
-      })
+      getAllUsersDays(getJwtTokenFromLocalStorage())
       .then((userDays) => {
         setUserDays(userDays);
-        getEntriesForUser(userDays).then((entries) => {
           // Setting Today && if a new day creating another day
-          getTodaysInformation(userDays, user.id, entries, foods);
-        });
+          getTodaysInformation(food);
       });
   };
 
-  const getTodaysInformation = (
-    days: TDay[],
-    userId: number,
-    userEntries: TEntry[],
+  const getTodaysInformation = async (
     foods: TFood[]
   ) => {
-    const matchedDay = days.find((day) => day.date === dateToday);
 
-    if (matchedDay) {
-      const filteredTodaysEntries = userEntries.filter(
-        (entry) => entry.dayId === matchedDay.id
-      );
+    let matchedDay: undefined | TDay
 
-      const entryFoodIds = filteredTodaysEntries.map((entry) => entry.foodId);
-
-      const filteredFood = foods.filter((food) =>
-        entryFoodIds.includes(food.id)
-      );
-
-      setTotalCalories(
-        filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
-      );
-
-      setTodaysEntries(filteredTodaysEntries);
-
-      setToday(matchedDay);
-    } else {
-      if (userId || userId === 0) {
-        newDay(userId, dateToday)
+        matchedDay = await getDate(dateToday, getJwtTokenFromLocalStorage()).then((day) => {
+          if(!day) {
+          return newDay(dateToday, getJwtTokenFromLocalStorage())
           .then((res) => res.json())
           .then((day) => {
             setToday(day);
             setUserDays([...userDays, day]);
           });
-      }
-    }
+          }
+          return day
+        })
+
+        if(matchedDay !== undefined) {
+   
+         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, getJwtTokenFromLocalStorage()).then((entries) => {
+          setTodaysEntries(entries)
+          return entries
+      })
+
+         const allUserEntries = await getAllEntriesForUser(getJwtTokenFromLocalStorage()).then((entries) => setUserEntries(entries))
+   
+         const entryFoodIds = filteredTodaysEntries.map((entry: TEntry) => entry.foodId);
+   
+         const filteredFood = foods.filter((food) =>
+           entryFoodIds.includes(food.id)
+         );
+   
+         setTotalCalories(
+           filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
+         );
+   
+         setToday(matchedDay);
+        }
+    
   };
 
-  const getEntriesForUser = (days: TDay[]) => {
-    return getAllEntries().then((entries) => {
-      const dayUserIds = days.map((day) => day.id);
-
-      const matchedEntries = entries.filter((entry: TEntry) =>
-        dayUserIds.includes(entry.dayId)
-      );
-
-      setUserEntries(matchedEntries);
-
-      return matchedEntries;
-    });
-  };
-
-  const handleUserFoodData = (user: TUser) => {
+  const handleUserFoodData = () => {
     getAllFoods()
       .then((foods) => {
         setAllFoods(foods);
         return foods;
       })
-      .then((foods) => handleDate(user, foods));
+      .then((foods) => handleDate(foods));
   };
 
   const handleLogin = async () => {
-    // validating user login and setting user if already logged in
-    return await getUsers().then((users) => {
+    // setting user if already logged in
+    
       const localStoreUser = localStorage.getItem("user");
-
+      
       if (localStoreUser) {
-        const savedUser = JSON.parse(localStoreUser);
-        const matchedUser = users.find(
-          (user) =>
-            user.user === savedUser.user && user.password === savedUser.password
-        );
-        if (matchedUser) {
-          setIsLoggedIn(true);
-          setUser(matchedUser);
-          return matchedUser;
+
+        const userJson = JSON.parse(localStoreUser);
+
+        const isCorrectUserFormat = localStorageUserSchema.parse(userJson)
+
+        if(!isCorrectUserFormat) {
+          return new Error("Incorrect user format")
         }
+
+        return loginFromJwt(userJson.token).then((user) => {
+          if(userSchema.parse(user)) {
+            setIsLoggedIn(true)
+            setUser(user)
+            return user
+          } else {
+            throw new Error("Incorrect user data type")
+          }
+        }).catch((e) => console.log({ERROR: e}))
+
       } else {
         push("/login");
       }
-    });
-  };
+    
+  }
 
   const handleUserLoginData = async () => {
     await handleLogin().then((user) => {
       if (user) {
-        handleUserFoodData(user);
+        handleUserFoodData();
       }
     });
   };
@@ -206,8 +201,8 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         setToday,
         totalCalories,
         setTotalCalories,
-        handleUserLoginData,
         resetState,
+        handleUserFoodData
       }}
     >
       {children}

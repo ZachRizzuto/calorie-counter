@@ -1,14 +1,13 @@
 "use client";
+import { login } from "@/app/(utils)/requests";
 import Link from "next/link";
-import { useContext, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { TUser } from "@/types";
-import { UserContentContext } from "../../Components/Providers/UserContentProvider";
+import { useContext, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { getUsers } from "@/app/(utils)/requests";
+import { UserContentContext } from "../../Components/Providers/UserContentProvider";
 
 export default function Login() {
-  const { handleUserLoginData } = useContext(UserContentContext);
+  const { setIsLoggedIn, setUser, handleUserFoodData } = useContext(UserContentContext);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -29,34 +28,24 @@ export default function Login() {
     <>
       <form
         className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
 
-          const userData = getUsers();
-          userData
-            .then((data) =>
-              data.find(
-                (user: TUser) =>
-                  form.user === user.user && form.password === user.password
-              )
-            )
-            .then((match) => {
-              if (match) {
-                localStorage.setItem("user", JSON.stringify(match));
-                setIsError(false);
-                return match;
-              } else {
-                setIsError(true);
-                userRef.current?.focus();
-              }
+          await login({
+            user: form.user,
+            password: form.password
+          }).then((res) => {
+            localStorage.setItem("user", JSON.stringify(res))
+            toast.success("Logged In")
+            setUser({
+              user: res.userInformation.user,
+              balance: res.userInformation.balance,
+              calorie_goal: res.userInformation.calorie_goal
             })
-            .then((match) => {
-              if (match) {
-                handleUserLoginData();
-                toast.success("Logged In");
-                push("/today");
-              }
-            });
+            setIsLoggedIn(true)
+            handleUserFoodData()
+            push("/today")
+          }).catch((e) => console.log(e))
 
           reset();
         }}

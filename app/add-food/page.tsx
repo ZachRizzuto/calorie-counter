@@ -7,7 +7,7 @@ import styles from "./food-form.module.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { TEntry, TFood, TFoodForm } from "@/types";
-import { getAllFoods, postEntry, postFood } from "../(utils)/requests";
+import { getAllFoods, getJwtTokenFromLocalStorage, postEntry, postFood } from "../(utils)/requests";
 import { Button } from "@/Components/Button";
 import toast from "react-hot-toast";
 import { getTime } from "@/utils/date";
@@ -56,20 +56,18 @@ export default function AddFoodForm() {
 
     if (selectedFoodData) {
       const newEntry = {
-        userId: user.id,
         dayId: today.id,
         createdAt: getTime(),
         foodId: selectedFoodData.id,
       };
 
-      postEntry(newEntry)
-        .then((entry: TEntry) => {
+        setTotalCalories(totalCalories + selectedFoodData.calories);
+          postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry) => {
           setUserEntries([...userEntries, entry]);
           setTodaysEntries([...todaysEntries, entry]);
-          setTotalCalories(totalCalories + selectedFoodData.calories);
           toast.success("Added entry!");
-        })
-        .catch(() => toast.error("Couldn't post entry"));
+        });
+
     } else if (
       allFoods.find(
         (food) =>
@@ -90,18 +88,19 @@ export default function AddFoodForm() {
 
       if (matchedFood) {
         const newEntry = {
-          userId: user.id,
           dayId: today.id,
           createdAt: getTime(),
           foodId: matchedFood.id,
         };
 
-        setTotalCalories(totalCalories + matchedFood.calories);
-        postEntry(newEntry).then((entry) => {
+          setTotalCalories(totalCalories + matchedFood.calories);
+          postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry) => {
           setUserEntries([...userEntries, entry]);
           setTodaysEntries([...todaysEntries, entry]);
           toast.success("Added entry!");
         });
+
+        
       }
     } else {
       const foodName = newFood.food;
@@ -114,7 +113,7 @@ export default function AddFoodForm() {
         amount: amount,
       };
 
-      postFood(food)
+      postFood(food, getJwtTokenFromLocalStorage())
         .then((res) => {
           if (!res.ok) {
             throw new Error("Couldn't add entry");
@@ -128,13 +127,12 @@ export default function AddFoodForm() {
           setTotalCalories(totalCalories + res.calories);
 
           const newEntry = {
-            userId: user.id,
             dayId: today.id,
             createdAt: getTime(),
             foodId: res.id,
           };
 
-          postEntry(newEntry).then((entry: TEntry) => {
+          postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry: TEntry) => {
             setUserEntries([...userEntries, entry]);
             setTodaysEntries([...todaysEntries, entry]);
             toast.success("Added entry!");

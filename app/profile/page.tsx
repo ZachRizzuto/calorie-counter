@@ -1,21 +1,22 @@
 "use client";
 import { Button } from "@/Components/Button";
+import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
 import { UserContentContext } from "@/Components/Providers/UserContentProvider";
-import { EditCalorieGoalModal } from "@/Components/EditCalorieGoalModal";
 import Image from "next/image";
 import { useContext, useState } from "react";
-import { editUserGoal } from "../(utils)/requests";
 import toast from "react-hot-toast";
-import { TFood } from "@/types";
+import { editUserGoal, getJwtTokenFromLocalStorage } from "../(utils)/requests";
 
 export default function Profile() {
   const { user, setUser, userDays, userEntries, allFoods } =
     useContext(UserContentContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
+
+  // Doesn't actually get "this weeks" calorie count fix later
 
   let lastWeeksCalorieTotal = 0;
 
@@ -25,20 +26,15 @@ export default function Profile() {
     .filter((entry) => lastSevenDayIds.includes(entry.dayId))
     .map((entry) => entry.foodId);
 
+  const lastSevenDayFoods = allFoods.filter((food) => lastSevenDayFoodIds.includes(food.id))
 
-  for(let food of allFoods) {
-    for(let id of lastSevenDayFoodIds) {
-      if(food.id === id) {
-        lastWeeksCalorieTotal += food.calories;
-      }
-    }
-  }
+  lastWeeksCalorieTotal = lastSevenDayFoods.reduce((acc, val) => acc+=val.calories,0)
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
 
-    if (typeof user.id === "number" && newGoal !== "") {
-      editUserGoal(user.id, newGoal).then((res) => {
+    if (newGoal !== "") {
+      editUserGoal(newGoal, getJwtTokenFromLocalStorage()).then((res) => {
         if (!res.ok) {
           toast.error("Failed to changed goal");
           throw new Error("Couldn't resolve goal change.");
