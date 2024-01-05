@@ -16,6 +16,8 @@ export default function Profile() {
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
+  // Doesn't actually get "this weeks" calorie count fix later
+
   let lastWeeksCalorieTotal = 0;
 
   const lastSevenDayIds = userDays.slice(-7).map((day) => day.id);
