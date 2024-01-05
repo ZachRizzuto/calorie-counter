@@ -7,7 +7,7 @@ import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { StoreOption } from "@/Components/StoreOption";
 import Image from "next/image";
 import { useContext } from "react";
-import { buyFood } from "../(utils)/requests";
+import { buyFood, getJwtTokenFromLocalStorage } from "../(utils)/requests";
 
 export default function BuyFoodPage() {
   const { allFoods, user, setUser } = useContext(UserContentContext);
@@ -47,7 +47,7 @@ export default function BuyFoodPage() {
                     text={"+1"}
                     styles={"w-12"}
                     onClick={() => {
-                      buyFood(-1, user.balance, user.id).then((res) => {
+                      buyFood(-1, user.balance, getJwtTokenFromLocalStorage(), user.user).then((res) => {
                         if (res.ok) {
                           const newBalance = user.balance + 1;
                           setUser({ ...user, balance: newBalance });
@@ -59,7 +59,7 @@ export default function BuyFoodPage() {
                     text={"+5"}
                     styles={"w-12"}
                     onClick={() => {
-                      buyFood(-5, user.balance, user.id).then((res) => {
+                      buyFood(-5, user.balance, getJwtTokenFromLocalStorage(), user.user).then((res) => {
                         if (res.ok) {
                           const newBalance = user.balance + 5;
                           setUser({ ...user, balance: newBalance });
@@ -71,7 +71,7 @@ export default function BuyFoodPage() {
                     text={"+10"}
                     styles={"w-12"}
                     onClick={() => {
-                      buyFood(-10, user.balance, user.id).then((res) => {
+                      buyFood(-10, user.balance, getJwtTokenFromLocalStorage(), user.user).then((res) => {
                         if (res.ok) {
                           const newBalance = user.balance + 10;
                           setUser({ ...user, balance: newBalance });

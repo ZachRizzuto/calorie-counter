@@ -1,8 +1,8 @@
+import { buyFood, getJwtTokenFromLocalStorage } from "@/app/(utils)/requests";
 import { useContext } from "react";
+import toast from "react-hot-toast";
 import { Button } from "./Button";
 import { UserContentContext } from "./Providers/UserContentProvider";
-import { buyFood } from "@/app/(utils)/requests";
-import toast from "react-hot-toast";
 
 export const StoreOption = ({
   foodName,
@@ -55,7 +55,7 @@ export const StoreOption = ({
               disabled={user.balance < cost}
               onClick={() => {
                 const newBalance = user.balance - cost;
-                buyFood(cost, user.balance, user.id).then((res) => {
+                buyFood(cost, user.balance, getJwtTokenFromLocalStorage(),user.user).then((res) => {
                   if (!res.ok) {
                     setUser(user);
                   } else {

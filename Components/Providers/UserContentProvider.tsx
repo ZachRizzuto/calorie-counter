@@ -1,18 +1,17 @@
 import {
-  deleteEntry,
-  getAllEntries,
+  getAllEntriesForUser,
   getAllFoods,
   getAllUsersDays,
   getDate,
   getEntriesForUserByDay,
   getJwtTokenFromLocalStorage,
   loginFromJwt,
-  newDay,
+  newDay
 } from "@/app/(utils)/requests";
 import { TDay, TEntry, TFood, TUser } from "@/types";
-import { ReactNode, createContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { localStorageUserSchema, userSchema } from "@/zod-types";
+import { useRouter } from "next/navigation";
+import { ReactNode, createContext, useEffect, useState } from "react";
 
 
 const date = new Date();
@@ -107,9 +106,12 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         })
         if(matchedDay) {
    
-         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, getJwtTokenFromLocalStorage())
+         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, getJwtTokenFromLocalStorage()).then((entries) => {
+          setTodaysEntries(entries)
+          return entries
+      })
 
-         setUserEntries(filteredTodaysEntries)
+         const allUserEntries = await getAllEntriesForUser(getJwtTokenFromLocalStorage()).then((entries) => setUserEntries(entries))
    
          const entryFoodIds = filteredTodaysEntries.map((entry: TEntry) => entry.foodId);
    
@@ -120,8 +122,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
          setTotalCalories(
            filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
          );
-   
-         setTodaysEntries(filteredTodaysEntries);
    
          setToday(matchedDay);
         }
