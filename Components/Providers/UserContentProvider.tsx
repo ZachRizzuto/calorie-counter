@@ -36,7 +36,7 @@ type TContext = {
   setUserDays: (days: TDay[]) => void;
   today: TDay;
   setToday: (day: TDay) => void;
-  handleUserLoginData: () => void;
+  handleUserFoodData: () => void;
   totalCalories: number;
   setTotalCalories: (calories: number) => void;
   resetState: () => void;
@@ -104,7 +104,8 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
           }
           return day
         })
-        if(matchedDay) {
+
+        if(matchedDay !== undefined) {
    
          const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, getJwtTokenFromLocalStorage()).then((entries) => {
           setTodaysEntries(entries)
@@ -200,8 +201,8 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         setToday,
         totalCalories,
         setTotalCalories,
-        handleUserLoginData,
         resetState,
+        handleUserFoodData
       }}
     >
       {children}

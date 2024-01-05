@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { UserContentContext } from "../../Components/Providers/UserContentProvider";
 
 export default function Login() {
-  const { handleUserLoginData, setIsLoggedIn, setUser } = useContext(UserContentContext);
+  const { setIsLoggedIn, setUser, handleUserFoodData } = useContext(UserContentContext);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -37,8 +37,13 @@ export default function Login() {
           }).then((res) => {
             localStorage.setItem("user", JSON.stringify(res))
             toast.success("Logged In")
-            setUser(res)
+            setUser({
+              user: res.userInformation.user,
+              balance: res.userInformation.balance,
+              calorie_goal: res.userInformation.calorie_goal
+            })
             setIsLoggedIn(true)
+            handleUserFoodData()
             push("/today")
           }).catch((e) => console.log(e))
 
