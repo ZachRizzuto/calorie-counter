@@ -40,7 +40,7 @@ type TContext = {
   totalCalories: number;
   setTotalCalories: (calories: number) => void;
   resetState: () => void;
-};
+}; 
 
 export const UserContentContext = createContext<TContext>({} as TContext);
 export const UserContentProvider = ({ children }: { children: ReactNode }) => {
