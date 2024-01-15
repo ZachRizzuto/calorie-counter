@@ -37,13 +37,7 @@ export const login = (user: { user: string; password: string }) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(user),
-  })
-    .then((res) => res.json())
-    .then((userData) => {
-      localStorage.setItem("user", JSON.stringify(userData));
-      return userData;
-    })
-    .catch((error) => console.log(error));
+  }).catch((error) => console.log(error));
 };
 
 export const loginFromJwt = (token: string | undefined) => {

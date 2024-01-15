@@ -7,7 +7,8 @@ import toast from "react-hot-toast";
 import { UserContentContext } from "../../Components/Providers/UserContentProvider";
 
 export default function Login() {
-  const { setIsLoggedIn, setUser, handleUserFoodData } = useContext(UserContentContext);
+  const { setIsLoggedIn, setUser, handleUserFoodData } =
+    useContext(UserContentContext);
   const [form, setForm] = useState({
     user: "",
     password: "",
@@ -33,19 +34,38 @@ export default function Login() {
 
           await login({
             user: form.user,
-            password: form.password
-          }).then((res) => {
-            localStorage.setItem("user", JSON.stringify(res))
-            toast.success("Logged In")
-            setUser({
-              user: res.userInformation.user,
-              balance: res.userInformation.balance,
-              calorie_goal: res.userInformation.calorie_goal
+            password: form.password,
+          })
+            .then((res) => {
+              if (res) {
+                return res;
+              } else {
+                throw new Error("Couldn't Resolve Login Request");
+              }
             })
-            setIsLoggedIn(true)
-            handleUserFoodData()
-            push("/today")
-          }).catch((e) => console.log(e))
+            .then((res) => {
+              if (!res.ok) {
+                setIsError(true);
+                userRef.current?.focus();
+                toast.error("Invalid Credentials");
+                return undefined;
+              } else return res.json();
+            })
+            .then((res) => {
+              if (res) {
+                localStorage.setItem("user", JSON.stringify(res));
+                toast.success("Logged In");
+                setUser({
+                  user: res.userInformation.user,
+                  balance: res.userInformation.balance,
+                  calorie_goal: res.userInformation.calorie_goal,
+                });
+                setIsLoggedIn(true);
+                handleUserFoodData();
+                push("/today");
+              }
+            })
+            .catch((e) => console.log(e));
 
           reset();
         }}
@@ -63,12 +83,15 @@ export default function Login() {
             name="user"
             autoComplete="off"
             value={form.user}
-            onChange={(e) =>
+            onChange={(e) => {
               setForm({
                 ...form,
                 user: e.target.value,
-              })
-            }
+              });
+              if (isError) {
+                setIsError(false);
+              }
+            }}
             ref={userRef}
           />
         </div>
@@ -84,6 +107,9 @@ export default function Login() {
                 ...form,
                 password: e.target.value,
               });
+              if (isError) {
+                setIsError(false);
+              }
             }}
           />
         </div>
