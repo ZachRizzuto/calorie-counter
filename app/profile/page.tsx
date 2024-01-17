@@ -17,6 +17,7 @@ export default function Profile() {
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
   // Doesn't actually get "this weeks" calorie count fix later
+  // Should probably get turned into a piece of state
 
   let lastWeeksCalorieTotal = 0;
 
@@ -26,28 +27,37 @@ export default function Profile() {
     .filter((entry) => lastSevenDayIds.includes(entry.dayId))
     .map((entry) => entry.foodId);
 
-  const lastSevenDayFoods = allFoods.filter((food) => lastSevenDayFoodIds.includes(food.id))
+  const lastSevenDayFoods = allFoods.filter((food) =>
+    lastSevenDayFoodIds.includes(food.id)
+  );
 
-  lastWeeksCalorieTotal = lastSevenDayFoods.reduce((acc, val) => acc+=val.calories,0)
+  lastWeeksCalorieTotal = lastSevenDayFoods.reduce(
+    (acc, val) => (acc += val.calories),
+    0
+  );
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
 
     if (newGoal !== "") {
-      editUserGoal(newGoal, getJwtTokenFromLocalStorage()).then((res) => {
-        if (!res.ok) {
-          toast.error("Failed to changed goal");
-          throw new Error("Couldn't resolve goal change.");
-        }
-        if (typeof newGoal === "string") {
-          const intGoal = parseInt(newGoal);
-          setUser({
-            ...user,
-            calorie_goal: intGoal,
-          });
-        }
-      });
-      toast.success("Changed goal!");
+      editUserGoal(newGoal, getJwtTokenFromLocalStorage())
+        .then((res) => {
+          if (!res.ok) {
+            toast.error("Failed to changed goal");
+            throw new Error("Couldn't resolve goal change.");
+          }
+          if (typeof newGoal === "string") {
+            const intGoal = parseInt(newGoal);
+            setUser({
+              ...user,
+              calorie_goal: intGoal,
+            });
+            toast.success("Changed goal!");
+          }
+        })
+        .catch((e) =>
+          console.error("CORS policy prevents editing this", { ERROR: e })
+        );
     }
   };
 

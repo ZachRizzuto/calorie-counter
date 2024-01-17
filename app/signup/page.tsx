@@ -1,9 +1,9 @@
+"use client";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-async function createUser(data: FormData) {
-  "use server";
-
+async function createUser(data: FormData, router: AppRouterInstance) {
   const user = data.get("username")?.valueOf();
   const password = data.get("password")?.valueOf();
 
@@ -20,7 +20,7 @@ async function createUser(data: FormData) {
     body: JSON.stringify(userObj),
   }).then((res) => {
     if (res.ok) {
-      redirect("/login");
+      router.push("/login");
     } else {
       throw new Error("Couldn't create account");
     }
@@ -28,11 +28,21 @@ async function createUser(data: FormData) {
 }
 
 export default function SignUpForm() {
+  const router = useRouter();
   return (
     <>
       <form
+        id="signup-form"
         className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border border-blue-500"
-        action={createUser}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.currentTarget);
+          await createUser(formData, router);
+          const form = document.getElementById(
+            "signup-form"
+          ) as HTMLFormElement;
+          form.reset();
+        }}
       >
         <h1 className="text-5xl mt-0">Sign Up!</h1>
         <div>
