@@ -1,18 +1,16 @@
 import {
-  getAllEntriesForUser,
   getAllFoods,
   getAllUsersDays,
   getDate,
   getEntriesForUserByDay,
   getJwtTokenFromLocalStorage,
   loginFromJwt,
-  newDay
+  newDay,
 } from "@/app/(utils)/requests";
 import { TDay, TEntry, TFood, TUser } from "@/types";
 import { localStorageUserSchema, userSchema } from "@/zod-types";
 import { useRouter } from "next/navigation";
 import { ReactNode, createContext, useEffect, useState } from "react";
-
 
 const date = new Date();
 const month = date.getMonth();
@@ -40,7 +38,7 @@ type TContext = {
   totalCalories: number;
   setTotalCalories: (calories: number) => void;
   resetState: () => void;
-}; 
+};
 
 export const UserContentContext = createContext<TContext>({} as TContext);
 export const UserContentProvider = ({ children }: { children: ReactNode }) => {
@@ -79,54 +77,57 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
   const handleDate = (food: TFood[]) => {
     // Setting the users days
-      getAllUsersDays(getJwtTokenFromLocalStorage())
-      .then((userDays) => {
-        setUserDays(userDays);
-          // Setting Today && if a new day creating another day
-          getTodaysInformation(food);
-      });
+    getAllUsersDays(getJwtTokenFromLocalStorage()).then((userDays) => {
+      setUserDays(userDays);
+      // Setting Today && if a new day creating another day
+      getTodaysInformation(food);
+    });
   };
 
-  const getTodaysInformation = async (
-    foods: TFood[]
-  ) => {
+  const getTodaysInformation = async (foods: TFood[]) => {
+    let matchedDay: undefined | TDay;
 
-    let matchedDay: undefined | TDay
-
-        matchedDay = await getDate(dateToday, getJwtTokenFromLocalStorage()).then((day) => {
-          if(!day) {
+    matchedDay = await getDate(dateToday, getJwtTokenFromLocalStorage()).then(
+      (day) => {
+        if (!day) {
           return newDay(dateToday, getJwtTokenFromLocalStorage())
-          .then((res) => res.json())
-          .then((day) => {
-            setToday(day);
-            setUserDays([...userDays, day]);
-          });
-          }
-          return day
-        })
-
-        if(matchedDay !== undefined) {
-   
-         const filteredTodaysEntries = await getEntriesForUserByDay(matchedDay.id, getJwtTokenFromLocalStorage()).then((entries) => {
-          setTodaysEntries(entries)
-          return entries
-      })
-
-         const allUserEntries = await getAllEntriesForUser(getJwtTokenFromLocalStorage()).then((entries) => setUserEntries(entries))
-   
-         const entryFoodIds = filteredTodaysEntries.map((entry: TEntry) => entry.foodId);
-   
-         const filteredFood = foods.filter((food) =>
-           entryFoodIds.includes(food.id)
-         );
-   
-         setTotalCalories(
-           filteredFood.reduce((prev, curr) => (prev += curr.calories), 0)
-         );
-   
-         setToday(matchedDay);
+            .then((res) => res.json())
+            .then((day) => {
+              setToday(day);
+              setUserDays([...userDays, day]);
+            });
         }
-    
+        return day;
+      }
+    );
+
+    if (matchedDay !== undefined) {
+      const filteredTodaysEntries = await getEntriesForUserByDay(
+        matchedDay.id,
+        getJwtTokenFromLocalStorage()
+      ).then((entries) => {
+        setTodaysEntries(entries);
+        return entries;
+      });
+
+      const allFoodCaloriesForToday: number[] = filteredTodaysEntries.map(
+        (entry: TEntry) => {
+          const food = foods.find((food) => food.id === entry.foodId);
+          if (food) {
+            return food.calories;
+          }
+          return 0;
+        }
+      );
+
+      console.log(allFoodCaloriesForToday);
+
+      setTotalCalories(
+        allFoodCaloriesForToday.reduce((prev, curr) => (prev += curr), 0)
+      );
+
+      setToday(matchedDay);
+    }
   };
 
   const handleUserFoodData = () => {
@@ -140,34 +141,33 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
   const handleLogin = async () => {
     // setting user if already logged in
-    
-      const localStoreUser = localStorage.getItem("user");
-      
-      if (localStoreUser) {
 
-        const userJson = JSON.parse(localStoreUser);
+    const localStoreUser = localStorage.getItem("user");
 
-        const isCorrectUserFormat = localStorageUserSchema.parse(userJson)
+    if (localStoreUser) {
+      const userJson = JSON.parse(localStoreUser);
 
-        if(!isCorrectUserFormat) {
-          return new Error("Incorrect user format")
-        }
+      const isCorrectUserFormat = localStorageUserSchema.parse(userJson);
 
-        return loginFromJwt(userJson.token).then((user) => {
-          if(userSchema.parse(user)) {
-            setIsLoggedIn(true)
-            setUser(user)
-            return user
-          } else {
-            throw new Error("Incorrect user data type")
-          }
-        }).catch((e) => console.log({ERROR: e}))
-
-      } else {
-        push("/login");
+      if (!isCorrectUserFormat) {
+        return new Error("Incorrect user format");
       }
-    
-  }
+
+      return loginFromJwt(userJson.token)
+        .then((user) => {
+          if (userSchema.parse(user)) {
+            setIsLoggedIn(true);
+            setUser(user);
+            return user;
+          } else {
+            throw new Error("Incorrect user data type");
+          }
+        })
+        .catch((e) => console.log({ ERROR: e }));
+    } else {
+      push("/login");
+    }
+  };
 
   const handleUserLoginData = async () => {
     await handleLogin().then((user) => {
@@ -202,7 +202,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         totalCalories,
         setTotalCalories,
         resetState,
-        handleUserFoodData
+        handleUserFoodData,
       }}
     >
       {children}
