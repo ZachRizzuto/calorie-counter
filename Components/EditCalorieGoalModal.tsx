@@ -19,12 +19,15 @@ export const EditCalorieGoalModal = ({ show, setShow, handleForm }: Props) => {
         onClick={() => setShow(false)}
       ></div>
       <div
-        className={`absolute left-0 right-0 m-auto bg-gray-700 z-10 rounded-md flex flex-col items-center w-[350px] shadow-md justify-start p-[20px] border-2 border-green-500 duration-300 ${
+        className={`absolute left-0 right-0 m-auto bg-light-dark-contrast z-10 rounded-md flex flex-col items-center w-[350px] shadow-md justify-start p-[20px] border-2 border-green-500 duration-300 ${
           show ? "bottom-[45%]" : "-bottom-96"
         }`}
       >
-        <button className="ml-auto" onClick={() => setShow(false)}>
-          X
+        <button
+          className="ml-auto transform scale-[2]"
+          onClick={() => setShow(false)}
+        >
+          ⌄
         </button>
         <form
           action={handleForm}

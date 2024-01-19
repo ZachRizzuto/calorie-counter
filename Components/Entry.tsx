@@ -1,4 +1,3 @@
-import { TEntry } from "@/types";
 import { Button } from "./Button";
 import styles from "./Entry.module.css";
 
@@ -12,7 +11,7 @@ type Props = {
 export const Entry = ({ calories, foodName, amount, deleteEntry }: Props) => {
   return (
     <div
-      className={`border-b-[1px] border-solid border-gray-600 flex items-center justify-between p-1 ${styles.deleteShow} hover:border-green-500`}
+      className={`border-b-[1px] border-solid border-neutral-400 flex items-center justify-between p-1 ${styles.deleteShow} hover:border-green-500`}
     >
       <div className="flex justify-between gap-6">
         <div className="w-[150px]">{amount}</div>
