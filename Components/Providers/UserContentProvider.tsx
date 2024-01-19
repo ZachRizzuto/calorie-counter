@@ -120,8 +120,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         }
       );
 
-      console.log(allFoodCaloriesForToday);
-
       setTotalCalories(
         allFoodCaloriesForToday.reduce((prev, curr) => (prev += curr), 0)
       );

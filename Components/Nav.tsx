@@ -59,6 +59,10 @@ export const Nav = () => {
                 toast("Logged out!", {
                   icon: "👋",
                   duration: 1200,
+                  style: {
+                    backgroundColor: "#5285A4",
+                    color: "white",
+                  },
                 });
               }}
               styles={isLoggedIn ? "hover:bg-red-600" : ""}

@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <>
       <form
-        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
+        className="bg-light-dark-contrast p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
         onSubmit={async (e) => {
           e.preventDefault();
 
@@ -54,7 +54,12 @@ export default function Login() {
             .then((res) => {
               if (res) {
                 localStorage.setItem("user", JSON.stringify(res));
-                toast.success("Logged In");
+                toast.success("Logged In", {
+                  style: {
+                    backgroundColor: "#5285A4",
+                    color: "white",
+                  },
+                });
                 setUser({
                   user: res.userInformation.user,
                   balance: res.userInformation.balance,
@@ -78,50 +83,54 @@ export default function Login() {
         )}
         <div>
           <label htmlFor="user">Username: </label>
-          <input
-            type="text"
-            name="user"
-            autoComplete="off"
-            value={form.user}
-            onChange={(e) => {
-              setForm({
-                ...form,
-                user: e.target.value,
-              });
-              if (isError) {
-                setIsError(false);
-              }
-            }}
-            ref={userRef}
-          />
+          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px]">
+            <input
+              type="text"
+              name="user"
+              autoComplete="off"
+              value={form.user}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  user: e.target.value,
+                });
+                if (isError) {
+                  setIsError(false);
+                }
+              }}
+              ref={userRef}
+            />
+          </div>
         </div>
         <div>
           <label htmlFor="pass">Password: </label>
-          <input
-            type="password"
-            name="pass"
-            autoComplete="off"
-            value={form.password}
-            onChange={(e) => {
-              setForm({
-                ...form,
-                password: e.target.value,
-              });
-              if (isError) {
-                setIsError(false);
-              }
-            }}
-          />
+          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px]">
+            <input
+              type="password"
+              name="pass"
+              autoComplete="off"
+              value={form.password}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  password: e.target.value,
+                });
+                if (isError) {
+                  setIsError(false);
+                }
+              }}
+            />
+          </div>
         </div>
         <div>
           <input
             type="submit"
             value="Login"
-            className="bg-gray-700 w-32 h-10 mr-8"
+            className="bg-success text-dark-contrast w-32 h-10 mr-8"
           />
           <Link
             href="/signup"
-            className="text-white hover:text-gray-500 focus:text-gray-500"
+            className="text-white hover:text-success focus:text-success"
           >
             Sign up
           </Link>

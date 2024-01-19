@@ -21,6 +21,9 @@ const config: Config = {
         "dark-contrast": "#234862",
         success: "#ADDDA9",
       },
+      borderRadius: {
+        pill: "15px",
+      },
     },
   },
   plugins: [],

@@ -242,7 +242,7 @@ export default function AddFoodForm() {
               <div className="h-full w-full">
                 <h2>New Food Entry</h2>
                 <div className="flex flex-col gap-10 w-full h-full justify-center items-center max-w-[350px] mx-auto">
-                  <div className="flex flex-col w-full">
+                  <div className="flex flex-col w-full justify-evenly items-evenly">
                     <label htmlFor="amount">Amount</label>
                     <div>
                       <input
