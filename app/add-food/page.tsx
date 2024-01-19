@@ -1,17 +1,23 @@
 "use client";
+import { Button } from "@/Components/Button";
 import { Header } from "@/Components/Header";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
-import styles from "./food-form.module.css";
-import { useContext, useEffect, useState } from "react";
 import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { TEntry, TFood, TFoodForm } from "@/types";
-import { getAllFoods, getJwtTokenFromLocalStorage, postEntry, postFood } from "../(utils)/requests";
-import { Button } from "@/Components/Button";
-import toast from "react-hot-toast";
 import { getTime } from "@/utils/date";
 import { validateEntry } from "@/utils/formvalidation";
+import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import {
+  addToUserBalance,
+  getAllFoods,
+  getJwtTokenFromLocalStorage,
+  postEntry,
+  postFood,
+} from "../(utils)/requests";
+import styles from "./food-form.module.css";
 
 export default function AddFoodForm() {
   const {
@@ -25,6 +31,7 @@ export default function AddFoodForm() {
     setTodaysEntries,
     setTotalCalories,
     totalCalories,
+    setUser,
   } = useContext(UserContentContext);
 
   const [formData, setFormData] = useState<TFoodForm>({
@@ -61,13 +68,35 @@ export default function AddFoodForm() {
         foodId: selectedFoodData.id,
       };
 
-        setTotalCalories(totalCalories + selectedFoodData.calories);
-          postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry) => {
-          setUserEntries([...userEntries, entry]);
-          setTodaysEntries([...todaysEntries, entry]);
-          toast.success("Added entry!");
+      setTotalCalories(totalCalories + selectedFoodData.calories);
+      postEntry(newEntry, getJwtTokenFromLocalStorage()).then(async (entry) => {
+        if (selectedFoodData.calories <= user.calorie_goal / 6) {
+          await addToUserBalance(
+            1,
+            user.balance,
+            getJwtTokenFromLocalStorage(),
+            user.user
+          ).then(() => setUser({ ...user, balance: user.balance + 1 }));
+          toast("1🪙 Added to balance!", {
+            icon: "👏",
+            position: "bottom-right",
+            style: {
+              backgroundColor: "#5285A4",
+              color: "white",
+            },
+            duration: 1500,
+          });
+        }
+        setUserEntries([...userEntries, entry]);
+        setTodaysEntries([...todaysEntries, entry]);
+        toast.success("Added entry!", {
+          position: "bottom-right",
+          style: {
+            backgroundColor: "#5285A4",
+            color: "white",
+          },
         });
-
+      });
     } else if (
       allFoods.find(
         (food) =>
@@ -93,14 +122,12 @@ export default function AddFoodForm() {
           foodId: matchedFood.id,
         };
 
-          setTotalCalories(totalCalories + matchedFood.calories);
-          postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry) => {
+        setTotalCalories(totalCalories + matchedFood.calories);
+        postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry) => {
           setUserEntries([...userEntries, entry]);
           setTodaysEntries([...todaysEntries, entry]);
           toast.success("Added entry!");
         });
-
-        
       }
     } else {
       const foodName = newFood.food;
@@ -132,11 +159,13 @@ export default function AddFoodForm() {
             foodId: res.id,
           };
 
-          postEntry(newEntry, getJwtTokenFromLocalStorage()).then((entry: TEntry) => {
-            setUserEntries([...userEntries, entry]);
-            setTodaysEntries([...todaysEntries, entry]);
-            toast.success("Added entry!");
-          });
+          postEntry(newEntry, getJwtTokenFromLocalStorage()).then(
+            (entry: TEntry) => {
+              setUserEntries([...userEntries, entry]);
+              setTodaysEntries([...todaysEntries, entry]);
+              toast.success("Added entry!");
+            }
+          );
 
           setAllFoods(newFoods);
           setAllFoods(newFoods);

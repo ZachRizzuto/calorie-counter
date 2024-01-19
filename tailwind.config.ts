@@ -16,6 +16,10 @@ const config: Config = {
       colors: {
         "transparent-gray": "#1f29375d",
         "transparent-theme": "rgba(0, 255, 146, 0.2)",
+        "light-contrast": "#5285A4",
+        "light-dark-contrast": "#2B5574",
+        "dark-contrast": "#234862",
+        success: "#ADDDA9",
       },
     },
   },

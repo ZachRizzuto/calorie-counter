@@ -36,7 +36,7 @@ export const StoreOption = ({
 
   return (
     <>
-      <div className="flex flex-col w-full hover:bg-gray-700 rounded">
+      <div className="flex flex-col w-full hover:bg-light-contrast rounded">
         <div className="flex w-full h-full justify-between items-center">
           <p className="text-4xl mb-[10px] cursor-default">{foodName}</p>
           <div className="flex justify-center items-center">
@@ -50,18 +50,29 @@ export const StoreOption = ({
             <Button
               text="Buy Food"
               styles={
-                "border-2 border-transparent hover:border-green-500 hover:bg-gray-800 disabled:pointer-events-none"
+                "border-2 border-transparent hover:border-green-500 hover:bg-dark-contrast disabled:pointer-events-none"
               }
               disabled={user.balance < cost}
               onClick={() => {
                 const newBalance = user.balance - cost;
-                buyFood(cost, user.balance, getJwtTokenFromLocalStorage(),user.user).then((res) => {
+                buyFood(
+                  cost,
+                  user.balance,
+                  getJwtTokenFromLocalStorage(),
+                  user.user
+                ).then((res) => {
                   if (!res.ok) {
                     setUser(user);
                   } else {
                     newBalance >= 0 &&
                       setUser({ ...user, balance: newBalance });
-                    toast.success("Purchased Meal! Enjoy!🍰");
+                    toast.success("Purchased Meal! Enjoy!🍰", {
+                      position: "bottom-right",
+                      style: {
+                        backgroundColor: "#5285A4",
+                        color: "white",
+                      },
+                    });
                   }
                 });
               }}

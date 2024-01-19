@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --background-dark: #234862;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,8 +24,7 @@
 
 body,
 html {
-  background-image: linear-gradient(to bottom right, #243555, #141e30);
-  background-repeat: no-repeat;
+  background-color: var(--background-dark);
   background-size: 100%;
   padding: 0;
   margin: 0;

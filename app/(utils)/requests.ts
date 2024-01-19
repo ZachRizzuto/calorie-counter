@@ -227,3 +227,23 @@ export const buyFood = (
     throw new Error("Cannot process purchase");
   }
 };
+
+export const addToUserBalance = (
+  addition: number,
+  prevBalance: number,
+  jwtToken: string | undefined,
+  user: string
+) => {
+  if (jwtToken === undefined)
+    throw new Error("Unable to retrieve login information");
+
+  const newBalance = prevBalance + addition;
+
+  return fetch(`${baseUrl}/users/${user}/balance`, {
+    method: "PATCH",
+    headers: setAuthHeaders(jwtToken),
+    body: JSON.stringify({
+      balance: newBalance,
+    }),
+  }).catch((e) => console);
+};
