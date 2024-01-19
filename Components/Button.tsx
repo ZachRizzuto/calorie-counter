@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 type Props = {
-  text: string;
+  text: string | ReactNode;
   onClick?: () => void;
   styles?: string;
   type?: "button" | "reset" | "submit" | undefined;

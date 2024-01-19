@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { UserContentProvider } from "@/Components/Providers/UserContentProvider";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
@@ -20,12 +21,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-        <body className={inter.className}>
-          <UserContentProvider>
+      <head>
+        <Script
+          src="https://kit.fontawesome.com/779cae142e.js"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className={inter.className}>
+        <UserContentProvider>
           <Toaster />
           {children}
-          </UserContentProvider>
-        </body>
+        </UserContentProvider>
+      </body>
     </html>
   );
 }

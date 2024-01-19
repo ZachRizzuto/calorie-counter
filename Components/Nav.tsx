@@ -2,20 +2,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import styles from "../Components/Button.module.css";
 import { Button } from "./Button";
+import { MobileModal } from "./MobileModal";
 import { UserContentContext } from "./Providers/UserContentProvider";
 
 export const Nav = () => {
   const { push } = useRouter();
   const { isLoggedIn, resetState, user } = useContext(UserContentContext);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   return (
     <>
       <nav className="flex items-center justify-between min-h-[86px] w-full bg-light-dark-contrast shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
         <Image src={"/favicon.ico"} height={50} width={50} alt="logo" />
-        <ul className="flex items-center gap-2 mr-4">
+        <ul className="flex items-center gap-2 mr-4 justify-center lg:flex xs:hidden">
           <li>{user.balance}🪙</li>
           <li>
             <Link
@@ -69,6 +71,14 @@ export const Nav = () => {
             />
           </li>
         </ul>
+        <Button
+          text={showMobileMenu ? "X" : <i className="fa-solid fa-bars"></i>}
+          styles="w-[50px] mr-[5px] hover:text-light-dark-contrast lg:hidden xs:block"
+          onClick={() =>
+            showMobileMenu ? setShowMobileMenu(false) : setShowMobileMenu(true)
+          }
+        ></Button>
+        <MobileModal show={showMobileMenu}></MobileModal>
       </nav>
     </>
   );

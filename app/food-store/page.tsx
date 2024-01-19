@@ -19,12 +19,12 @@ export default function BuyFoodPage() {
           <div className="w-full border-b-2 border-green-500 text-4xl pb-1 mb-4">
             Buy Food
           </div>
-          <div className="flex w-full h-full ">
-            <div className="border-t-1 border-green-500 w-[60%] h-full max-w-[370px]">
+          <div className="flex w-full h-full justify-start">
+            <div className="border-t-1 border-green-500 w-[50%] h-full max-w-[370px]">
               <PageSection
                 styles={{
                   height: "h-full",
-                  width: "w-full",
+                  width: "w-[80%]",
                   custom: "items-center justify-evenly",
                 }}
               >
@@ -33,8 +33,8 @@ export default function BuyFoodPage() {
                     "https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
                   }
                   alt={"profile image"}
-                  width={350}
-                  height={350}
+                  width={250}
+                  height={250}
                   className="rounded-[50%]"
                   loading="lazy"
                 />
@@ -47,7 +47,12 @@ export default function BuyFoodPage() {
                     text={"+1"}
                     styles={"w-12"}
                     onClick={() => {
-                      buyFood(-1, user.balance, getJwtTokenFromLocalStorage(), user.user).then((res) => {
+                      buyFood(
+                        -1,
+                        user.balance,
+                        getJwtTokenFromLocalStorage(),
+                        user.user
+                      ).then((res) => {
                         if (res.ok) {
                           const newBalance = user.balance + 1;
                           setUser({ ...user, balance: newBalance });
@@ -59,7 +64,12 @@ export default function BuyFoodPage() {
                     text={"+5"}
                     styles={"w-12"}
                     onClick={() => {
-                      buyFood(-5, user.balance, getJwtTokenFromLocalStorage(), user.user).then((res) => {
+                      buyFood(
+                        -5,
+                        user.balance,
+                        getJwtTokenFromLocalStorage(),
+                        user.user
+                      ).then((res) => {
                         if (res.ok) {
                           const newBalance = user.balance + 5;
                           setUser({ ...user, balance: newBalance });
@@ -71,7 +81,12 @@ export default function BuyFoodPage() {
                     text={"+10"}
                     styles={"w-12"}
                     onClick={() => {
-                      buyFood(-10, user.balance, getJwtTokenFromLocalStorage(), user.user).then((res) => {
+                      buyFood(
+                        -10,
+                        user.balance,
+                        getJwtTokenFromLocalStorage(),
+                        user.user
+                      ).then((res) => {
                         if (res.ok) {
                           const newBalance = user.balance + 10;
                           setUser({ ...user, balance: newBalance });

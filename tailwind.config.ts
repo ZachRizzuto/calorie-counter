@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
   content: [
@@ -24,6 +25,10 @@ const config: Config = {
       borderRadius: {
         pill: "15px",
       },
+    },
+    screens: {
+      xs: "320px",
+      ...defaultTheme.screens,
     },
   },
   plugins: [],

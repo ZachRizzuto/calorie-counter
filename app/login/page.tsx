@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <>
       <form
-        className="bg-light-dark-contrast p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
+        className="bg-light-dark-contrast p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 sm:w-1/3 xs:w-[60%] top-1/3 border-green-500 border"
         onSubmit={async (e) => {
           e.preventDefault();
 
@@ -81,9 +81,11 @@ export default function Login() {
             Incorrect username or password! Try again!
           </div>
         )}
-        <div>
-          <label htmlFor="user">Username: </label>
-          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px]">
+        <div className="w-full m-auto max-w-[300px]">
+          <label htmlFor="user" className="w-[80%] m-auto max-w-[300px]">
+            Username:{" "}
+          </label>
+          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px] w-[80%] m-auto max-w-[300px]">
             <input
               type="text"
               name="user"
@@ -99,12 +101,18 @@ export default function Login() {
                 }
               }}
               ref={userRef}
+              style={{
+                width: "100%",
+                maxWidth: "300px",
+              }}
             />
           </div>
         </div>
-        <div>
-          <label htmlFor="pass">Password: </label>
-          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px]">
+        <div className="w-full m-auto max-w-[300px]">
+          <label htmlFor="pass" className="w-[80%] m-auto">
+            Password:{" "}
+          </label>
+          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px] w-[80%] m-auto max-w-[300px]">
             <input
               type="password"
               name="pass"
@@ -119,18 +127,22 @@ export default function Login() {
                   setIsError(false);
                 }
               }}
+              style={{
+                width: "100%",
+                maxWidth: "300px",
+              }}
             />
           </div>
         </div>
-        <div>
+        <div className="lg:block xs:flex xs:flex-col xs:items-center xs:justify-center">
           <input
             type="submit"
             value="Login"
-            className="bg-success text-dark-contrast w-32 h-10 mr-8"
+            className="bg-success text-dark-contrast w-32 h-10 lg:mr-8"
           />
           <Link
             href="/signup"
-            className="text-white hover:text-success focus:text-success"
+            className="text-white hover:text-success focus:text-success xs:mt-2 lg:mt-auto"
           >
             Sign up
           </Link>
