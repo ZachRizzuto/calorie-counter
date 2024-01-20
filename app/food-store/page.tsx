@@ -15,12 +15,12 @@ export default function BuyFoodPage() {
     <>
       <PageWrapper>
         <Nav />
-        <div className="p-16 mt-2 flex justify-center items-center w-full h-full flex-col">
+        <div className="lg:p-16 xs:p-6 mt-2 flex justify-center items-center w-full h-full flex-col">
           <div className="w-full border-b-2 border-green-500 text-4xl pb-1 mb-4">
             Buy Food
           </div>
           <div className="flex w-full h-full justify-start">
-            <div className="border-t-1 border-green-500 w-[50%] h-full max-w-[370px]">
+            <div className="border-t-1 border-green-500 w-[50%] h-full max-w-[370px] xs:hidden lg:block">
               <PageSection
                 styles={{
                   height: "h-full",
@@ -97,7 +97,7 @@ export default function BuyFoodPage() {
                 </div>
               </PageSection>
             </div>
-            <div className="mx-4 h-full w-1 bg-green-500"></div>
+            <div className="mx-4 h-full w-1 bg-green-500 xs:hidden lg:block"></div>
             <div className="border-t-1 border-green-500 w-full h-full">
               <PageSection
                 styles={{

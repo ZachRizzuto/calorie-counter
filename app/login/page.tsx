@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <>
       <form
-        className="bg-light-dark-contrast p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 sm:w-1/3 xs:w-[60%] top-1/3 border-green-500 border"
+        className="bg-light-dark-contrast p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 sm:w-[60%] md:w-1/3 xs:w-[90%] top-1/3 border-green-500 border"
         onSubmit={async (e) => {
           e.preventDefault();
 

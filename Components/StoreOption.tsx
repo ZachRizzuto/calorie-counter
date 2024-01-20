@@ -38,19 +38,21 @@ export const StoreOption = ({
     <>
       <div className="flex flex-col w-full hover:bg-light-contrast rounded">
         <div className="flex w-full h-full justify-between items-center">
-          <p className="text-4xl mb-[10px] cursor-default">{foodName}</p>
+          <p className="xs:text-2xl sm:text-4xl mb-[10px] cursor-default">
+            {foodName}
+          </p>
           <div className="flex justify-center items-center">
             <div
-              className={`mr-2 text-xl ${
+              className={`mr-2 sm:text-xl xs:text-lg ${
                 user.balance >= cost ? "text-white" : "text-red-500"
               }`}
             >
               {cost}🪙
             </div>
             <Button
-              text="Buy Food"
+              text={`Purchase Meal`}
               styles={
-                "border-2 border-transparent hover:border-green-500 hover:bg-dark-contrast disabled:pointer-events-none"
+                "border-2 border-transparent hover:border-green-500 hover:bg-dark-contrast disabled:pointer-events-none xs:text-xs sm:text-xl"
               }
               disabled={user.balance < cost}
               onClick={() => {

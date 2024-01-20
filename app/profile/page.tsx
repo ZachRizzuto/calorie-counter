@@ -70,12 +70,12 @@ export default function Profile() {
           setShow={(show) => setShowCalorieModal(show)}
           handleForm={handleForm}
         />
-        <div className="flex items-center justify-center h-[100vh] p-[30px] gap-2 w-full">
+        <div className="flex items-center justify-center h-[100vh] p-[30px] gap-2 w-full lg:flex-row xs:flex-col">
           <div>
             <PageSection
               styles={{
                 width: "max-w-full",
-                height: "max-h-full rounded-[50%] overflow-hidden",
+                height: "rounded-[50%] overflow-hidden",
               }}
             >
               <Image
@@ -90,7 +90,7 @@ export default function Profile() {
             <PageSection
               styles={{
                 width: "w-full",
-                height: "h-full",
+                height: "",
               }}
             >
               <div className="flex justify-between items-center w-full">
@@ -111,10 +111,10 @@ export default function Profile() {
             <PageSection
               styles={{
                 width: "w-full",
-                height: "h-full",
+                height: "",
               }}
             >
-              <h2 className="text-2xl">
+              <h2 className="lg:text-2xl xs:text-md md:text-lg">
                 Calorie Count This Week: {lastWeeksCalorieTotal}
               </h2>
             </PageSection>

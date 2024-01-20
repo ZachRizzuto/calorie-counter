@@ -7,7 +7,7 @@ export default function TodayTab() {
     <>
       <PageWrapper>
         <Nav />
-        <div className="flex items-center justify-between h-[100vh] p-[30px] gap-2">
+        <div className="flex items-center justify-between h-[100vh] xs:p-2 md:p-[30px] gap-2">
           <Today />
         </div>
       </PageWrapper>

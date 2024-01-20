@@ -11,7 +11,7 @@ export const MobileModal = ({ show }: { show: boolean }) => {
   const { push } = useRouter();
   return (
     <div
-      className={`absolute flex items-center rounded-md w-[320px] h-[40%] bg-light-contrast top-[100px] z-10 ${
+      className={`absolute flex items-center rounded-md w-[320px] h-[300px] bg-light-contrast xs:top-[86px] sm:top-[100px] z-10 ${
         show ? "right-0" : "right-[-321px]"
       }`}
     >
