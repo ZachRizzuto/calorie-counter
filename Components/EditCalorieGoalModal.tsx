@@ -37,18 +37,23 @@ export const EditCalorieGoalModal = ({ show, setShow, handleForm }: Props) => {
           }}
         >
           <label htmlFor="calorie">New Calorie Goal:</label>
-          <input
-            id="calorie"
-            type="text"
-            name="calorie"
-            value={formValue}
-            onChange={(e) => {
-              if (e.target.value.match("^[0-9]+$") || e.target.value === "") {
-                setFormValue(e.target.value);
-              }
-            }}
-            autoComplete="off"
-          />
+          <div className="bg-white rounded-pill w-full flex justify-center">
+            <input
+              id="calorie"
+              type="text"
+              name="calorie"
+              value={formValue}
+              onChange={(e) => {
+                if (e.target.value.match("^[0-9]+$") || e.target.value === "") {
+                  setFormValue(e.target.value);
+                }
+              }}
+              autoComplete="off"
+              style={{
+                width: "90%",
+              }}
+            />
+          </div>
           <button type="submit"></button>
         </form>
       </div>

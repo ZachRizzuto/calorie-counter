@@ -25,7 +25,7 @@ export default function BuyFoodPage() {
                 styles={{
                   height: "h-full",
                   width: "w-[80%]",
-                  custom: "items-center justify-evenly",
+                  custom: "items-center justify-evenly m-auto flex-col",
                 }}
               >
                 <Image
@@ -103,7 +103,7 @@ export default function BuyFoodPage() {
                 styles={{
                   height: "h-full",
                   width: "w-full",
-                  custom: "overflow-y-scroll overflow-x-none",
+                  custom: "overflow-y-scroll overflow-x-none flex-col",
                 }}
               >
                 {allFoods.map((food) => {

@@ -61,13 +61,14 @@ export const loginFromJwt = (token: string | undefined) => {
 };
 
 export const editUserGoal = (
-  change: number | string | Object | undefined,
-  jwtToken: string | undefined
+  change: number,
+  jwtToken: string | undefined,
+  user: TUser
 ) => {
   if (jwtToken === undefined)
     throw new Error("Unable to retrieve login information");
 
-  return fetch(`${baseUrl}/users/`, {
+  return fetch(`${baseUrl}/users/${user}/calorie_goal`, {
     method: "PATCH",
     headers: setAuthHeaders(jwtToken),
     body: JSON.stringify({

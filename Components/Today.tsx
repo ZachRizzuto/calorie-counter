@@ -28,7 +28,7 @@ export const Today = () => {
           styles={{
             height: "h-[90%]",
             width: "xs:w-[95%] md:w-full",
-            custom: "p-2 m-auto",
+            custom: "p-2 m-auto flex-col",
           }}
         >
           <div className="flex justify-between border-b-2 border-solid w-full pb-2 gap-2">

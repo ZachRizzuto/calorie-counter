@@ -39,8 +39,9 @@ export default function Profile() {
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
 
-    if (newGoal !== "") {
-      editUserGoal(newGoal, getJwtTokenFromLocalStorage())
+    if (typeof newGoal === "string" && newGoal !== "") {
+      const numberNewGoal = parseInt(newGoal);
+      editUserGoal(numberNewGoal, getJwtTokenFromLocalStorage(), user)
         .then((res) => {
           if (!res.ok) {
             toast.error("Failed to changed goal");
@@ -55,9 +56,7 @@ export default function Profile() {
             toast.success("Changed goal!");
           }
         })
-        .catch((e) =>
-          console.error("CORS policy prevents editing this", { ERROR: e })
-        );
+        .catch((e) => console.error({ ERROR: e }));
     }
   };
 
