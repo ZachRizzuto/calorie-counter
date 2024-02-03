@@ -77,7 +77,7 @@ export const editUserGoal = (
   });
 };
 
-export const getAllFoods = () => {
+export const getAllFoods = (): Promise<TFood> => {
   return fetch(`${baseUrl}/foods`).then((res) => res.json());
 };
 
@@ -95,6 +95,12 @@ export const postFood = (
       Authorization: `Bearer ${jwtToken}`,
     },
     body: JSON.stringify(food),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw new Error("Couldn't post food");
+    }
   });
 };
 

@@ -47,7 +47,6 @@ export default function Login() {
               if (!res.ok) {
                 setIsError(true);
                 userRef.current?.focus();
-                toast.error("Invalid Credentials");
                 return undefined;
               } else return res.json();
             })
@@ -76,11 +75,13 @@ export default function Login() {
         }}
       >
         <h1 className="text-5xl mt-0">Login!</h1>
-        {isError && (
-          <div className="bg-red-500 text-white p-2 rounded-md">
-            Incorrect username or password! Try again!
-          </div>
-        )}
+        <div
+          className={`bg-red-500 text-white text-center p-2 rounded-md ${
+            isError ? "top-[-14%]" : "top-[-120%]"
+          } absolute`}
+        >
+          Incorrect username or password! Try again!
+        </div>
         <div className="w-full m-auto max-w-[300px]">
           <label htmlFor="user" className="w-[80%] m-auto max-w-[300px]">
             Username:{" "}

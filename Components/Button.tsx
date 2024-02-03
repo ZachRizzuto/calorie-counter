@@ -11,7 +11,7 @@ type Props = {
 export const Button = ({ text, onClick, styles, type, disabled }: Props) => {
   return (
     <button
-      className={`text-center text-white bg-light-contrast rounded-3xl relative p-2 py-[13.5px] ${styles}`}
+      className={`text-center bg-light-contrast rounded-3xl relative p-2 py-[13.5px] ${styles}`}
       onClick={onClick}
       type={type}
       disabled={disabled}
