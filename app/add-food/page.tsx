@@ -51,7 +51,11 @@ export default function AddFoodForm() {
 
   const [selectedFoods, setSelectedFoods] = useState<WithKey<TFood>[]>([]);
 
-  const [mealEntryForm, setMealEntryForm] = useState({
+  const [mealEntryForm, setMealEntryForm] = useState<{
+    mealType: string;
+    mealName: string;
+    foodIds: number[];
+  }>({
     mealType: "Snack🥝️",
     mealName: "",
     foodIds: [],
@@ -102,7 +106,7 @@ export default function AddFoodForm() {
                 <h1 className="text-4xl">Create a Meal!</h1>
                 <p>Click add food to add that food to your meal!</p>
               </div>
-              <div className="flex flex-col h-[85%] overflow-scroll gap-2">
+              <div className="flex flex-col h-[85%] overflow-scroll gap-2 p-2">
                 {allFoods.map((mapFood) => (
                   <FoodOption
                     key={mapFood.id}
@@ -132,10 +136,31 @@ export default function AddFoodForm() {
               </div>
               <form
                 className="m-auto h-[85%] w-[98%] bg-light-contrast rounded-pill p-2"
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
-                  toast.success(`Added meal sucessfully`);
-                  resetForm();
+
+                  const selectedFoodIds = selectedFoods.map((food) => food.id);
+
+                  console.log(selectedFoodIds);
+
+                  setMealEntryForm((prevMealEntryForm) => ({
+                    ...prevMealEntryForm,
+                    foodIds: selectedFoodIds,
+                  }));
+
+                  const newEntry = {
+                    dayId: today.id,
+                    mealName: mealEntryForm.mealName,
+                    mealType: mealEntryForm.mealType,
+                    foodsIds: selectedFoodIds,
+                  };
+
+                  await postEntry(newEntry, getJwtTokenFromLocalStorage())
+                    .then((entry) =>
+                      setTodaysEntries([...todaysEntries, entry])
+                    )
+                    .catch((e) => console.log(e))
+                    .finally(() => resetForm());
                 }}
               >
                 <div className="border-b-2 m-auto pb-2">

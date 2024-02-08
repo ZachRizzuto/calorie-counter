@@ -112,11 +112,11 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
       const allFoodCaloriesForToday: number[] = filteredTodaysEntries.map(
         (entry: TEntry) => {
-          const food = foods.find((food) => food.id === entry.foodId);
-          if (food) {
-            return food.calories;
-          }
-          return 0;
+          const totalEntryCalories = entry.foods
+            .map((food) => food.food)
+            .reduce((acc, val) => (acc += val.calories), 0);
+
+          return totalEntryCalories;
         }
       );
 

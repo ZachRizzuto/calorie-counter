@@ -17,7 +17,7 @@ export default function FoodOption({
   setSelectedFoodsKey,
 }: Props) {
   return (
-    <div className="flex justify-between border-b-2 hover:border-b-success p-2">
+    <div className="flex justify-between border-b-2 hover:border-b-success p-2 bg-light-contrast rounded-pill">
       <div className="flex justify-between gap-4">
         <p>{food.food}</p>
         <p>{food.calories}</p>

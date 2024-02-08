@@ -38,34 +38,38 @@ export const Today = () => {
           <div className="overflow-y-scroll md:max-h-[450px] w-full h-full text-xl overflow-x-none">
             {todaysEntries.length > 0 ? (
               todaysEntries.map((entry: TEntry) => {
-                const food = allFoods.find((food) => entry.foodId === food.id);
+                const entryFoods = entry.foods.map((food) => food.food);
 
-                if (food) {
-                  return (
-                    <Entry
-                      calories={food.calories}
-                      foodName={food.food}
-                      amount={food.amount}
-                      key={entry.id}
-                      deleteEntry={() =>
-                        deleteEntry(
-                          entry.id,
-                          getJwtTokenFromLocalStorage()
-                        ).then((res) => {
+                const totalEntryCalories = entryFoods.reduce(
+                  (acc, val) => (acc += val.calories),
+                  0
+                );
+                return (
+                  <Entry
+                    foods={entryFoods}
+                    createdAt={entry.createdAt}
+                    mealType={entry.mealType}
+                    mealName={entry.mealName}
+                    key={entry.id}
+                    deleteEntry={() =>
+                      deleteEntry(entry.id, getJwtTokenFromLocalStorage()).then(
+                        (res) => {
                           if (res.ok) {
                             setTodaysEntries(
                               todaysEntries.filter((ent) => ent.id !== entry.id)
                             );
 
-                            setTotalCalories(totalCalories - food.calories);
+                            setTotalCalories(
+                              totalCalories - totalEntryCalories
+                            );
                           } else {
                             throw new Error("Couldn't Delete Food :(");
                           }
-                        })
-                      }
-                    />
-                  );
-                }
+                        }
+                      )
+                    }
+                  />
+                );
               })
             ) : (
               <h2 className="mt-6 text-center">No food entries for today!</h2>

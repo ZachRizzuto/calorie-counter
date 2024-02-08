@@ -3,7 +3,6 @@ import { Button } from "./Button";
 import { useContext, useState } from "react";
 import { UserContentContext } from "./Providers/UserContentProvider";
 import { getJwtTokenFromLocalStorage, postFood } from "@/app/(utils)/requests";
-import { set } from "zod";
 
 export default function CreateFoodModal({
   display,
@@ -53,12 +52,6 @@ export default function CreateFoodModal({
 
             toast.success("Submitted");
 
-            console.log({
-              food: createFoodForm.food,
-              amount: `${createFoodForm.amountNum} ${createFoodForm.amountType}`,
-              calories: createFoodForm.calories,
-            });
-
             postFood(
               {
                 food: createFoodForm.food,
@@ -99,16 +92,21 @@ export default function CreateFoodModal({
                 type="text"
                 id="food-amount"
                 value={createFoodForm.amountNum}
-                onChange={(e) =>
-                  setCreateFoodForm({
-                    ...createFoodForm,
-                    amountNum: e.target.value,
-                  })
-                }
+                onChange={(e) => {
+                  if (
+                    e.target.value.match(/^[0-9]*(\.[0-9]*)?$/) ||
+                    e.target.value === ""
+                  ) {
+                    setCreateFoodForm({
+                      ...createFoodForm,
+                      amountNum: e.target.value,
+                    });
+                  }
+                }}
                 className="w-[90%] text-xl"
               />
             </div>
-            <div className="w-[2px] bg-white h-[40px]"></div>
+            <div className="w-[5px] bg-white h-[40px]"></div>
             <select
               name=""
               id=""
@@ -122,6 +120,11 @@ export default function CreateFoodModal({
               className="text-xl rounded-pill h-[40px]"
             >
               <option value="Whole">Whole</option>
+              <option value="Cup">Cup</option>
+              <option value="Tablespoon">Tablespoon</option>
+              <option value="Teaspoon">Teaspoon</option>
+              <option value="Oz">Oz</option>
+              <option value="G">Gram</option>
             </select>
           </div>
 
@@ -134,12 +137,17 @@ export default function CreateFoodModal({
                 type="text"
                 id="calories"
                 value={createFoodForm.calories}
-                onChange={(e) =>
-                  setCreateFoodForm({
-                    ...createFoodForm,
-                    calories: e.target.value,
-                  })
-                }
+                onChange={(e) => {
+                  if (
+                    e.target.value.match(/^[0-9]*(\.[0-9]*)?$/) ||
+                    e.target.value === ""
+                  ) {
+                    setCreateFoodForm({
+                      ...createFoodForm,
+                      calories: e.target.value,
+                    });
+                  }
+                }}
                 className="w-[90%] text-xl"
               />
             </div>

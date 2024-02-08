@@ -13,10 +13,19 @@ export type TFood = {
 
 export type TEntry = {
   id: number;
-  createdAt: number;
-  foodId: number;
-  dayId: number;
+  createdAt: string;
   userId: number;
+  dayId: number;
+  mealType: string;
+  foods: Food[];
+  mealName: string;
+};
+
+type Food = {
+  id: number;
+  entryId: number;
+  foodId: number;
+  food: TFood;
 };
 
 export type TDay = {
@@ -31,4 +40,11 @@ export type TFoodForm = {
   amountType: string;
   food: string;
   calories: string;
+};
+
+export type TEntryForm = {
+  dayId: number;
+  foodsIds: number[];
+  mealType: string;
+  mealName: string;
 };
