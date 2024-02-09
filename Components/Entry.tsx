@@ -20,13 +20,21 @@ export const Entry = ({
 }: Props) => {
   const [showHamburger, setShowHamburger] = useState(false);
 
+  const createdDate = new Date(parseInt(createdAt));
+
+  const hours = createdDate.getHours();
+
+  const minutes = createdDate.getMinutes();
+
   return (
     <>
       <div
-        className={`border-b-[1px] border-solid border-neutral-400 flex items-center justify-between p-1 ${styles.deleteShow} hover:border-green-500`}
+        className={`border-b-[1px] border-solid flex items-center justify-between p-1 ${
+          showHamburger ? "border-green-500" : "border-neutral-400"
+        } ${styles.deleteShow} hover:border-green-500`}
       >
         <div className="flex items-center justify-between gap-6">
-          <div className="xs:w-[100%] lg:w-[150px] xs:text-sm lg:text-xl whitespace-nowrap">
+          <div className="xs:w-[100%] lg:w-[300px] xs:text-sm lg:text-xl whitespace-nowrap">
             {mealName}
           </div>
           <div className="xs:w-[100%] lg:w-[400px] xs:text-sm lg:text-xl flex gap-2 items-center">
@@ -41,8 +49,9 @@ export const Entry = ({
             </button>
           </div>
         </div>
-        <div className="xs:text-sm lg:text-xl whitespace-nowrap xs:ml-[6px] lg:ml-0 xs:mr-[6px] lg:mr-0">
-          {foods.reduce((acc, val) => (acc += val.calories), 0)} kcal
+        <div className="xs:text-sm lg:text-xl whitespace-nowrap xs:ml-[6px] lg:ml-0 xs:mr-[6px] lg:mr-0 flex justify-between w-[25%]">
+          <div>{foods.reduce((acc, val) => (acc += val.calories), 0)} kcal</div>
+          <div>{`${hours}:${minutes}`}</div>
         </div>
         <Button
           text="Delete"
@@ -51,16 +60,23 @@ export const Entry = ({
         />
       </div>
       <div
-        className={`transition-max-height duration-300 flex flex-col w-[40%] origin-top-left ${
+        className={`transition-max-height duration-300 flex flex-col origin-top-left ${
           showHamburger ? "scale-y-100" : "scale-y-0 max-h-0 overflow-hidden"
-        }`}
+        } border-b-2 border-l-2 border-r-2 p-2 border-green-500 rounded-b-pill`}
       >
         {foods.map((food, index) => {
           return (
-            <div key={index} className="flex justify-between">
+            <div
+              key={index}
+              className={`flex justify-between w-[40%] ${
+                showHamburger
+                  ? "scale-y-100"
+                  : "scale-y-0 max-h-0 overflow-hidden"
+              }`}
+            >
               <div>{food.amount}</div>
               <div>{food.food}</div>
-              <div>{food.calories}</div>
+              <div>{food.calories} kcal</div>
             </div>
           );
         })}

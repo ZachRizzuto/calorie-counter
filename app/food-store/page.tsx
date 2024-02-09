@@ -107,10 +107,11 @@ export default function BuyFoodPage() {
                 }}
               >
                 {allFoods.map((food) => {
-                  if (food.calories >= 350) {
+                  if (food.calories >= user.calorie_goal * 0.35) {
                     return (
                       <StoreOption
                         key={food.id}
+                        foodId={food.id}
                         foodName={food.food}
                         calories={food.calories}
                       />

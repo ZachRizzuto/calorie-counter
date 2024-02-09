@@ -1,17 +1,28 @@
-import { buyFood, getJwtTokenFromLocalStorage } from "@/app/(utils)/requests";
+import {
+  buyFood,
+  getJwtTokenFromLocalStorage,
+  postEntry,
+} from "@/app/(utils)/requests";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { Button } from "./Button";
 import { UserContentContext } from "./Providers/UserContentProvider";
+import { useRouter } from "next/navigation";
 
 export const StoreOption = ({
   foodName,
   calories,
+  foodId,
 }: {
   foodName: string;
   calories: number;
+  foodId: number;
 }) => {
-  const { user, setUser } = useContext(UserContentContext);
+  const { user, setUser, today, setTodaysEntries, todaysEntries } =
+    useContext(UserContentContext);
+
+  const router = useRouter();
+
   let cost = 0;
 
   switch (
@@ -20,17 +31,16 @@ export const StoreOption = ({
     (calories >= 500 && calories < 750) ||
     calories >= 750
   ) {
-    case calories === 350:
-      cost = 3;
+    case calories >= user.calorie_goal * 0.35 &&
+      calories < user.calorie_goal * 0.4:
+      cost = 12;
       break;
-    case calories > 350 && calories < 500:
-      cost = 5;
+    case calories >= user.calorie_goal * 0.4 &&
+      calories < user.calorie_goal * 0.45:
+      cost = 15;
       break;
-    case calories >= 500 && calories < 750:
-      cost = 7;
-      break;
-    case calories >= 750:
-      cost = 10;
+    case calories >= user.calorie_goal * 0.45:
+      cost = 20;
       break;
   }
 
@@ -55,9 +65,9 @@ export const StoreOption = ({
                 "border-2 border-transparent hover:border-green-500 hover:bg-dark-contrast disabled:pointer-events-none xs:text-xs sm:text-xl"
               }
               disabled={user.balance < cost}
-              onClick={() => {
+              onClick={async () => {
                 const newBalance = user.balance - cost;
-                buyFood(
+                await buyFood(
                   cost,
                   user.balance,
                   getJwtTokenFromLocalStorage(),
@@ -77,6 +87,19 @@ export const StoreOption = ({
                     });
                   }
                 });
+                const newCheatEntry = {
+                  mealName: foodName,
+                  mealType: "Cheat Meal🎂",
+                  foodsIds: [foodId],
+                  dayId: today.id,
+                };
+
+                await postEntry(newCheatEntry, getJwtTokenFromLocalStorage())
+                  .then((entry) => {
+                    router.push("/today");
+                    setTodaysEntries([...todaysEntries, entry]);
+                  })
+                  .catch((e) => console.log(e));
               }}
             />
           </div>

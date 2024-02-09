@@ -9,32 +9,13 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { editUserGoal, getJwtTokenFromLocalStorage } from "../(utils)/requests";
+import styles from "./profile.module.css";
 
 export default function Profile() {
   const { user, setUser, userDays, userEntries, allFoods } =
     useContext(UserContentContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
-
-  // Doesn't actually get "this weeks" calorie count fix later
-  // Should probably get turned into a piece of state
-
-  let lastWeeksCalorieTotal = 0;
-
-  const lastSevenDayIds = userDays.slice(-7).map((day) => day.id);
-
-  const lastSevenDayFoodIds = userEntries
-    .filter((entry) => lastSevenDayIds.includes(entry.dayId))
-    .map((entry) => entry.foodId);
-
-  const lastSevenDayFoods = allFoods.filter((food) =>
-    lastSevenDayFoodIds.includes(food.id)
-  );
-
-  lastWeeksCalorieTotal = lastSevenDayFoods.reduce(
-    (acc, val) => (acc += val.calories),
-    0
-  );
 
   const handleForm = (data: FormData) => {
     const newGoal = data.get("calorie")?.valueOf();
@@ -110,12 +91,35 @@ export default function Profile() {
             <PageSection
               styles={{
                 width: "w-full",
-                height: "",
+                height: "max-h-[390px]",
+                custom: "flex-col",
               }}
             >
-              <h2 className="lg:text-2xl xs:text-md md:text-lg">
-                Calorie Count This Week: {lastWeeksCalorieTotal}
+              <h2
+                className={`lg:text-2xl xs:text-md md:text-lg ${styles.tooltip}`}
+              >
+                Track Record:
+                <span className={`${styles.tooltiptext}`}>
+                  Your Calorie Total History
+                </span>
               </h2>
+              <div>
+                {userDays.map((day) => (
+                  <div key={day.id}>
+                    <div className="flex flex-col">
+                      {day.date}:{" "}
+                      {day.entries
+                        .map((entry) => entry.foods)
+                        .flat()
+                        .reduce(
+                          (acc, val) => (acc += val.food.calories),
+                          0
+                        )}{" "}
+                      kcals
+                    </div>
+                  </div>
+                ))}
+              </div>
             </PageSection>
           </div>
         </div>

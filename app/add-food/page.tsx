@@ -1,24 +1,18 @@
 "use client";
 import { Button } from "@/Components/Button";
-import { Header } from "@/Components/Header";
 import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
 import { UserContentContext } from "@/Components/Providers/UserContentProvider";
 import { TEntry, TFood, TFoodForm } from "@/types";
-import { getTime } from "@/utils/date";
-import { validateEntry } from "@/utils/formvalidation";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
   addToUserBalance,
-  getAllFoods,
   getJwtTokenFromLocalStorage,
   postEntry,
-  postFood,
 } from "../(utils)/requests";
 import styles from "./food-form.module.css";
-import { divide } from "lodash-es";
 import CreateFoodModal from "@/Components/CreateFoodModal";
 import FoodOption from "@/Components/FoodOption";
 
@@ -141,8 +135,6 @@ export default function AddFoodForm() {
 
                   const selectedFoodIds = selectedFoods.map((food) => food.id);
 
-                  console.log(selectedFoodIds);
-
                   setMealEntryForm((prevMealEntryForm) => ({
                     ...prevMealEntryForm,
                     foodIds: selectedFoodIds,
@@ -155,12 +147,47 @@ export default function AddFoodForm() {
                     foodsIds: selectedFoodIds,
                   };
 
-                  await postEntry(newEntry, getJwtTokenFromLocalStorage())
-                    .then((entry) =>
-                      setTodaysEntries([...todaysEntries, entry])
-                    )
-                    .catch((e) => console.log(e))
-                    .finally(() => resetForm());
+                  if (
+                    !Object.values(newEntry).includes("") &&
+                    selectedFoodIds.length > 0
+                  ) {
+                    await postEntry(newEntry, getJwtTokenFromLocalStorage())
+                      .then((entry: TEntry) => {
+                        const totalCals = entry.foods.reduce(
+                          (acc, val) => (acc += val.food.calories),
+                          0
+                        );
+
+                        if (
+                          totalCals <= user.calorie_goal / 3 &&
+                          totalCalories + totalCals <= user.calorie_goal
+                        ) {
+                          addToUserBalance(
+                            1,
+                            user.balance,
+                            getJwtTokenFromLocalStorage(),
+                            user.user
+                          )
+                            .then(() => {
+                              toast.success(
+                                "Good job! Heres some coins. 1+ 🪙"
+                              );
+                              setUser({ ...user, balance: user.balance + 1 });
+                            })
+                            .catch((e) => console.log(e));
+                        }
+
+                        setTodaysEntries([...todaysEntries, entry]);
+
+                        setTotalCalories(totalCalories + totalCals);
+
+                        toast.success("Entry Added");
+                      })
+                      .catch((e) => console.log(e))
+                      .finally(() => resetForm());
+                  } else {
+                    toast.error("Meal must have name and foods selected");
+                  }
                 }}
               >
                 <div className="border-b-2 m-auto pb-2">
@@ -180,11 +207,11 @@ export default function AddFoodForm() {
                       id="meal-type"
                       className=""
                     >
-                      <option value="Snack">Snack🥝️</option>
-                      <option value="Breakfast">Breakfast🥞️</option>
-                      <option value="Brunch">Brunch🥂️</option>
-                      <option value="Lunch">Lunch🍕️</option>
-                      <option value="Dinner">Dinner🍝️</option>
+                      <option value="Snack🥝">Snack🥝</option>
+                      <option value="Breakfast🥞">Breakfast🥞</option>
+                      <option value="Brunch🥂">Brunch🥂</option>
+                      <option value="Lunch🍕">Lunch🍕</option>
+                      <option value="Dinner🍝">Dinner🍝</option>
                     </select>
                   </div>
                   <label htmlFor="meal-name" className="inline mr-2">
@@ -204,8 +231,12 @@ export default function AddFoodForm() {
                 </div>
                 <div className="flex flex-col border-b-2 overflow-scroll h-[70%] max-h-[70%]">
                   {selectedFoods.map((mapFood) => (
-                    <div key={mapFood.key}>
+                    <div
+                      key={mapFood.key}
+                      className="flex border-b-2 border-white justify-between items-center py-2"
+                    >
                       <p>{mapFood.food}</p>
+                      <p>{mapFood.calories} kcal</p>
                       <button
                         onClick={() =>
                           setSelectedFoods(
@@ -214,8 +245,10 @@ export default function AddFoodForm() {
                             )
                           )
                         }
+                        className={`hover:scale-125 ${styles.tooltip}`}
                       >
-                        Remove
+                        <span className={`${styles.tooltiptext}`}>Delete</span>
+                        🗑️
                       </button>
                     </div>
                   ))}

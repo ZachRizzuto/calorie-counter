@@ -16,7 +16,14 @@ export const Nav = () => {
   return (
     <>
       <nav className="flex items-center justify-between min-h-[86px] w-full bg-light-dark-contrast shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-        <Image src={"/favicon.ico"} height={50} width={50} alt="logo" />
+        <Image
+          src={"/favicon.ico"}
+          height={50}
+          width={50}
+          alt="logo"
+          onClick={() => push("/today")}
+          className="hover:cursor-pointer"
+        />
         <ul className="flex items-center gap-2 mr-4 justify-center lg:flex xs:hidden">
           <li>{user.balance}🪙</li>
           <li>

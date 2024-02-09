@@ -19,8 +19,8 @@ export default function FoodOption({
   return (
     <div className="flex justify-between border-b-2 hover:border-b-success p-2 bg-light-contrast rounded-pill">
       <div className="flex justify-between gap-4">
-        <p>{food.food}</p>
-        <p>{food.calories}</p>
+        <p className="border-b-2">{food.food}</p>
+        <p className="border-b-2">{food.calories} kcal</p>
       </div>
       <button
         onClick={() => {

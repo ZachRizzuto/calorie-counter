@@ -1,0 +1,25 @@
+.tooltip {
+    position: relative;
+}
+
+
+.tooltip .tooltiptext {
+    display: inline-block;
+    background-color: #5285A4;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: all ease-in-out 350ms;
+    pointer-events:none;
+    font-size: medium;
+    left: 115%;
+    width: 100%;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    opacity: 1;
+  }

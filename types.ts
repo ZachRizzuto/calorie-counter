@@ -32,6 +32,7 @@ export type TDay = {
   id: number;
   userId: number;
   date: string;
+  entries: TEntry[];
 };
 
 export type TFoodForm = {

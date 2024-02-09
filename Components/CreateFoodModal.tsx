@@ -125,6 +125,7 @@ export default function CreateFoodModal({
               <option value="Teaspoon">Teaspoon</option>
               <option value="Oz">Oz</option>
               <option value="G">Gram</option>
+              <option value="Fl Oz">Fl Oz</option>
             </select>
           </div>
 
