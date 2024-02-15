@@ -55,7 +55,13 @@ export default function AddFoodForm() {
     foodIds: [],
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [showCreateFoodModal, setShowCreateFoodModal] = useState(false);
+
+  const [showAddFoodModal, setShowAddFoodModal] = useState(false);
+
+  const [searchInput, setSearchInput] = useState("");
+
+  const [foodOptions, setFoodOptions] = useState<TFood[]>([]);
 
   const resetForm = () => {
     setMealEntryForm({
@@ -78,7 +84,7 @@ export default function AddFoodForm() {
     if (form) {
       observer.observe(form);
     }
-  });
+  }, []);
 
   return (
     <>
@@ -95,41 +101,68 @@ export default function AddFoodForm() {
               custom: "gap-12 overflow-none",
             }}
           >
-            <div className="w-[70%] h-full">
-              <div className="border-b-2">
-                <h1 className="text-4xl">Create a Meal!</h1>
-                <p>Click add food to add that food to your meal!</p>
+            <div className="w-[70%] h-full flex flex-col gap-2 xs:hidden lg:flex">
+              <div className="flex border-b-2 items-center justify-between">
+                <div className="">
+                  <h1 className="lg:text-2xl xl:text-4xl">Create a Meal!</h1>
+                  <p className="lg:text-[67%] ml-[2px]">
+                    Click add food to add that food to your meal!
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <label htmlFor="search-foods">
+                    <i className="fa-solid fa-magnifying-glass"></i>
+                  </label>
+                  <input
+                    id="search-foods"
+                    type="text"
+                    value={searchInput}
+                    onChange={(e) => {
+                      setSearchInput(e.target.value.toLowerCase());
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex flex-col h-[85%] overflow-scroll gap-2 p-2">
-                {allFoods.map((mapFood) => (
-                  <FoodOption
-                    key={mapFood.id}
-                    food={mapFood}
-                    selectedFoods={selectedFoods}
-                    setSelectedFoods={(selectedFoods) =>
-                      setSelectedFoods(selectedFoods)
-                    }
-                    selectedFoodsKey={key}
-                    setSelectedFoodsKey={(key) => setKey(key)}
-                  />
-                ))}
+                {allFoods
+                  .filter((food) =>
+                    food.food.toLowerCase().includes(searchInput)
+                  )
+                  .map((mapFood) => {
+                    return (
+                      <FoodOption
+                        key={mapFood.id}
+                        food={mapFood}
+                        selectedFoods={selectedFoods}
+                        setSelectedFoods={(selectedFoods) =>
+                          setSelectedFoods(selectedFoods)
+                        }
+                        selectedFoodsKey={key}
+                        setSelectedFoodsKey={(key) => setKey(key)}
+                      />
+                    );
+                  })}
               </div>
-              <div className="w-[35%] ml-auto">
-                <p className="inline mr-4">{`Don't see your food?`}</p>
+              <div className="w-[40%] ml-auto flex justify-between items-center">
+                <p className="inline mr-4 lg:text-sm md:text-xs">{`Don't see your food?`}</p>
                 <Button
                   text="Create Food"
-                  styles="bg-light-contrast"
-                  onClick={() => setShowModal(true)}
+                  styles="bg-light-contrast md:text-sm"
+                  onClick={() => setShowCreateFoodModal(true)}
                 ></Button>
               </div>
             </div>
-            <div className="w-[30%] h-full border-l-2 pl-2">
+            <div className="xs:w-full lg:w-[30%] h-full lg:border-l-2 pl-2">
               <div className="border-b-2 mb-2">
-                <h2 className="text-4xl">Log Your Meal!</h2>
-                <p>After building meal hit log meal to log your entry!</p>
+                <h2 className="lg:text-2xl xl:text-4xl lg:text-left xs:text-center">
+                  Log Your Meal!
+                </h2>
+                <p className="md:text-[67%] lg:text-left xs:text-center">
+                  After building meal hit log meal to log your entry!
+                </p>
               </div>
               <form
-                className="m-auto h-[85%] w-[98%] bg-light-contrast rounded-pill p-2"
+                className="m-auto h-[85%] w-[98%] bg-light-contrast rounded-pill p-2 flex flex-col"
                 onSubmit={async (e) => {
                   e.preventDefault();
 
@@ -192,7 +225,10 @@ export default function AddFoodForm() {
               >
                 <div className="border-b-2 m-auto pb-2">
                   <div>
-                    <label htmlFor="meal-type" className="inline mr-2">
+                    <label
+                      htmlFor="meal-type"
+                      className="inline mr-2 lg:text-sm xl:text-md"
+                    >
                       What kind of meal is this?:
                     </label>
                     <select
@@ -214,7 +250,10 @@ export default function AddFoodForm() {
                       <option value="Dinner🍝">Dinner🍝</option>
                     </select>
                   </div>
-                  <label htmlFor="meal-name" className="inline mr-2">
+                  <label
+                    htmlFor="meal-name"
+                    className="inline mr-2 lg:text-sm xl:text-md"
+                  >
                     What do you want to name this meal?:
                   </label>
                   <input
@@ -235,8 +274,8 @@ export default function AddFoodForm() {
                       key={mapFood.key}
                       className="flex border-b-2 border-white justify-between items-center py-2"
                     >
-                      <p>{mapFood.food}</p>
-                      <p>{mapFood.calories} kcal</p>
+                      <p className="w-[50%]">{mapFood.food}</p>
+                      <p className="text-left">{mapFood.calories} kcal</p>
                       <button
                         onClick={() =>
                           setSelectedFoods(
@@ -253,13 +292,13 @@ export default function AddFoodForm() {
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center justify-between mt-[5%] w-[70%]">
+                <div className="flex items-center justify-between mt-[5%] w-[100%]">
                   <Button
                     text="Log Meal"
                     type="submit"
-                    styles="bg-success text-dark-contrast w-[50%]"
+                    styles="bg-success text-dark-contrast w-[100%] xl:text-md lg:text-sm"
                   />
-                  <p className="text-xl">
+                  <p className="lg:text-xs xl:text-[90%] w-full">
                     Total:{" "}
                     {selectedFoods.reduce(
                       (acc, currVal) => (acc += currVal.calories),
@@ -267,6 +306,12 @@ export default function AddFoodForm() {
                     )}{" "}
                     kcal
                   </p>
+                  <Button
+                    text="Add Food"
+                    type="button"
+                    styles="bg-success text-dark-contrast w-[100%] xl:text-md xs:text-sm"
+                    onClick={() => setShowAddFoodModal(true)}
+                  />
                 </div>
               </form>
             </div>
@@ -274,8 +319,8 @@ export default function AddFoodForm() {
         </div>
       </PageWrapper>
       <CreateFoodModal
-        display={showModal}
-        setShowModal={(val: boolean) => setShowModal(val)}
+        display={showCreateFoodModal}
+        setShowModal={(val: boolean) => setShowCreateFoodModal(val)}
       />
     </>
   );

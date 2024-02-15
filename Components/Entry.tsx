@@ -34,11 +34,11 @@ export const Entry = ({
         } ${styles.deleteShow} hover:border-green-500`}
       >
         <div className="flex items-center justify-between gap-6">
-          <div className="xs:w-[100%] lg:w-[300px] xs:text-sm lg:text-xl whitespace-nowrap">
+          <div className="min-w-[50%] lg:w-[300px] xs:text-sm lg:text-xl whitespace-nowrap">
             {mealName}
           </div>
-          <div className="xs:w-[100%] lg:w-[400px] xs:text-sm lg:text-xl flex gap-2 items-center">
-            {mealType}
+          <div className="xs:min-w-[70%] lg:min-w-min xs:w-[50%] lg:w-[400px] xs:text-sm lg:text-xl flex gap-2 items-center">
+            <p className="xs:hidden sm:block">{mealType}</p>
             <button
               className={`${showHamburger ? "rotate-[-180deg]" : ""}`}
               onClick={() =>
@@ -49,7 +49,7 @@ export const Entry = ({
             </button>
           </div>
         </div>
-        <div className="xs:text-sm lg:text-xl whitespace-nowrap xs:ml-[6px] lg:ml-0 xs:mr-[6px] lg:mr-0 flex justify-between w-[25%]">
+        <div className="xs:text-sm gap-2 lg:text-xl whitespace-nowrap xs:ml-[6px] lg:ml-0 xs:mr-[6px] lg:mr-0 flex justify-between w-[25%]">
           <div>{foods.reduce((acc, val) => (acc += val.calories), 0)} kcal</div>
           <div>{`${hours}:${minutes}`}</div>
         </div>
@@ -68,7 +68,7 @@ export const Entry = ({
           return (
             <div
               key={index}
-              className={`flex justify-between w-[40%] ${
+              className={`flex gap-2 justify-between xs:w-[100%] sm:w-[40%] xs:text-sm lg:text-lg ${
                 showHamburger
                   ? "scale-y-100"
                   : "scale-y-0 max-h-0 overflow-hidden"

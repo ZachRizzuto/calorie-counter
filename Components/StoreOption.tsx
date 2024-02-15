@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { Button } from "./Button";
 import { UserContentContext } from "./Providers/UserContentProvider";
 import { useRouter } from "next/navigation";
+import { TEntry } from "@/types";
 
 export const StoreOption = ({
   foodName,
@@ -18,8 +19,15 @@ export const StoreOption = ({
   calories: number;
   foodId: number;
 }) => {
-  const { user, setUser, today, setTodaysEntries, todaysEntries } =
-    useContext(UserContentContext);
+  const {
+    user,
+    setUser,
+    today,
+    setTodaysEntries,
+    todaysEntries,
+    setTotalCalories,
+    totalCalories,
+  } = useContext(UserContentContext);
 
   const router = useRouter();
 
@@ -48,7 +56,7 @@ export const StoreOption = ({
     <>
       <div className="flex flex-col w-full hover:bg-light-contrast rounded">
         <div className="flex w-full h-full justify-between items-center">
-          <p className="xs:text-2xl sm:text-4xl mb-[10px] cursor-default">
+          <p className="xs:text-xl sm:text-4xl mb-[10px] cursor-default">
             {foodName}
           </p>
           <div className="flex justify-center items-center">
@@ -87,6 +95,7 @@ export const StoreOption = ({
                     });
                   }
                 });
+
                 const newCheatEntry = {
                   mealName: foodName,
                   mealType: "Cheat Meal🎂",
@@ -95,9 +104,14 @@ export const StoreOption = ({
                 };
 
                 await postEntry(newCheatEntry, getJwtTokenFromLocalStorage())
-                  .then((entry) => {
+                  .then((entry: TEntry) => {
+                    const totalEntryCalories = entry.foods.reduce(
+                      (acc, val) => (acc += val.food.calories),
+                      0
+                    );
                     router.push("/today");
                     setTodaysEntries([...todaysEntries, entry]);
+                    setTotalCalories(totalCalories + totalEntryCalories);
                   })
                   .catch((e) => console.log(e));
               }}

@@ -51,48 +51,11 @@ export default function Profile() {
           handleForm={handleForm}
         />
         <div className="flex items-center justify-center h-[100vh] p-[30px] gap-2 w-full lg:flex-row xs:flex-col">
-          <div>
+          <div className="w-full">
             <PageSection
               styles={{
                 width: "max-w-full",
-                height: "rounded-[50%] overflow-hidden",
-              }}
-            >
-              <Image
-                src={"/images/image-removebg-preview.png"}
-                alt={"profile image"}
-                width={350}
-                height={350}
-                className="rounded-[50%]"
-                loading="lazy"
-              />
-            </PageSection>
-            <PageSection
-              styles={{
-                width: "w-full",
-                height: "",
-              }}
-            >
-              <div className="flex justify-between items-center w-full">
-                <div>Calorie Goal: {user.calorie_goal}</div>
-                <Button
-                  text="Edit"
-                  onClick={() => {
-                    !showCalorieModal
-                      ? setShowCalorieModal(true)
-                      : setShowCalorieModal(false);
-                  }}
-                  styles="hover:bg-green-400 hover:text-gray-800"
-                />
-              </div>
-            </PageSection>
-          </div>
-          <div>
-            <PageSection
-              styles={{
-                width: "w-full",
-                height: "max-h-[390px]",
-                custom: "flex-col",
+                height: "rounded-[50%] overflow-hidden flex-col items-center",
               }}
             >
               <h2
@@ -106,7 +69,7 @@ export default function Profile() {
               <div>
                 {userDays.map((day) => (
                   <div key={day.id}>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col max-h-[400px] overflow-scroll">
                       {day.date}:{" "}
                       {day.entries
                         .map((entry) => entry.foods)
@@ -121,7 +84,27 @@ export default function Profile() {
                 ))}
               </div>
             </PageSection>
+            <PageSection
+              styles={{
+                width: "w-full",
+                height: "",
+              }}
+            >
+              <div className="flex justify-between items-center w-full gap-2">
+                <div>Calorie Goal: {user.calorie_goal}</div>
+                <Button
+                  text="Edit"
+                  onClick={() => {
+                    !showCalorieModal
+                      ? setShowCalorieModal(true)
+                      : setShowCalorieModal(false);
+                  }}
+                  styles="hover:bg-green-400 hover:text-gray-800"
+                />
+              </div>
+            </PageSection>
           </div>
+          <div></div>
         </div>
       </PageWrapper>
     </>

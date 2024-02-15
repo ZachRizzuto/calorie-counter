@@ -46,7 +46,7 @@ export default function CreateFoodModal({
         </button>
         <form
           action=""
-          className="flex flex-col gap-2 w-[25%]"
+          className="flex flex-col gap-2 w-[40%]"
           onSubmit={(e) => {
             e.preventDefault();
 
