@@ -1,0 +1,23 @@
+.tooltip::before {
+    content: 'These coins are earned for eating at or under 30% of your goal! Once you earn enough you can purchase a cheat meal!';
+    font-size: 22%;
+    position: absolute;
+    left: 102%;
+    bottom: 5%;
+    width: max-content;
+    max-width: 100%;
+    background-color: #5285A4;
+    border-radius: 10%;
+    padding: 5px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all ease-in-out 100ms;
+}
+
+.tooltip:hover::before {
+    opacity: 80%;
+}
+
+.tooltip {
+    position: relative;
+}

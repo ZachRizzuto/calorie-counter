@@ -35,14 +35,23 @@ html {
 }
 
 input {
-  border: none;
-  background-color: rgba(31, 41, 55, 1);
-  border-bottom: 2px solid rgba(75, 85, 99, 1);
+  border-bottom: 2px solid white;
+  background-color: white;
+  padding: 0px 2px;
+  color: var(--background-dark)
+}
+
+input:focus {
+  border-bottom:2px solid #234862;
+  border-radius: 3px;
+  caret-color: var(--background-dark)
 }
 
 select {
   border: none;
-  background-color: rgba(31, 41, 55, 1);
+  background-color: white;
+  padding: 0px 2px;
+  color: var(--background-dark);
   border-bottom: 2px solid rgba(75, 85, 99, 1);
 }
 

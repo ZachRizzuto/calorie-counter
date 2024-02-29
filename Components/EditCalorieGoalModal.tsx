@@ -19,7 +19,7 @@ export const EditCalorieGoalModal = ({ show, setShow, handleForm }: Props) => {
         onClick={() => setShow(false)}
       ></div>
       <div
-        className={`absolute left-0 right-0 m-auto bg-light-dark-contrast z-10 rounded-md flex flex-col items-center w-[350px] shadow-md justify-start p-[20px] border-2 border-green-500 duration-300 ${
+        className={`absolute left-0 right-0 m-auto bg-light-dark-contrast z-10 rounded-md flex flex-col items-center xs:w-[300px] sm:w-[350px] shadow-md justify-start p-[20px] border-2 border-green-500 duration-300 ${
           show ? "bottom-[45%]" : "-bottom-96"
         }`}
       >
@@ -37,18 +37,23 @@ export const EditCalorieGoalModal = ({ show, setShow, handleForm }: Props) => {
           }}
         >
           <label htmlFor="calorie">New Calorie Goal:</label>
-          <input
-            id="calorie"
-            type="text"
-            name="calorie"
-            value={formValue}
-            onChange={(e) => {
-              if (e.target.value.match("^[0-9]+$") || e.target.value === "") {
-                setFormValue(e.target.value);
-              }
-            }}
-            autoComplete="off"
-          />
+          <div className="bg-white rounded-pill w-full flex justify-center">
+            <input
+              id="calorie"
+              type="text"
+              name="calorie"
+              value={formValue}
+              onChange={(e) => {
+                if (e.target.value.match("^[0-9]+$") || e.target.value === "") {
+                  setFormValue(e.target.value);
+                }
+              }}
+              autoComplete="off"
+              style={{
+                width: "90%",
+              }}
+            />
+          </div>
           <button type="submit"></button>
         </form>
       </div>

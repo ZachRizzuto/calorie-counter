@@ -1,4 +1,4 @@
-import { TEntry, TFood, TUser } from "@/types";
+import { TEntry, TEntryForm, TFood, TUser } from "@/types";
 
 const baseUrl = "http://localhost:3001";
 
@@ -61,13 +61,14 @@ export const loginFromJwt = (token: string | undefined) => {
 };
 
 export const editUserGoal = (
-  change: number | string | Object | undefined,
-  jwtToken: string | undefined
+  change: number,
+  jwtToken: string | undefined,
+  user: TUser
 ) => {
   if (jwtToken === undefined)
     throw new Error("Unable to retrieve login information");
 
-  return fetch(`${baseUrl}/users/`, {
+  return fetch(`${baseUrl}/users/${user}/calorie_goal`, {
     method: "PATCH",
     headers: setAuthHeaders(jwtToken),
     body: JSON.stringify({
@@ -76,7 +77,7 @@ export const editUserGoal = (
   });
 };
 
-export const getAllFoods = () => {
+export const getAllFoods = (): Promise<TFood[]> => {
   return fetch(`${baseUrl}/foods`).then((res) => res.json());
 };
 
@@ -94,6 +95,12 @@ export const postFood = (
       Authorization: `Bearer ${jwtToken}`,
     },
     body: JSON.stringify(food),
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    } else {
+      throw new Error("Couldn't post food");
+    }
   });
 };
 
@@ -137,10 +144,7 @@ export const getEntriesForUserByDay = (
     .catch((e) => console.error(e));
 };
 
-export const postEntry = (
-  entry: Omit<TEntry, "id" | "userId">,
-  jwtToken: string | undefined
-) => {
+export const postEntry = (entry: TEntryForm, jwtToken: string | undefined) => {
   if (jwtToken === undefined)
     throw new Error("Unable to retrieve login information");
 
@@ -150,7 +154,7 @@ export const postEntry = (
     body: JSON.stringify(entry),
   }).then((res) => {
     if (!res.ok) {
-      throw new Error("Couldn't post Entry");
+      throw new Error(res.statusText);
     } else {
       return res.json();
     }

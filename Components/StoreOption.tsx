@@ -1,17 +1,36 @@
-import { buyFood, getJwtTokenFromLocalStorage } from "@/app/(utils)/requests";
+import {
+  buyFood,
+  getJwtTokenFromLocalStorage,
+  postEntry,
+} from "@/app/(utils)/requests";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { Button } from "./Button";
 import { UserContentContext } from "./Providers/UserContentProvider";
+import { useRouter } from "next/navigation";
+import { TEntry } from "@/types";
 
 export const StoreOption = ({
   foodName,
   calories,
+  foodId,
 }: {
   foodName: string;
   calories: number;
+  foodId: number;
 }) => {
-  const { user, setUser } = useContext(UserContentContext);
+  const {
+    user,
+    setUser,
+    today,
+    setTodaysEntries,
+    todaysEntries,
+    setTotalCalories,
+    totalCalories,
+  } = useContext(UserContentContext);
+
+  const router = useRouter();
+
   let cost = 0;
 
   switch (
@@ -20,17 +39,16 @@ export const StoreOption = ({
     (calories >= 500 && calories < 750) ||
     calories >= 750
   ) {
-    case calories === 350:
-      cost = 3;
+    case calories >= user.calorie_goal * 0.35 &&
+      calories < user.calorie_goal * 0.4:
+      cost = 12;
       break;
-    case calories > 350 && calories < 500:
-      cost = 5;
+    case calories >= user.calorie_goal * 0.4 &&
+      calories < user.calorie_goal * 0.45:
+      cost = 15;
       break;
-    case calories >= 500 && calories < 750:
-      cost = 7;
-      break;
-    case calories >= 750:
-      cost = 10;
+    case calories >= user.calorie_goal * 0.45:
+      cost = 20;
       break;
   }
 
@@ -38,24 +56,26 @@ export const StoreOption = ({
     <>
       <div className="flex flex-col w-full hover:bg-light-contrast rounded">
         <div className="flex w-full h-full justify-between items-center">
-          <p className="text-4xl mb-[10px] cursor-default">{foodName}</p>
+          <p className="xs:text-xl sm:text-4xl mb-[10px] cursor-default">
+            {foodName}
+          </p>
           <div className="flex justify-center items-center">
             <div
-              className={`mr-2 text-xl ${
+              className={`mr-2 sm:text-xl xs:text-lg ${
                 user.balance >= cost ? "text-white" : "text-red-500"
               }`}
             >
               {cost}🪙
             </div>
             <Button
-              text="Buy Food"
+              text={`Purchase Meal`}
               styles={
-                "border-2 border-transparent hover:border-green-500 hover:bg-dark-contrast disabled:pointer-events-none"
+                "border-2 border-transparent hover:border-green-500 hover:bg-dark-contrast disabled:pointer-events-none xs:text-xs sm:text-xl"
               }
               disabled={user.balance < cost}
-              onClick={() => {
+              onClick={async () => {
                 const newBalance = user.balance - cost;
-                buyFood(
+                await buyFood(
                   cost,
                   user.balance,
                   getJwtTokenFromLocalStorage(),
@@ -75,6 +95,25 @@ export const StoreOption = ({
                     });
                   }
                 });
+
+                const newCheatEntry = {
+                  mealName: foodName,
+                  mealType: "Cheat Meal🎂",
+                  foodsIds: [foodId],
+                  dayId: today.id,
+                };
+
+                await postEntry(newCheatEntry, getJwtTokenFromLocalStorage())
+                  .then((entry: TEntry) => {
+                    const totalEntryCalories = entry.foods.reduce(
+                      (acc, val) => (acc += val.food.calories),
+                      0
+                    );
+                    router.push("/today");
+                    setTodaysEntries([...todaysEntries, entry]);
+                    setTotalCalories(totalCalories + totalEntryCalories);
+                  })
+                  .catch((e) => console.log(e));
               }}
             />
           </div>

@@ -8,3 +8,24 @@
   opacity: 1;
   transform: translateX(0);
 }
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: #2B5574;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  position: relative;
+  z-index: 1;
+  margin-left: -60px;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}

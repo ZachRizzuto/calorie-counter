@@ -25,7 +25,6 @@ type TContext = {
   setUser: (user: TUser) => void;
   allFoods: TFood[];
   setAllFoods: (foods: TFood[]) => void;
-  deleteFood: (entry: TEntry) => void;
   userEntries: TEntry[];
   setUserEntries: (entries: TEntry[]) => void;
   todaysEntries: TEntry[];
@@ -64,27 +63,20 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
     setTotalCalories(0);
   };
 
-  // Deletes Entry On Today Page
-  const deleteFood = (entry: TEntry) => {
-    // deleteEntry(entry.id).then((res) => {
-    //   if (res.ok) {
-    //     setTodaysEntries(todaysEntries.filter((ent) => ent.id !== entry.id));
-    //   } else {
-    //     throw new Error("Couldn't Delete Food :(");
-    //   }
-    // });
-  };
-
-  const handleDate = (food: TFood[]) => {
+  const handleDate = () => {
     // Setting the users days
-    getAllUsersDays(getJwtTokenFromLocalStorage()).then((userDays) => {
-      setUserDays(userDays);
-      // Setting Today && if a new day creating another day
-      getTodaysInformation(food);
-    });
+    getAllUsersDays(getJwtTokenFromLocalStorage())
+      .then((userDays) => {
+        setUserDays(userDays);
+        return userDays;
+      })
+      .then((allDays) => {
+        // Setting Today && if a new day creating another day
+        getTodaysInformation(allDays);
+      });
   };
 
-  const getTodaysInformation = async (foods: TFood[]) => {
+  const getTodaysInformation = async (days: TDay[]) => {
     let matchedDay: undefined | TDay;
 
     matchedDay = await getDate(dateToday, getJwtTokenFromLocalStorage()).then(
@@ -92,9 +84,10 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         if (!day) {
           return newDay(dateToday, getJwtTokenFromLocalStorage())
             .then((res) => res.json())
-            .then((day) => {
-              setToday(day);
-              setUserDays([...userDays, day]);
+            .then((newDay) => {
+              setToday(newDay);
+              console.log(userDays);
+              setUserDays([...days, newDay]);
             });
         }
         return day;
@@ -112,15 +105,13 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
 
       const allFoodCaloriesForToday: number[] = filteredTodaysEntries.map(
         (entry: TEntry) => {
-          const food = foods.find((food) => food.id === entry.foodId);
-          if (food) {
-            return food.calories;
-          }
-          return 0;
+          const totalEntryCalories = entry.foods
+            .map((food) => food.food)
+            .reduce((acc, val) => (acc += val.calories), 0);
+
+          return totalEntryCalories;
         }
       );
-
-      console.log(allFoodCaloriesForToday);
 
       setTotalCalories(
         allFoodCaloriesForToday.reduce((prev, curr) => (prev += curr), 0)
@@ -136,7 +127,7 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         setAllFoods(foods);
         return foods;
       })
-      .then((foods) => handleDate(foods));
+      .then(() => handleDate());
   };
 
   const handleLogin = async () => {
@@ -190,7 +181,6 @@ export const UserContentProvider = ({ children }: { children: ReactNode }) => {
         setUser,
         allFoods,
         setAllFoods,
-        deleteFood,
         userEntries,
         setUserEntries,
         todaysEntries,

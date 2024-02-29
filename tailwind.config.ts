@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
   content: [
@@ -21,6 +22,13 @@ const config: Config = {
         "dark-contrast": "#234862",
         success: "#ADDDA9",
       },
+      borderRadius: {
+        pill: "15px",
+      },
+    },
+    screens: {
+      xs: "320px",
+      ...defaultTheme.screens,
     },
   },
   plugins: [],

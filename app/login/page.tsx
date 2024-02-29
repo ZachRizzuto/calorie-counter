@@ -28,7 +28,7 @@ export default function Login() {
   return (
     <>
       <form
-        className="bg-gray-800 p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 w-1/3 top-1/3 border-green-500 border"
+        className="bg-light-dark-contrast p-8 flex flex-col min-h-72 m-auto relative justify-center items-center gap-6 sm:w-[60%] md:w-1/3 xs:w-[90%] top-1/3 border-green-500 border"
         onSubmit={async (e) => {
           e.preventDefault();
 
@@ -47,14 +47,18 @@ export default function Login() {
               if (!res.ok) {
                 setIsError(true);
                 userRef.current?.focus();
-                toast.error("Invalid Credentials");
                 return undefined;
               } else return res.json();
             })
             .then((res) => {
               if (res) {
                 localStorage.setItem("user", JSON.stringify(res));
-                toast.success("Logged In");
+                toast.success("Logged In", {
+                  style: {
+                    backgroundColor: "#5285A4",
+                    color: "white",
+                  },
+                });
                 setUser({
                   user: res.userInformation.user,
                   balance: res.userInformation.balance,
@@ -71,57 +75,75 @@ export default function Login() {
         }}
       >
         <h1 className="text-5xl mt-0">Login!</h1>
-        {isError && (
-          <div className="bg-red-500 text-white p-2 rounded-md">
-            Incorrect username or password! Try again!
+        <div
+          className={`bg-red-500 text-white text-center p-2 rounded-md ${
+            isError ? "top-[-14%]" : "top-[-120%]"
+          } absolute`}
+        >
+          Incorrect username or password! Try again!
+        </div>
+        <div className="w-full m-auto max-w-[300px]">
+          <label htmlFor="user" className="w-[80%] m-auto max-w-[300px]">
+            Username:{" "}
+          </label>
+          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px] w-[80%] m-auto max-w-[300px]">
+            <input
+              type="text"
+              name="user"
+              autoComplete="off"
+              value={form.user}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  user: e.target.value,
+                });
+                if (isError) {
+                  setIsError(false);
+                }
+              }}
+              ref={userRef}
+              style={{
+                width: "100%",
+                maxWidth: "300px",
+              }}
+            />
           </div>
-        )}
-        <div>
-          <label htmlFor="user">Username: </label>
-          <input
-            type="text"
-            name="user"
-            autoComplete="off"
-            value={form.user}
-            onChange={(e) => {
-              setForm({
-                ...form,
-                user: e.target.value,
-              });
-              if (isError) {
-                setIsError(false);
-              }
-            }}
-            ref={userRef}
-          />
         </div>
-        <div>
-          <label htmlFor="pass">Password: </label>
-          <input
-            type="password"
-            name="pass"
-            autoComplete="off"
-            value={form.password}
-            onChange={(e) => {
-              setForm({
-                ...form,
-                password: e.target.value,
-              });
-              if (isError) {
-                setIsError(false);
-              }
-            }}
-          />
+        <div className="w-full m-auto max-w-[300px]">
+          <label htmlFor="pass" className="w-[80%] m-auto">
+            Password:{" "}
+          </label>
+          <div className="bg-white rounded-pill p-2 pt-[1px] pb-[1px] w-[80%] m-auto max-w-[300px]">
+            <input
+              type="password"
+              name="pass"
+              autoComplete="off"
+              value={form.password}
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  password: e.target.value,
+                });
+                if (isError) {
+                  setIsError(false);
+                }
+              }}
+              style={{
+                width: "100%",
+                maxWidth: "300px",
+              }}
+            />
+          </div>
         </div>
-        <div>
+        <div className="lg:block xs:flex xs:flex-col xs:items-center xs:justify-center">
           <input
             type="submit"
             value="Login"
-            className="bg-gray-700 w-32 h-10 mr-8"
+            className="bg-success text-dark-contrast w-32 h-10 lg:mr-8"
           />
           <Link
             href="/signup"
-            className="text-white hover:text-gray-500 focus:text-gray-500"
+            className="text-white hover:text-success focus:text-success xs:mt-2 lg:mt-auto"
           >
             Sign up
           </Link>
