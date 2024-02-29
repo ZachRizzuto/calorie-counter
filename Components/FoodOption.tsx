@@ -19,6 +19,7 @@ export default function FoodOption({
   return (
     <div className="flex justify-between border-b-2 hover:border-b-success p-2 bg-light-contrast rounded-pill">
       <div className="flex justify-between gap-4">
+        <p className="border-b-2">{food.amount}</p>
         <p className="border-b-2">{food.food}</p>
         <p className="border-b-2">{food.calories} kcal</p>
       </div>

@@ -8,6 +8,7 @@ import { StoreOption } from "@/Components/StoreOption";
 import Image from "next/image";
 import { useContext } from "react";
 import { buyFood, getJwtTokenFromLocalStorage } from "../(utils)/requests";
+import styles from "./food-store.module.css";
 
 export default function BuyFoodPage() {
   const { allFoods, user, setUser } = useContext(UserContentContext);
@@ -39,7 +40,10 @@ export default function BuyFoodPage() {
                   loading="lazy"
                 />
                 <div>
-                  <span className="text-7xl text-center">{user.balance}🪙</span>
+                  <span className={`text-7xl text-center ${styles.tooltip}`}>
+                    {user.balance}🪙
+                    <i className={`fa-solid fa-circle-info text-[20%]`}></i>
+                  </span>
                 </div>
                 <div className="flex gap-1">
                   Dev Purposes:

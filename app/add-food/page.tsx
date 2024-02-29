@@ -15,6 +15,7 @@ import {
 import styles from "./food-form.module.css";
 import CreateFoodModal from "@/Components/CreateFoodModal";
 import FoodOption from "@/Components/FoodOption";
+import AddFoodModal from "@/Components/AddFoodModal";
 
 export type WithKey<T> = T & { key: number };
 
@@ -22,10 +23,7 @@ export default function AddFoodForm() {
   const {
     user,
     allFoods,
-    setAllFoods,
-    setUserEntries,
     today,
-    userEntries,
     todaysEntries,
     setTodaysEntries,
     setTotalCalories,
@@ -33,7 +31,7 @@ export default function AddFoodForm() {
     setUser,
   } = useContext(UserContentContext);
 
-  const [key, setKey] = useState(0);
+  const [foodKey, setKey] = useState(0);
 
   const [formEntry, setFormEntry] = useState<TFoodForm>({
     foodSelect: "",
@@ -60,8 +58,6 @@ export default function AddFoodForm() {
   const [showAddFoodModal, setShowAddFoodModal] = useState(false);
 
   const [searchInput, setSearchInput] = useState("");
-
-  const [foodOptions, setFoodOptions] = useState<TFood[]>([]);
 
   const resetForm = () => {
     setMealEntryForm({
@@ -137,17 +133,17 @@ export default function AddFoodForm() {
                         setSelectedFoods={(selectedFoods) =>
                           setSelectedFoods(selectedFoods)
                         }
-                        selectedFoodsKey={key}
+                        selectedFoodsKey={foodKey}
                         setSelectedFoodsKey={(key) => setKey(key)}
                       />
                     );
                   })}
               </div>
-              <div className="w-[40%] ml-auto flex justify-between items-center">
+              <div className="w-[40%] ml-auto flex justify-end items-center">
                 <p className="inline mr-4 lg:text-sm md:text-xs">{`Don't see your food?`}</p>
                 <Button
                   text="Create Food"
-                  styles="bg-light-contrast md:text-sm"
+                  styles="bg-light-contrast lg:text-xs"
                   onClick={() => setShowCreateFoodModal(true)}
                 ></Button>
               </div>
@@ -227,7 +223,7 @@ export default function AddFoodForm() {
                   <div>
                     <label
                       htmlFor="meal-type"
-                      className="inline mr-2 lg:text-sm xl:text-md"
+                      className="inline mr-2 xs:text-[80%] sm:text-sm xl:text-md"
                     >
                       What kind of meal is this?:
                     </label>
@@ -241,7 +237,7 @@ export default function AddFoodForm() {
                       }
                       name="meal-type"
                       id="meal-type"
-                      className=""
+                      className="sm:w-auto xs:w-full"
                     >
                       <option value="Snack🥝">Snack🥝</option>
                       <option value="Breakfast🥞">Breakfast🥞</option>
@@ -252,7 +248,7 @@ export default function AddFoodForm() {
                   </div>
                   <label
                     htmlFor="meal-name"
-                    className="inline mr-2 lg:text-sm xl:text-md"
+                    className="inline mr-2 xs:text-[80%] sm:text-xs xl:text-[95%]"
                   >
                     What do you want to name this meal?:
                   </label>
@@ -292,13 +288,13 @@ export default function AddFoodForm() {
                     </div>
                   ))}
                 </div>
-                <div className="flex items-center justify-between mt-[5%] w-[100%]">
+                <div className="flex items-center sm:flex-row xs:flex-col justify-between mt-[5%] w-[100%]">
                   <Button
                     text="Log Meal"
                     type="submit"
-                    styles="bg-success text-dark-contrast w-[100%] xl:text-md lg:text-sm"
+                    styles="bg-success text-dark-contrast w-[100%] xl:text-md lg:text-xs"
                   />
-                  <p className="lg:text-xs xl:text-[90%] w-full">
+                  <p className="lg:text-xs xl:text-[90%] xs:text-center w-full">
                     Total:{" "}
                     {selectedFoods.reduce(
                       (acc, currVal) => (acc += currVal.calories),
@@ -309,7 +305,7 @@ export default function AddFoodForm() {
                   <Button
                     text="Add Food"
                     type="button"
-                    styles="bg-success text-dark-contrast w-[100%] xl:text-md xs:text-sm"
+                    styles="bg-success text-dark-contrast w-[100%] xs:block lg:hidden xl:text-md xs:text-sm"
                     onClick={() => setShowAddFoodModal(true)}
                   />
                 </div>
@@ -321,6 +317,15 @@ export default function AddFoodForm() {
       <CreateFoodModal
         display={showCreateFoodModal}
         setShowModal={(val: boolean) => setShowCreateFoodModal(val)}
+      />
+      <AddFoodModal
+        showAddFoodModal={showAddFoodModal}
+        setShowAddFoodModal={(show) => setShowAddFoodModal(show)}
+        selectedFoods={selectedFoods}
+        setSelectedFoods={(selectedFoods) => setSelectedFoods(selectedFoods)}
+        foodKey={foodKey}
+        setKey={(num) => setKey(num)}
+        setShowCreateFoodModal={(show) => setShowCreateFoodModal(show)}
       />
     </>
   );

@@ -5,15 +5,13 @@ import { Nav } from "@/Components/Nav";
 import { PageSection } from "@/Components/PageSection";
 import { PageWrapper } from "@/Components/PageWrapper";
 import { UserContentContext } from "@/Components/Providers/UserContentProvider";
-import Image from "next/image";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { editUserGoal, getJwtTokenFromLocalStorage } from "../(utils)/requests";
 import styles from "./profile.module.css";
 
 export default function Profile() {
-  const { user, setUser, userDays, userEntries, allFoods } =
-    useContext(UserContentContext);
+  const { user, setUser, userDays } = useContext(UserContentContext);
 
   const [showCalorieModal, setShowCalorieModal] = useState(false);
 
@@ -51,7 +49,7 @@ export default function Profile() {
           handleForm={handleForm}
         />
         <div className="flex items-center justify-center h-[100vh] p-[30px] gap-2 w-full lg:flex-row xs:flex-col">
-          <div className="w-full">
+          <div className="w-[50%]">
             <PageSection
               styles={{
                 width: "max-w-full",
@@ -67,7 +65,7 @@ export default function Profile() {
                 </span>
               </h2>
               <div>
-                {userDays.map((day) => (
+                {userDays.slice(-7).map((day) => (
                   <div key={day.id}>
                     <div className="flex flex-col max-h-[400px] overflow-scroll">
                       {day.date}:{" "}
@@ -90,7 +88,7 @@ export default function Profile() {
                 height: "",
               }}
             >
-              <div className="flex justify-between items-center w-full gap-2">
+              <div className="flex justify-center items-center w-full gap-2">
                 <div>Calorie Goal: {user.calorie_goal}</div>
                 <Button
                   text="Edit"

@@ -46,9 +46,9 @@ export default function SignUpForm() {
             formData.get("password")!.length > 0
           ) {
             await createUser(formData, router);
-            const form = document.getElementById(
-              "signup-form"
-            ) as HTMLFormElement;
+            const form = document.querySelectorAll(
+              "#signup-form"
+            )[0] as HTMLFormElement;
             form.reset();
           } else {
             toast.error("Username and Password fields must be filled.");
