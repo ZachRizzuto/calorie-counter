@@ -45,60 +45,6 @@ export default function BuyFoodPage() {
                     <i className={`fa-solid fa-circle-info text-[20%]`}></i>
                   </span>
                 </div>
-                <div className="flex gap-1">
-                  Dev Purposes:
-                  <Button
-                    text={"+1"}
-                    styles={"w-12"}
-                    onClick={() => {
-                      buyFood(
-                        -1,
-                        user.balance,
-                        getJwtTokenFromLocalStorage(),
-                        user.user
-                      ).then((res) => {
-                        if (res.ok) {
-                          const newBalance = user.balance + 1;
-                          setUser({ ...user, balance: newBalance });
-                        }
-                      });
-                    }}
-                  />
-                  <Button
-                    text={"+5"}
-                    styles={"w-12"}
-                    onClick={() => {
-                      buyFood(
-                        -5,
-                        user.balance,
-                        getJwtTokenFromLocalStorage(),
-                        user.user
-                      ).then((res) => {
-                        if (res.ok) {
-                          const newBalance = user.balance + 5;
-                          setUser({ ...user, balance: newBalance });
-                        }
-                      });
-                    }}
-                  />
-                  <Button
-                    text={"+10"}
-                    styles={"w-12"}
-                    onClick={() => {
-                      buyFood(
-                        -10,
-                        user.balance,
-                        getJwtTokenFromLocalStorage(),
-                        user.user
-                      ).then((res) => {
-                        if (res.ok) {
-                          const newBalance = user.balance + 10;
-                          setUser({ ...user, balance: newBalance });
-                        }
-                      });
-                    }}
-                  />
-                </div>
               </PageSection>
             </div>
             <div className="mx-4 h-full w-1 bg-green-500 xs:hidden lg:block"></div>

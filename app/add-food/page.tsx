@@ -119,7 +119,7 @@ export default function AddFoodForm() {
                   />
                 </div>
               </div>
-              <div className="flex flex-col h-[85%] overflow-scroll gap-2 p-2">
+              <div className="flex flex-col h-[85%] overflow-y-scroll overflow-x-hidden gap-2 p-2">
                 {allFoods
                   .filter((food) =>
                     food.food.toLowerCase().includes(searchInput)
@@ -264,7 +264,7 @@ export default function AddFoodForm() {
                     }
                   />
                 </div>
-                <div className="flex flex-col border-b-2 overflow-scroll h-[70%] max-h-[70%]">
+                <div className="flex flex-col border-b-2 overflow-y-scroll overflow-x-hidden h-[70%] max-h-[70%]">
                   {selectedFoods.map((mapFood) => (
                     <div
                       key={mapFood.key}
