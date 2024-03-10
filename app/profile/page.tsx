@@ -64,19 +64,23 @@ export default function Profile() {
                   Your Calorie Total History
                 </span>
               </h2>
-              <div>
+              <div className="translate-x-[-8%]">
                 {userDays.slice(-7).map((day) => (
                   <div key={day.id}>
-                    <div className="flex flex-col max-h-[400px] overflow-scroll">
-                      {day.date}:{" "}
-                      {day.entries
-                        .map((entry) => entry.foods)
-                        .flat()
-                        .reduce(
-                          (acc, val) => (acc += val.food.calories),
-                          0
-                        )}{" "}
-                      kcals
+                    <div className="flex flex-col max-h-[400px]">
+                      <div className="flex">
+                        <div className="min-w-[100px]">{day.date}:</div>
+                        <div className="min-w-[30%]">
+                          {day.entries
+                            .map((entry) => entry.foods)
+                            .flat()
+                            .reduce(
+                              (acc, val) => (acc += val.food.calories),
+                              0
+                            )}{" "}
+                        </div>
+                        <div>kcals</div>
+                      </div>
                     </div>
                   </div>
                 ))}
